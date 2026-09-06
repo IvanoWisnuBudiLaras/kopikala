@@ -1,28 +1,212 @@
 @inherits LayoutComponentBase
+@using Microsoft.AspNetCore.Authorization
+@inject NavigationManager NavigationManager
 
-<MudThemeProvider />
+<MudThemeProvider Theme="@KopiKalaTheme.CreateTheme()" IsDarkMode="@_isDarkMode" />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<MudLayout Class="kopi-layout">
+    @* ── Top App Bar with Dynamic Navbar ── *@
+    <MudAppBar Elevation="2" Class="kopi-appbar px-4" Color="Color.Inherit">
+        @* Brand Logo *@
+        <MudIconButton Icon="@Icons.Material.Filled.Coffee" Color="Color.Primary" Class="mr-1" />
+        <MudText Typo="Typo.h6" Class="font-weight-bold mr-4" Color="Color.Primary">
+            KopiKala
+        </MudText>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+        <MudSpacer />
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+        @* ── DYNAMIC NAVBAR: Role-Based via AuthorizeView ── *@
+        <AuthorizeView>
+            <Authorized>
+                @* Customer Shortcuts *@
+                <AuthorizeView Policy="CustomerOnly" Context="custContext">
+                    <Authorized>
+                        <MudButton Href="/Booking"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   Size="Size.Small"
+                                   Class="mr-2 kopi-nav-btn"
+                                   StartIcon="@Icons.Material.Filled.EventSeat">
+                            Pesan Meja
+                        </MudButton>
+                        <MudButton Href="/Customer/Orders"
+                                   Variant="Variant.Text"
+                                   Color="Color.Inherit"
+                                   Size="Size.Small"
+                                   Class="mr-2 kopi-nav-btn"
+                                   StartIcon="@Icons.Material.Filled.ReceiptLong">
+                            Pesanan Saya
+                        </MudButton>
+                    </Authorized>
+                </AuthorizeView>
+
+                @* Staff Shortcuts (Kasir / Barista / Manager) *@
+                <AuthorizeView Policy="StaffAccess" Context="staffContext">
+                    <Authorized>
+                        <MudButton Href="/Staff"
+                                   Variant="Variant.Outlined"
+                                   Color="Color.Warning"
+                                   Size="Size.Small"
+                                   Class="mr-2 kopi-nav-btn"
+                                   StartIcon="@Icons.Material.Filled.Badge">
+                            Portal Staf
+                        </MudButton>
+                    </Authorized>
+                </AuthorizeView>
+
+                @* SuperAdmin Shortcuts *@
+                <AuthorizeView Policy="SuperAdminOnly" Context="adminContext">
+                    <Authorized>
+                        <MudButton Href="/SuperAdmin"
+                                   Variant="Variant.Outlined"
+                                   Color="Color.Error"
+                                   Size="Size.Small"
+                                   Class="mr-2 kopi-nav-btn"
+                                   StartIcon="@Icons.Material.Filled.AdminPanelSettings">
+                            SuperAdmin
+                        </MudButton>
+                    </Authorized>
+                </AuthorizeView>
+
+                @* Theme Toggle *@
+                <MudIconButton Icon="@(_isDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)"
+                               Color="Color.Inherit"
+                               OnClick="ToggleDarkMode"
+                               Class="mr-2" />
+
+                @* User Profile Dropdown *@
+                <MudMenu Label="@context.User.Identity?.Name"
+                         EndIcon="@Icons.Material.Filled.AccountCircle"
+                         Color="Color.Inherit"
+                         Class="mr-1">
+                    <MudMenuItem Href="/Account/Manage" Icon="@Icons.Material.Filled.Person">
+                        Profil Akun
+                    </MudMenuItem>
+                    <MudDivider />
+                    <MudMenuItem Icon="@Icons.Material.Filled.Logout" OnClick="HandleLogout">
+                        Keluar
+                    </MudMenuItem>
+                </MudMenu>
+            </Authorized>
+
+            <NotAuthorized>
+                @* Public / Guest Navigation *@
+                <MudButton Href="/"
+                           Variant="Variant.Text"
+                           Color="Color.Inherit"
+                           Size="Size.Small"
+                           Class="mr-2 kopi-nav-btn">
+                    Beranda
+                </MudButton>
+
+                @* Theme Toggle *@
+                <MudIconButton Icon="@(_isDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)"
+                               Color="Color.Inherit"
+                               OnClick="ToggleDarkMode"
+                               Class="mr-2" />
+
+                <MudButton Href="/Account/Login"
+                           Variant="Variant.Text"
+                           Color="Color.Inherit"
+                           Size="Size.Small"
+                           Class="mr-2 kopi-nav-btn">
+                    Masuk
+                </MudButton>
+                <MudButton Href="/Account/Register"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           Size="Size.Small"
+                           Class="kopi-nav-btn">
+                    Daftar
+                </MudButton>
+            </NotAuthorized>
+        </AuthorizeView>
+    </MudAppBar>
+
+    @* ── Main Content ── *@
+    <MudMainContent Class="kopi-main">
+        @Body
+    </MudMainContent>
+
+    @* ── Footer ── *@
+    <MudPaper Elevation="2" Class="kopi-footer" Square="true">
+        <MudContainer MaxWidth="MaxWidth.Large" Class="pa-6">
+            <MudGrid Spacing="4" Justify="Justify.SpaceBetween">
+                <MudItem xs="12" sm="4">
+                    <MudStack Spacing="1">
+                        <MudText Typo="Typo.h6" Class="font-weight-bold" Color="Color.Primary">
+                            <MudIcon Icon="@Icons.Material.Filled.Coffee" Size="Size.Small" Class="mr-1" /> KopiKala
+                        </MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">
+                            Nikmati kopi terbaik tanpa antre meja. Reservasi &amp; pre-order mudah, cepat, dan elegan.
+                        </MudText>
+                    </MudStack>
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <MudStack Spacing="1">
+                        <MudText Typo="Typo.h6" Class="font-weight-bold">Jelajahi</MudText>
+                        <MudLink Href="/" Color="Color.Primary" Typo="Typo.body2">Beranda</MudLink>
+                        <MudLink Href="/Account/Login" Color="Color.Primary" Typo="Typo.body2">Masuk</MudLink>
+                        <MudLink Href="/Account/Register" Color="Color.Primary" Typo="Typo.body2">Daftar</MudLink>
+                    </MudStack>
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <MudStack Spacing="1">
+                        <MudText Typo="Typo.h6" Class="font-weight-bold">Kontak</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">
+                            <MudIcon Icon="@Icons.Material.Filled.LocationOn" Size="Size.Small" Class="mr-1" /> Jl. Kopi Nusantara No. 42
+                        </MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary">
+                            <MudIcon Icon="@Icons.Material.Filled.Phone" Size="Size.Small" Class="mr-1" /> (021) 555-0142
+                        </MudText>
+                    </MudStack>
+                </MudItem>
+            </MudGrid>
+            <MudDivider Class="my-4" />
+            <MudText Typo="Typo.caption" Align="Align.Center" Color="Color.Secondary">
+                &copy; 2025 KopiKala &mdash; Semua hak dilindungi.
+            </MudText>
+        </MudContainer>
+    </MudPaper>
+</MudLayout>
 
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+@code {
+    private bool _isDarkMode;
+    private string? _currentUrl;
+
+    protected override void OnInitialized()
+    {
+        _currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        _currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+        StateHasChanged();
+    }
+
+    private void ToggleDarkMode()
+    {
+        _isDarkMode = !_isDarkMode;
+    }
+
+    private void HandleLogout()
+    {
+        NavigationManager.NavigateTo("/auth/logout", forceLoad: true);
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+}

@@ -104,12 +104,14 @@
     private LoginRequestDto _loginDto = new();
     private string? _errorMessage;
     private bool _isLoading;
+    private string? _returnUrl;
 
     protected override void OnInitialized()
     {
         var uri = new Uri(Navigation.Uri);
         var query = HttpUtility.ParseQueryString(uri.Query);
         _errorMessage = query["error"];
+        _returnUrl = query["returnUrl"];
     }
 
     private async Task HandleLoginSubmitAsync()
@@ -136,7 +138,14 @@
             await HttpContextAccessor.HttpContext!.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme, result.Principal, authProperties);
 
-            // Redirect berdasarkan permission (pola SPA routing)
+            // Redirect: prioritaskan returnUrl jika tersedia dan aman
+            if (!string.IsNullOrWhiteSpace(_returnUrl) && IsLocalUrl(_returnUrl))
+            {
+                Navigation.NavigateTo(_returnUrl);
+                return;
+            }
+
+            // Fallback: Redirect berdasarkan permission (pola SPA routing)
             if (result.Principal.HasClaim("Permission", "Sistem.Kelola"))
             {
                 Navigation.NavigateTo("/SuperAdmin");
@@ -158,5 +167,24 @@
         {
             _isLoading = false;
         }
+    }
+
+    /// <summary>
+    /// Validates that the returnUrl is a safe local path (prevents open-redirect attacks).
+    /// </summary>
+    private static bool IsLocalUrl(string url)
+    {
+        if (string.IsNullOrEmpty(url)) return false;
+
+        // Must start with '/' and not contain scheme/host
+        if (url.StartsWith("//") || url.StartsWith("/#")) return false;
+
+        // Disallow absolute paths to external hosts
+        if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
+            return uri.Authority.Equals("localhost", StringComparison.OrdinalIgnoreCase)
+                || uri.Authority.Equals("127.0.0.1", StringComparison.OrdinalIgnoreCase);
+
+        // Relative paths starting with '/' are safe
+        return url.StartsWith("/");
     }
 }

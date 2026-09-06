@@ -1,7 +1,417 @@
-﻿@page "/"
+@page "/"
+@using Microsoft.AspNetCore.Authorization
 
-<PageTitle>Home</PageTitle>
+<PageTitle>KopiKala — Nikmati Kopi Terbaik Tanpa Antre Meja</PageTitle>
 
-<h1>Hello, world!</h1>
+@* ══════════════════════════════════════════════════════
+   HERO BANNER — Full-width with dark overlay gradient
+   ══════════════════════════════════════════════════════ *@
+<section class="kopi-hero">
+    <div class="kopi-hero-overlay"></div>
+    <div class="kopi-hero-content">
+        <MudStack Spacing="2" AlignItems="AlignItems.Center" Justify="Justify.Center" Class="text-center">
+            <MudText Typo="Typo.h2" Class="kopi-hero-title" Color="Color.Inherit">
+                Nikmati Kopi Terbaik<br />Tanpa Antre Meja
+            </MudText>
+            <MudText Typo="Typo.body1" Class="kopi-hero-subtitle" Color="Color.Inherit">
+                Reservasi meja &amp; pre-order minuman favorit Anda dalam hitungan detik.
+                Datang, duduk, dan nikmati — tanpa menunggu.
+            </MudText>
+            <MudStack Spacing="2" Row="true" Justify="Justify.Center" Class="mt-4">
+                <AuthorizeView>
+                    <Authorized>
+                        <MudButton Href="/Booking"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   Size="Size.Large"
+                                   StartIcon="@Icons.Material.Filled.EventSeat"
+                                   Class="kopi-hero-cta">
+                            Pesan Meja Sekarang
+                        </MudButton>
+                    </Authorized>
+                    <NotAuthorized>
+                        <MudButton Href="/Account/Login?returnUrl=/Booking"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   Size="Size.Large"
+                                   StartIcon="@Icons.Material.Filled.EventSeat"
+                                   Class="kopi-hero-cta">
+                            Pesan Meja Sekarang
+                        </MudButton>
+                        <MudButton Href="/Account/Register"
+                                   Variant="Variant.Outlined"
+                                   Color="Color.Inherit"
+                                   Size="Size.Large"
+                                   Class="kopi-hero-cta-outline">
+                            Daftar Gratis
+                        </MudButton>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </MudStack>
+        </MudStack>
+    </div>
+</section>
 
-Welcome to your new app.
+@* ══════════════════════════════════════════════════════
+   SECTION: Fitur Singkat Kafe — 3 Feature Cards
+   ══════════════════════════════════════════════════════ *@
+<MudContainer MaxWidth="MaxWidth.Large" Class="kopi-section">
+    <MudText Typo="Typo.h3" Align="Align.Center" Class="kopi-section-title mb-8">
+        Kenapa KopiKala?
+    </MudText>
+
+    <MudGrid Spacing="4" Justify="Justify.Center">
+        @* Card 1: Pilih Meja & Durasi *@
+        <MudItem xs="12" sm="4">
+            <MudPaper Elevation="3" Class="kopi-feature-card pa-6">
+                <MudStack Spacing="2" AlignItems="AlignItems.Center">
+                    <div class="kopi-feature-icon-wrap">
+                        <MudIcon Icon="@Icons.Material.Filled.EventSeat" Size="Size.Large" Color="Color.Primary" />
+                    </div>
+                    <MudText Typo="Typo.h5" Align="Align.Center" Class="font-weight-bold">
+                        Pilih Meja &amp; Durasi
+                    </MudText>
+                    <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Secondary">
+                        Atur waktu nongkrong santai Anda. Pilih meja favorit, tentukan durasi, dan kami menyiapkannya.
+                    </MudText>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+
+        @* Card 2: Pre-Order F&B *@
+        <MudItem xs="12" sm="4">
+            <MudPaper Elevation="3" Class="kopi-feature-card pa-6">
+                <MudStack Spacing="2" AlignItems="AlignItems.Center">
+                    <div class="kopi-feature-icon-wrap">
+                        <MudIcon Icon="@Icons.Material.Filled.LocalCafe" Size="Size.Large" Color="Color.Primary" />
+                    </div>
+                    <MudText Typo="Typo.h5" Align="Align.Center" Class="font-weight-bold">
+                        Pre-Order F&amp;B
+                    </MudText>
+                    <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Secondary">
+                        Minuman diracik segar tepat saat Anda tiba. Tidak perlu antre di kasir — langsung nikmati.
+                    </MudText>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+
+        @* Card 3: Pembayaran Fleksibel *@
+        <MudItem xs="12" sm="4">
+            <MudPaper Elevation="3" Class="kopi-feature-card pa-6">
+                <MudStack Spacing="2" AlignItems="AlignItems.Center">
+                    <div class="kopi-feature-icon-wrap">
+                        <MudIcon Icon="@Icons.Material.Filled.Payment" Size="Size.Large" Color="Color.Primary" />
+                    </div>
+                    <MudText Typo="Typo.h5" Align="Align.Center" Class="font-weight-bold">
+                        Pembayaran Fleksibel
+                    </MudText>
+                    <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Secondary">
+                        Transfer bank atau bayar di tempat saat datang. Pilih cara bayar yang paling nyaman untuk Anda.
+                    </MudText>
+                </MudStack>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@* ══════════════════════════════════════════════════════
+   SECTION: Menu Populer — Photo Gallery Grid
+   ══════════════════════════════════════════════════════ *@
+<MudContainer MaxWidth="MaxWidth.Large" Class="kopi-section">
+    <MudText Typo="Typo.h3" Align="Align.Center" Class="kopi-section-title mb-2">
+        Menu Populer
+    </MudText>
+    <MudText Typo="Typo.body1" Align="Align.Center" Color="Color.Secondary" Class="mb-8">
+        Racikan signature kami yang paling digemari pengunjung setia KopiKala.
+    </MudText>
+
+    <MudGrid Spacing="3" Justify="Justify.Center">
+        @* Menu items — 6 photos in 2 rows of 3 *@
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="2" Class="kopi-menu-card">
+                <MudImage Src="/images/menu/menu-kopi-susu.jpg" Alt="Kopi Susu" ObjectFit="ObjectFit.Cover" Class="kopi-menu-img" />
+                <div class="kopi-menu-label pa-3">
+                    <MudText Typo="Typo.h6" Class="font-weight-bold">Kopi Susu</MudText>
+                    <MudText Typo="Typo.caption" Color="Color.Secondary">Signature — creamy &amp; bold</MudText>
+                </div>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="2" Class="kopi-menu-card">
+                <MudImage Src="/images/menu/menu-americano.jpg" Alt="Americano" ObjectFit="ObjectFit.Cover" Class="kopi-menu-img" />
+                <div class="kopi-menu-label pa-3">
+                    <MudText Typo="Typo.h6" Class="font-weight-bold">Americano</MudText>
+                    <MudText Typo="Typo.caption" Color="Color.Secondary">Classic — clean &amp; bright</MudText>
+                </div>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="2" Class="kopi-menu-card">
+                <MudImage Src="/images/menu/menu-latte.jpg" Alt="Latte" ObjectFit="ObjectFit.Cover" Class="kopi-menu-img" />
+                <div class="kopi-menu-label pa-3">
+                    <MudText Typo="Typo.h6" Class="font-weight-bold">Latte</MudText>
+                    <MudText Typo="Typo.caption" Color="Color.Secondary">Velvet — smooth &amp; mild</MudText>
+                </div>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="2" Class="kopi-menu-card">
+                <MudImage Src="/images/menu/menu-matcha.jpg" Alt="Matcha Latte" ObjectFit="ObjectFit.Cover" Class="kopi-menu-img" />
+                <div class="kopi-menu-label pa-3">
+                    <MudText Typo="Typo.h6" Class="font-weight-bold">Matcha Latte</MudText>
+                    <MudText Typo="Typo.caption" Color="Color.Secondary">Zen — earthy &amp; calming</MudText>
+                </div>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="2" Class="kopi-menu-card">
+                <MudImage Src="/images/menu/menu-croissant.jpg" Alt="Croissant" ObjectFit="ObjectFit.Cover" Class="kopi-menu-img" />
+                <div class="kopi-menu-label pa-3">
+                    <MudText Typo="Typo.h6" Class="font-weight-bold">Croissant</MudText>
+                    <MudText Typo="Typo.caption" Color="Color.Secondary">Buttery — flaky &amp; golden</MudText>
+                </div>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudPaper Elevation="2" Class="kopi-menu-card">
+                <MudImage Src="/images/menu/menu-fries.jpg" Alt="French Fries" ObjectFit="ObjectFit.Cover" Class="kopi-menu-img" />
+                <div class="kopi-menu-label pa-3">
+                    <MudText Typo="Typo.h6" Class="font-weight-bold">French Fries</MudText>
+                    <MudText Typo="Typo.caption" Color="Color.Secondary">Snack — crispy &amp; salted</MudText>
+                </div>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@* ══════════════════════════════════════════════════════
+   SECTION: Galeri Suasana — Atmosphere Preview
+   ══════════════════════════════════════════════════════ *@
+<MudContainer MaxWidth="MaxWidth.Large" Class="kopi-section">
+    <MudText Typo="Typo.h3" Align="Align.Center" Class="kopi-section-title mb-8">
+        Suasana KopiKala
+    </MudText>
+
+    <MudGrid Spacing="4">
+        <MudItem xs="12" md="6">
+            <MudPaper Elevation="3" Class="kopi-atmos-card">
+                <MudImage Src="/images/banners/hero-outdoor.jpg"
+                          Alt="Suasana outdoor KopiKala"
+                          ObjectFit="ObjectFit.Cover"
+                          Class="kopi-atmos-img" />
+                <div class="kopi-atmos-label pa-4">
+                    <MudText Typo="Typo.h5" Class="font-weight-bold">Area Outdoor</MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">
+                        Nikmati angin segar dan cahaya pagi sambil menyeruput kopi pilihan di teras kami.
+                    </MudText>
+                </div>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudPaper Elevation="3" Class="kopi-atmos-card">
+                <MudImage Src="/images/staff/barista-working.svg"
+                          Alt="Barista KopiKala sedang meracik"
+                          ObjectFit="ObjectFit.Cover"
+                          Class="kopi-atmos-img" />
+                <div class="kopi-atmos-label pa-4">
+                    <MudText Typo="Typo.h5" Class="font-weight-bold">Barista Kami</MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">
+                        Barista berpengalaman meracik setiap cangkir dengan ketelitian dan cinta untuk kopi.
+                    </MudText>
+                </div>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@* ══════════════════════════════════════════════════════
+   SECTION: CTA Bottom Banner
+   ══════════════════════════════════════════════════════ *@
+<section class="kopi-cta-banner">
+    <MudContainer MaxWidth="MaxWidth.Small" Class="text-center pa-8">
+        <MudText Typo="Typo.h4" Class="font-weight-bold mb-4" Color="Color.Inherit">
+            Siap Merasakan Pengalaman Baru?
+        </MudText>
+        <MudText Typo="Typo.body1" Color="Color.Inherit" Class="mb-6" Style="opacity: 0.85;">
+            Daftar sekarang dan pesan meja pertama Anda dalam hitungan menit.
+        </MudText>
+        <AuthorizeView>
+            <Authorized>
+                <MudButton Href="/Booking"
+                           Variant="Variant.Filled"
+                           Color="Color.Tertiary"
+                           Size="Size.Large"
+                           StartIcon="@Icons.Material.Filled.EventSeat">
+                    Pesan Meja Sekarang
+                </MudButton>
+            </Authorized>
+            <NotAuthorized>
+                <MudButton Href="/Account/Register"
+                           Variant="Variant.Filled"
+                           Color="Color.Tertiary"
+                           Size="Size.Large"
+                           StartIcon="@Icons.Material.Filled.PersonAdd">
+                    Daftar Gratis
+                </MudButton>
+            </NotAuthorized>
+        </AuthorizeView>
+    </MudContainer>
+</section>
+
+@* ══════════════════════════════════════════════════════
+   CUSTOM CSS — Modern Classic Vintage Elegance
+   ══════════════════════════════════════════════════════ *@
+<style>
+    /* ── Hero ── */
+    .kopi-hero {
+        position: relative;
+        min-height: 520px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: url('/images/banners/hero-indoor.jpg') center/cover no-repeat;
+        overflow: hidden;
+    }
+    .kopi-hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(42,36,33,0.82) 0%, rgba(93,64,55,0.62) 50%, rgba(42,36,33,0.75) 100%);
+        z-index: 1;
+    }
+    .kopi-hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 3rem 1.5rem;
+        max-width: 720px;
+    }
+    .kopi-hero-title {
+        letter-spacing: -0.01em;
+        text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+    .kopi-hero-subtitle {
+        opacity: 0.88;
+        font-size: 1.1rem;
+        line-height: 1.7;
+    }
+    .kopi-hero-cta, .kopi-hero-cta-outline {
+        min-width: 180px;
+        text-transform: none !important;
+        letter-spacing: 0.02em;
+        border-radius: 12px !important;
+    }
+    .kopi-hero-cta-outline {
+        border-color: rgba(250,249,246,0.6) !important;
+        color: #FAF9F6 !important;
+    }
+
+    /* ── Sections ── */
+    .kopi-section {
+        padding: 4rem 1rem;
+    }
+    .kopi-section-title {
+        font-weight: 700;
+        position: relative;
+    }
+    .kopi-section-title::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 3px;
+        background: #B5A642;
+        margin: 0.75rem auto 0;
+        border-radius: 2px;
+    }
+
+    /* ── Feature Cards ── */
+    .kopi-feature-card {
+        text-align: center;
+        border-radius: 16px !important;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .kopi-feature-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 32px rgba(93,64,55,0.18) !important;
+    }
+    .kopi-feature-icon-wrap {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: #F2EFE9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+
+    /* ── Menu Cards ── */
+    .kopi-menu-card {
+        border-radius: 14px !important;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .kopi-menu-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(93,64,55,0.14) !important;
+    }
+    .kopi-menu-img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+    }
+    .kopi-menu-label {
+        border-top: 2px solid #E8E3D9;
+    }
+
+    /* ── Atmosphere Cards ── */
+    .kopi-atmos-card {
+        border-radius: 16px !important;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .kopi-atmos-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 28px rgba(93,64,55,0.16) !important;
+    }
+    .kopi-atmos-img {
+        width: 100%;
+        height: 320px;
+        object-fit: cover;
+    }
+    .kopi-atmos-label {
+        background: rgba(250,249,246,0.97);
+    }
+
+    /* ── CTA Bottom Banner ── */
+    .kopi-cta-banner {
+        background: linear-gradient(135deg, #2A2421 0%, #5D4037 100%);
+        color: #FAF9F6;
+        padding: 2rem 0;
+    }
+
+    /* ── Layout Refinements ── */
+    .kopi-layout .mud-main-content {
+        min-height: 100vh;
+        background: #FAF9F6;
+    }
+    .kopi-appbar {
+        background: #FAF9F6 !important;
+        border-bottom: 1px solid #E2DDD3;
+    }
+    .kopi-nav-btn {
+        text-transform: none !important;
+        letter-spacing: 0.01em;
+    }
+    .kopi-footer {
+        background: #F2EFE9 !important;
+        border-top: 1px solid #E2DDD3;
+    }
+
+    /* ── Responsive ── */
+    @@media (max-width: 600px) {
+        .kopi-hero { min-height: 420px; }
+        .kopi-hero-content { padding: 2rem 1rem; }
+        .kopi-section { padding: 2.5rem 0.75rem; }
+        .kopi-menu-img { height: 160px; }
+        .kopi-atmos-img { height: 220px; }
+    }
+</style>
