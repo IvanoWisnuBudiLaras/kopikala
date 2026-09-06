@@ -11,118 +11,116 @@
 <PageTitle>Daftar Akun — KopiKala</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center justify-center py-8" Style="min-height: 90vh;">
-    <MudCard Class="pa-8" Style="border-radius: 20px; box-shadow: 0 12px 40px rgba(0,0,0,0.08); width: 100%; max-width: 480px;">
-        <MudCardContent>
-            <div class="text-center mb-6">
-                <MudIcon Icon="@Icons.Material.Filled.Coffee" Size="Size.Large" Color="Color.Primary" Style="font-size: 52px;" />
-                <MudText Typo="Typo.h5" Class="mt-2 font-weight-bold" Color="Color.Primary">
-                    KopiKala
-                </MudText>
-                <MudText Typo="Typo.body2" Color="Color.Default">
-                    Buat akun baru untuk mulai pesan meja
-                </MudText>
-            </div>
-
-            @if (!string.IsNullOrEmpty(_errorMessage))
-            {
-                <MudAlert Severity="Severity.Error" Class="mb-4" Variant="Variant.Filled">
-                    <MudText Typo="Typo.body2">@_errorMessage</MudText>
-                </MudAlert>
-            }
-
-            <EditForm Model="@_registerDto" OnValidSubmit="HandleRegisterSubmitAsync">
-                <DataAnnotationsValidator />
-
-                <MudTextField @bind-Value="_registerDto.FullName"
-                              Label="Nama Lengkap"
-                              Placeholder="Nama lengkap Anda"
-                              Variant="Variant.Outlined"
-                              Class="mb-3"
-                              For="@(() => _registerDto.FullName)"
-                              Adornment="Adornment.Start"
-                              AdornmentIcon="@Icons.Material.Filled.Person" />
-
-                <MudTextField @bind-Value="_registerDto.Email"
-                              Label="Alamat Email"
-                              Placeholder="contoh@email.com"
-                              Variant="Variant.Outlined"
-                              Class="mb-3"
-                              For="@(() => _registerDto.Email)"
-                              Adornment="Adornment.Start"
-                              AdornmentIcon="@Icons.Material.Filled.Email" />
-
-                <MudTextField @bind-Value="_registerDto.PhoneNumber"
-                              Label="Nomor Telepon / WhatsApp"
-                              Placeholder="081234567890"
-                              Variant="Variant.Outlined"
-                              Class="mb-3"
-                              For="@(() => _registerDto.PhoneNumber)"
-                              Adornment="Adornment.Start"
-                              AdornmentIcon="@Icons.Material.Filled.Phone" />
-
-                <MudTextField @bind-Value="_registerDto.Password"
-                              Label="Kata Sandi"
-                              InputType="InputType.Password"
-                              Placeholder="Minimal 6 karakter"
-                              Variant="Variant.Outlined"
-                              Class="mb-3"
-                              For="@(() => _registerDto.Password)"
-                              Adornment="Adornment.Start"
-                              AdornmentIcon="@Icons.Material.Filled.Lock" />
-
-                <MudTextField @bind-Value="_registerDto.ConfirmPassword"
-                              Label="Konfirmasi Kata Sandi"
-                              InputType="InputType.Password"
-                              Placeholder="Ulangi kata sandi"
-                              Variant="Variant.Outlined"
-                              Class="mb-4"
-                              For="@(() => _registerDto.ConfirmPassword)"
-                              Adornment="Adornment.Start"
-                              AdornmentIcon="@Icons.Material.Filled.LockClock" />
-
-                <MudButton ButtonType="ButtonType.Submit"
-                           Variant="Variant.Filled"
-                           Color="Color.Primary"
-                           Size="Size.Large"
-                           FullWidth="true"
-                           Disabled="_isLoading"
-                           Class="mb-4"
-                           Style="height: 48px; font-size: 16px; font-weight: 600;">
-                    @if (_isLoading)
-                    {
-                        <MudProgressCircular Indeterminate="true" Size="Size.Small" Class="ms-2" Color="Color.Inherit" />
-                    }
-                    else
-                    {
-                        @:Daftar Sekarang
-                    }
-                </MudButton>
-
-                <MudDivider Class="my-3" />
-                <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Default" Class="mb-3">atau</MudText>
-
-                <MudButton Variant="Variant.Outlined"
-                           Color="Color.Default"
-                           Size="Size.Large"
-                           FullWidth="true"
-                           Class="mb-4"
-                           Style="height: 48px; font-size: 15px; border: 1px solid #dadce0;"
-                           Href="/auth/google">
-                    <MudImage Src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                             Alt="Google"
-                             Height="20"
-                             Width="20"
-                             Class="me-2" />
-                    Daftar dengan Google
-                </MudButton>
-            </EditForm>
-
-            <MudText Typo="Typo.body2" Align="Align.Center" Class="mt-3" Color="Color.Default">
-                Sudah punya akun?
-                <MudLink Href="/Account/Login" Color="Color.Primary" Class="font-weight-bold">Masuk di sini</MudLink>
+    <MudPaper Elevation="3" Class="pa-8 w-100" Style="border-radius: 20px; max-width: 480px;">
+        <div class="text-center mb-6">
+            <MudIcon Icon="@Icons.Material.Filled.Coffee" Size="Size.Large" Color="Color.Primary" Style="font-size: 52px;" />
+            <MudText Typo="Typo.h5" Class="mt-2 font-weight-bold" Color="Color.Primary">
+                KopiKala
             </MudText>
-        </MudCardContent>
-    </MudCard>
+            <MudText Typo="Typo.body2" Color="Color.Secondary">
+                Buat akun baru untuk mulai pesan meja
+            </MudText>
+        </div>
+
+        @if (!string.IsNullOrEmpty(_errorMessage))
+        {
+            <MudAlert Severity="Severity.Error" Class="mb-4" Variant="Variant.Filled">
+                <MudText Typo="Typo.body2">@_errorMessage</MudText>
+            </MudAlert>
+        }
+
+        <EditForm Model="@_registerDto" OnValidSubmit="HandleRegisterSubmitAsync">
+            <DataAnnotationsValidator />
+
+            <MudTextField @bind-Value="_registerDto.FullName"
+                          Label="Nama Lengkap"
+                          Placeholder="Nama lengkap Anda"
+                          Variant="Variant.Outlined"
+                          Class="mb-3"
+                          For="@(() => _registerDto.FullName)"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Person" />
+
+            <MudTextField @bind-Value="_registerDto.Email"
+                          Label="Alamat Email"
+                          Placeholder="contoh@email.com"
+                          Variant="Variant.Outlined"
+                          Class="mb-3"
+                          For="@(() => _registerDto.Email)"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Email" />
+
+            <MudTextField @bind-Value="_registerDto.PhoneNumber"
+                          Label="Nomor Telepon / WhatsApp"
+                          Placeholder="081234567890"
+                          Variant="Variant.Outlined"
+                          Class="mb-3"
+                          For="@(() => _registerDto.PhoneNumber)"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Phone" />
+
+            <MudTextField @bind-Value="_registerDto.Password"
+                          Label="Kata Sandi"
+                          InputType="InputType.Password"
+                          Placeholder="Minimal 6 karakter"
+                          Variant="Variant.Outlined"
+                          Class="mb-3"
+                          For="@(() => _registerDto.Password)"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Lock" />
+
+            <MudTextField @bind-Value="_registerDto.ConfirmPassword"
+                          Label="Konfirmasi Kata Sandi"
+                          InputType="InputType.Password"
+                          Placeholder="Ulangi kata sandi"
+                          Variant="Variant.Outlined"
+                          Class="mb-4"
+                          For="@(() => _registerDto.ConfirmPassword)"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.LockClock" />
+
+            <MudButton ButtonType="ButtonType.Submit"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       Size="Size.Large"
+                       FullWidth="true"
+                       Disabled="_isLoading"
+                       Class="mb-4"
+                       Style="height: 48px; font-size: 16px; font-weight: 600;">
+                @if (_isLoading)
+                {
+                    <MudProgressCircular Indeterminate="true" Size="Size.Small" Class="ms-2" Color="Color.Inherit" />
+                }
+                else
+                {
+                    @:Daftar Sekarang
+                }
+            </MudButton>
+
+            <MudDivider Class="my-3" />
+            <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Secondary" Class="mb-3">atau</MudText>
+
+            <MudButton Variant="Variant.Outlined"
+                       Color="Color.Default"
+                       Size="Size.Large"
+                       FullWidth="true"
+                       Class="mb-4"
+                       Style="height: 48px; font-size: 15px;"
+                       Href="/auth/google">
+                <MudImage Src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                         Alt="Google"
+                         Height="20"
+                         Width="20"
+                         Class="me-2" />
+                Daftar dengan Google
+            </MudButton>
+        </EditForm>
+
+        <MudText Typo="Typo.body2" Align="Align.Center" Class="mt-3" Color="Color.Secondary">
+            Sudah punya akun?
+            <MudLink Href="/Account/Login" Color="Color.Primary" Class="font-weight-bold">Masuk di sini</MudLink>
+        </MudText>
+    </MudPaper>
 </MudContainer>
 
 @code {
@@ -144,7 +142,6 @@
                 return;
             }
 
-            // Auto SignIn setelah registrasi berhasil
             var authProperties = new AuthenticationProperties
             {
                 IsPersistent = true,

@@ -8,101 +8,101 @@
 @inject IAuthService AuthService
 @inject IHttpContextAccessor HttpContextAccessor
 
-<MudContainer MaxWidth="MaxWidth.ExtraSmall" Class="d-flex align-center justify-center" Style="min-height: 90vh;">
-    <MudCard Class="pa-8" Style="border-radius: 20px; box-shadow: 0 12px 40px rgba(0,0,0,0.1); width: 100%;">
-        <MudCardContent>
-            <div class="text-center mb-6">
-                <MudIcon Icon="@Icons.Material.Filled.Coffee" Size="Size.Large" Color="Color.Primary" Style="font-size: 56px;" />
-                <MudText Typo="Typo.h5" Class="mt-2" Color="Color.Primary" Style="font-weight: 600;">
-                    KopiKala
-                </MudText>
-                <MudText Typo="Typo.body2" Color="Color.Default">
-                    Masuk ke akun Anda
-                </MudText>
+<PageTitle>Masuk — KopiKala</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraSmall" Class="d-flex align-center justify-center py-8" Style="min-height: 90vh;">
+    <MudPaper Elevation="3" Class="pa-8 w-100" Style="border-radius: 20px;">
+        <div class="text-center mb-6">
+            <MudIcon Icon="@Icons.Material.Filled.Coffee" Size="Size.Large" Color="Color.Primary" Style="font-size: 56px;" />
+            <MudText Typo="Typo.h5" Class="mt-2 font-weight-bold" Color="Color.Primary">
+                KopiKala
+            </MudText>
+            <MudText Typo="Typo.body2" Color="Color.Secondary">
+                Masuk ke akun Anda
+            </MudText>
+        </div>
+
+        @if (!string.IsNullOrEmpty(_errorMessage))
+        {
+            <MudAlert Severity="Severity.Error" Class="mb-4" Variant="Variant.Filled">
+                <MudText Typo="Typo.body2">@_errorMessage</MudText>
+            </MudAlert>
+        }
+
+        <EditForm Model="@_loginDto" OnValidSubmit="HandleLoginSubmitAsync">
+            <DataAnnotationsValidator />
+
+            <MudTextField @bind-Value="_loginDto.Email"
+                          Label="Alamat Email"
+                          Placeholder="contoh@email.com"
+                          Variant="Variant.Outlined"
+                          Class="mb-4"
+                          For="@(() => _loginDto.Email)"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Email" />
+
+            <MudTextField @bind-Value="_loginDto.Password"
+                          Label="Kata Sandi"
+                          InputType="InputType.Password"
+                          Placeholder="Masukkan kata sandi"
+                          Variant="Variant.Outlined"
+                          Class="mb-4"
+                          For="@(() => _loginDto.Password)"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Lock" />
+
+            <div class="d-flex justify-space-between align-center mb-4">
+                <MudCheckBox @bind-Value="_loginDto.RememberMe"
+                             Label="Ingat Saya"
+                             Color="Color.Primary"
+                             Dense="true" />
+                <MudLink Href="/Account/ForgotPassword" Color="Color.Primary" Typo="Typo.body2">
+                    Lupa kata sandi?
+                </MudLink>
             </div>
 
-            @if (!string.IsNullOrEmpty(_errorMessage))
-            {
-                <MudAlert Severity="Severity.Error" Class="mb-4" Variant="Variant.Filled">
-                    <MudText Typo="Typo.body2">@_errorMessage</MudText>
-                </MudAlert>
-            }
+            <MudButton ButtonType="ButtonType.Submit"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       Size="Size.Large"
+                       FullWidth="true"
+                       Disabled="_isLoading"
+                       Class="mb-4"
+                       Style="height: 48px; font-size: 16px; font-weight: 600;">
+                @if (_isLoading)
+                {
+                    <MudProgressCircular Indeterminate="true" Size="Size.Small" Class="ms-2" Color="Color.Inherit" />
+                }
+                else
+                {
+                    @:Masuk
+                }
+            </MudButton>
 
-            <EditForm Model="@_loginDto" OnValidSubmit="HandleLoginSubmitAsync">
-                <DataAnnotationsValidator />
+            <MudDivider Class="my-4" />
+            <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Secondary" Class="mb-4">atau</MudText>
 
-                <MudTextField @bind-Value="_loginDto.Email"
-                              Label="Alamat Email"
-                              Placeholder="contoh@email.com"
-                              Variant="Variant.Outlined"
-                              Class="mb-4"
-                              For="@(() => _loginDto.Email)"
-                              Adornment="Adornment.Start"
-                              AdornmentIcon="@Icons.Material.Filled.Email" />
+            <MudButton Variant="Variant.Outlined"
+                       Color="Color.Default"
+                       Size="Size.Large"
+                       FullWidth="true"
+                       Class="mb-4"
+                       Style="height: 48px; font-size: 15px;"
+                       Href="/auth/google">
+                <MudImage Src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                         Alt="Google"
+                         Height="20"
+                         Width="20"
+                         Class="me-2" />
+                Masuk dengan Google
+            </MudButton>
+        </EditForm>
 
-                <MudTextField @bind-Value="_loginDto.Password"
-                              Label="Kata Sandi"
-                              InputType="InputType.Password"
-                              Placeholder="Masukkan kata sandi"
-                              Variant="Variant.Outlined"
-                              Class="mb-4"
-                              For="@(() => _loginDto.Password)"
-                              Adornment="Adornment.Start"
-                              AdornmentIcon="@Icons.Material.Filled.Lock" />
-
-                <div class="d-flex justify-space-between align-center mb-4">
-                    <MudCheckBox @bind-Value="_loginDto.RememberMe"
-                                 Label="Ingat Saya"
-                                 Color="Color.Primary"
-                                 Dense="true" />
-                    <MudLink Href="/Account/ForgotPassword" Color="Color.Primary" Typo="Typo.body2">
-                        Lupa kata sandi?
-                    </MudLink>
-                </div>
-
-                <MudButton ButtonType="ButtonType.Submit"
-                           Variant="Variant.Filled"
-                           Color="Color.Primary"
-                           Size="Size.Large"
-                           FullWidth="true"
-                           Disabled="_isLoading"
-                           Class="mb-4"
-                           Style="height: 48px; font-size: 16px; font-weight: 600;">
-                    @if (_isLoading)
-                    {
-                        <MudProgressCircular Indeterminate="true" Size="Size.Small" Class="ms-2" Color="Color.Inherit" />
-                    }
-                    else
-                    {
-                        @:Masuk
-                    }
-                </MudButton>
-
-                <MudDivider Class="my-4" />
-                <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Default" Class="mb-4">atau</MudText>
-
-                <MudButton Variant="Variant.Outlined"
-                           Color="Color.Default"
-                           Size="Size.Large"
-                           FullWidth="true"
-                           Class="mb-4"
-                           Style="height: 48px; font-size: 16px; border: 1px solid #dadce0;"
-                           Href="/auth/google">
-                    <MudImage Src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                             Alt="Google"
-                             Height="20"
-                             Width="20"
-                             Class="me-2" />
-                    Masuk dengan Google
-                </MudButton>
-            </EditForm>
-
-            <MudText Typo="Typo.body2" Align="Align.Center" Class="mt-4" Color="Color.Default">
-                Belum punya akun?
-                <MudLink Href="/Account/Register" Color="Color.Primary">Daftar sekarang</MudLink>
-            </MudText>
-        </MudCardContent>
-    </MudCard>
+        <MudText Typo="Typo.body2" Align="Align.Center" Class="mt-4" Color="Color.Secondary">
+            Belum punya akun?
+            <MudLink Href="/Account/Register" Color="Color.Primary" Class="font-weight-bold">Daftar sekarang</MudLink>
+        </MudText>
+    </MudPaper>
 </MudContainer>
 
 @code {
@@ -133,7 +133,7 @@
                 return;
             }
 
-            // SignIn langsung di komponen Blazor (pola Next.js/React)
+            // SignIn langsung di komponen Blazor
             var authProperties = new AuthenticationProperties
             {
                 IsPersistent = _loginDto.RememberMe,
@@ -150,7 +150,7 @@
                 return;
             }
 
-            // Fallback: Redirect berdasarkan permission (pola SPA routing)
+            // Fallback: Redirect berdasarkan permission
             if (result.Principal.HasClaim("Permission", "Sistem.Kelola"))
             {
                 Navigation.NavigateTo("/SuperAdmin");
@@ -174,22 +174,15 @@
         }
     }
 
-    /// <summary>
-    /// Validates that the returnUrl is a safe local path (prevents open-redirect attacks).
-    /// </summary>
     private static bool IsLocalUrl(string url)
     {
         if (string.IsNullOrEmpty(url)) return false;
-
-        // Must start with '/' and not contain scheme/host
         if (url.StartsWith("//") || url.StartsWith("/#")) return false;
 
-        // Disallow absolute paths to external hosts
         if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
             return uri.Authority.Equals("localhost", StringComparison.OrdinalIgnoreCase)
                 || uri.Authority.Equals("127.0.0.1", StringComparison.OrdinalIgnoreCase);
 
-        // Relative paths starting with '/' are safe
         return url.StartsWith("/");
     }
 }
