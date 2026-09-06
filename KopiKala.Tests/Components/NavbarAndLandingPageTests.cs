@@ -26,7 +26,9 @@ public class NavbarAndLandingPageTests
         Assert.StartsWith("#4a6c6f", theme.PaletteLight.Secondary.Value, StringComparison.OrdinalIgnoreCase);          // Muted Teal
         Assert.StartsWith("#b5a642", theme.PaletteLight.Tertiary.Value, StringComparison.OrdinalIgnoreCase);           // Antique Brass / Gold
         Assert.StartsWith("#faf9f6", theme.PaletteLight.Background.Value, StringComparison.OrdinalIgnoreCase);         // Ivory Canvas
-        Assert.StartsWith("#2a2421", theme.PaletteLight.AppbarBackground.Value, StringComparison.OrdinalIgnoreCase);   // Deep Charcoal
+        Assert.StartsWith("#ffffff", theme.PaletteLight.AppbarBackground.Value, StringComparison.OrdinalIgnoreCase);   // White Background
+        Assert.StartsWith("#2a2421", theme.PaletteLight.AppbarText.Value, StringComparison.OrdinalIgnoreCase);         // Black Charcoal Text
+        Assert.StartsWith("#2a2421", theme.PaletteLight.ActionDefault.Value, StringComparison.OrdinalIgnoreCase);      // Black Icons
 
         // Assert - Typography
         Assert.NotNull(theme.Typography);

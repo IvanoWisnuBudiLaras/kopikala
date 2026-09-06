@@ -13,6 +13,8 @@ public interface IAuthService
     Task<List<string>> GetUserPermissionsAsync(Guid userId);
     Task<UserSessionDto?> GetUserSessionAsync(Guid userId);
     Task<User?> GetUserByEmailAsync(string email);
+    Task<string?> GeneratePasswordResetTokenAsync(string email);
+    Task<bool> ResetPasswordAsync(string email, string token, string newPassword);
 }
 
 public record AuthResult(bool Success, string? ErrorMessage, ClaimsPrincipal? Principal);

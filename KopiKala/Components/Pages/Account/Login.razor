@@ -50,10 +50,15 @@
                               Adornment="Adornment.Start"
                               AdornmentIcon="@Icons.Material.Filled.Lock" />
 
-                <MudCheckBox @bind-Value="_loginDto.RememberMe"
-                             Label="Ingat Saya"
-                             Color="Color.Primary"
-                             Class="mb-4" />
+                <div class="d-flex justify-space-between align-center mb-4">
+                    <MudCheckBox @bind-Value="_loginDto.RememberMe"
+                                 Label="Ingat Saya"
+                                 Color="Color.Primary"
+                                 Dense="true" />
+                    <MudLink Href="/Account/ForgotPassword" Color="Color.Primary" Typo="Typo.body2">
+                        Lupa kata sandi?
+                    </MudLink>
+                </div>
 
                 <MudButton ButtonType="ButtonType.Submit"
                            Variant="Variant.Filled"
