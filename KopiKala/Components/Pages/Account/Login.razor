@@ -1,0 +1,162 @@
+@page "/Account/Login"
+@using System.Web
+@using KopiKala.DTOs.Auth
+@using KopiKala.Services
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@inject NavigationManager Navigation
+@inject IAuthService AuthService
+@inject IHttpContextAccessor HttpContextAccessor
+
+<MudContainer MaxWidth="MaxWidth.ExtraSmall" Class="d-flex align-center justify-center" Style="min-height: 90vh;">
+    <MudCard Class="pa-8" Style="border-radius: 20px; box-shadow: 0 12px 40px rgba(0,0,0,0.1); width: 100%;">
+        <MudCardContent>
+            <div class="text-center mb-6">
+                <MudIcon Icon="@Icons.Material.Filled.Coffee" Size="Size.Large" Color="Color.Primary" Style="font-size: 56px;" />
+                <MudText Typo="Typo.h5" Class="mt-2" Color="Color.Primary" Style="font-weight: 600;">
+                    KopiKala
+                </MudText>
+                <MudText Typo="Typo.body2" Color="Color.Default">
+                    Masuk ke akun Anda
+                </MudText>
+            </div>
+
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <MudAlert Severity="Severity.Error" Class="mb-4" Variant="Variant.Filled">
+                    <MudText Typo="Typo.body2">@_errorMessage</MudText>
+                </MudAlert>
+            }
+
+            <EditForm Model="@_loginDto" OnValidSubmit="HandleLoginSubmitAsync">
+                <DataAnnotationsValidator />
+
+                <MudTextField @bind-Value="_loginDto.Email"
+                              Label="Alamat Email"
+                              Placeholder="contoh@email.com"
+                              Variant="Variant.Outlined"
+                              Class="mb-4"
+                              For="@(() => _loginDto.Email)"
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Email" />
+
+                <MudTextField @bind-Value="_loginDto.Password"
+                              Label="Kata Sandi"
+                              InputType="InputType.Password"
+                              Placeholder="Masukkan kata sandi"
+                              Variant="Variant.Outlined"
+                              Class="mb-4"
+                              For="@(() => _loginDto.Password)"
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Lock" />
+
+                <MudCheckBox @bind-Value="_loginDto.RememberMe"
+                             Label="Ingat Saya"
+                             Color="Color.Primary"
+                             Class="mb-4" />
+
+                <MudButton ButtonType="ButtonType.Submit"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           Size="Size.Large"
+                           FullWidth="true"
+                           Disabled="_isLoading"
+                           Class="mb-4"
+                           Style="height: 48px; font-size: 16px; font-weight: 600;">
+                    @if (_isLoading)
+                    {
+                        <MudProgressCircular Indeterminate="true" Size="Size.Small" Class="ms-2" Color="Color.Inherit" />
+                    }
+                    else
+                    {
+                        @:Masuk
+                    }
+                </MudButton>
+
+                <MudDivider Class="my-4" />
+                <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Default" Class="mb-4">atau</MudText>
+
+                <MudButton Variant="Variant.Outlined"
+                           Color="Color.Default"
+                           Size="Size.Large"
+                           FullWidth="true"
+                           Class="mb-4"
+                           Style="height: 48px; font-size: 16px; border: 1px solid #dadce0;"
+                           Href="/auth/google">
+                    <MudImage Src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                             Alt="Google"
+                             Height="20"
+                             Width="20"
+                             Class="me-2" />
+                    Masuk dengan Google
+                </MudButton>
+            </EditForm>
+
+            <MudText Typo="Typo.body2" Align="Align.Center" Class="mt-4" Color="Color.Default">
+                Belum punya akun?
+                <MudLink Href="/Account/Register" Color="Color.Primary">Daftar sekarang</MudLink>
+            </MudText>
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
+
+@code {
+    private LoginRequestDto _loginDto = new();
+    private string? _errorMessage;
+    private bool _isLoading;
+
+    protected override void OnInitialized()
+    {
+        var uri = new Uri(Navigation.Uri);
+        var query = HttpUtility.ParseQueryString(uri.Query);
+        _errorMessage = query["error"];
+    }
+
+    private async Task HandleLoginSubmitAsync()
+    {
+        _isLoading = true;
+        _errorMessage = null;
+
+        try
+        {
+            var result = await AuthService.LoginAsync(_loginDto);
+            if (!result.Success || result.Principal == null)
+            {
+                _errorMessage = result.ErrorMessage ?? "Login gagal.";
+                return;
+            }
+
+            // SignIn langsung di komponen Blazor (pola Next.js/React)
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = _loginDto.RememberMe,
+                ExpiresUtc = _loginDto.RememberMe ? DateTimeOffset.UtcNow.AddDays(30) : null
+            };
+
+            await HttpContextAccessor.HttpContext!.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme, result.Principal, authProperties);
+
+            // Redirect berdasarkan permission (pola SPA routing)
+            if (result.Principal.HasClaim("Permission", "Sistem.Kelola"))
+            {
+                Navigation.NavigateTo("/SuperAdmin");
+            }
+            else if (result.Principal.HasClaim(c => c.Type == "Permission" && new[] { "Meja.Kelola", "Pembayaran.Verifikasi", "Dapur.Antrean", "Laporan.Lihat" }.Contains(c.Value)))
+            {
+                Navigation.NavigateTo("/Staff");
+            }
+            else
+            {
+                Navigation.NavigateTo("/");
+            }
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}

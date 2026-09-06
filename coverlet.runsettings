@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <DataCollectionRunSettings>
+    <DataCollectors>
+      <DataCollector friendlyName="XPlat code coverage">
+        <Configuration>
+          <Format>cobertura,json,lcov</Format>
+          <Exclude>[xunit.*]*</Exclude>
+          <ExcludeByAttribute>GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+          <Include>[KopiKala*]*</Include>
+          <ExcludeByFile>**/Program.cs</ExcludeByFile>
+        </Configuration>
+      </DataCollector>
+    </DataCollectors>
+  </DataCollectionRunSettings>
+  <RunConfiguration>
+    <MaxCpuCount>1</MaxCpuCount>
+    <EnvironmentVariables>
+      <ASPNETCORE_ENVIRONMENT>Development</ASPNETCORE_ENVIRONMENT>
+    </EnvironmentVariables>
+  </RunConfiguration>
+  <CoverletRunSettings>
+    <CoverletDataCollector>
+      <Format>cobertura,json,lcov</Format>
+      <Exclude>[xunit.*]*</Exclude>
+      <ExcludeByAttribute>GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+      <Include>[KopiKala*]*</Include>
+    </CoverletDataCollector>
+  </CoverletRunSettings>
+</RunSettings>

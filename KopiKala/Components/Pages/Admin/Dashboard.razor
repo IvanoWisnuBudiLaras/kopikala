@@ -1,0 +1,12 @@
+@page "/SuperAdmin"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Policy = "SuperAdminOnly")]
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <MudText Typo="Typo.h4" Class="mb-4">Area SuperAdmin</MudText>
+    <MudAlert Severity="Severity.Success" Variant="Variant.Filled">
+        <MudText Typo="Typo.body1">
+            Ruang kendali pemilik sistem. Kelola akun staf, peran kustom, dan template izin akses PBAC.
+        </MudText>
+    </MudAlert>
+</MudContainer>

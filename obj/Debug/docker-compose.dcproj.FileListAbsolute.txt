@@ -1,0 +1,1 @@
+I:\dev\web\KopiKala\obj\Debug\docker-compose.dcproj.CoreCompileInputs.cache

@@ -1,0 +1,17 @@
+﻿
+<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
+  <PropertyGroup Label="Globals">
+    <ProjectVersion>2.1</ProjectVersion>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <ProjectGuid>81dded9d-158b-e303-5f62-77a2896d2a5a</ProjectGuid>
+    <DockerServiceName>kopikala</DockerServiceName>
+    <UserSecretsId>56b67203-c8c0-42d1-912a-652f3d9b3137</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="docker-compose.override.yml">
+      <DependentUpon>docker-compose.yml</DependentUpon>
+    </None>
+    <None Include="docker-compose.yml" />
+    <None Include=".dockerignore" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,628 @@
+SF:I:\dev\web\KopiKala\KopiKala\Components\App.razor
+FN:32,Microsoft.AspNetCore.Components.IComponentRenderMode KopiKala.Components.App::get_PageRenderMode()
+FNDA:0,Microsoft.AspNetCore.Components.IComponentRenderMode KopiKala.Components.App::get_PageRenderMode()
+DA:33,0
+BRDA:33,11,0,0
+BRDA:33,11,1,0
+LF:1
+LH:0
+BRF:2
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:I:\dev\web\KopiKala\KopiKala\Components\Pages\Counter.razor
+FN:6,System.Void KopiKala.Components.Pages.Counter::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
+FNDA:0,System.Void KopiKala.Components.Pages.Counter::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
+DA:7,0
+FN:14,System.Void KopiKala.Components.Pages.Counter::IncrementCount()
+FNDA:0,System.Void KopiKala.Components.Pages.Counter::IncrementCount()
+DA:15,0
+DA:16,0
+DA:17,0
+FN:11,System.Void KopiKala.Components.Pages.Counter::.ctor()
+FNDA:0,System.Void KopiKala.Components.Pages.Counter::.ctor()
+DA:12,0
+LF:5
+LH:0
+BRF:0
+BRH:0
+FNF:3
+FNH:0
+end_of_record
+SF:I:\dev\web\KopiKala\KopiKala\Components\Pages\Error.razor
+FN:8,System.Void KopiKala.Components.Pages.Error::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
+FNDA:0,System.Void KopiKala.Components.Pages.Error::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
+DA:9,0
+DA:10,0
+DA:12,0
+DA:14,0
+BRDA:9,107,0,0
+BRDA:9,107,1,0
+FN:31,System.Boolean KopiKala.Components.Pages.Error::get_ShowRequestId()
+FNDA:0,System.Boolean KopiKala.Components.Pages.Error::get_ShowRequestId()
+DA:32,0
+FN:34,System.Void KopiKala.Components.Pages.Error::OnInitialized()
+FNDA:0,System.Void KopiKala.Components.Pages.Error::OnInitialized()
+DA:35,0
+BRDA:35,7,0,0
+BRDA:35,7,1,0
+BRDA:35,19,0,0
+BRDA:35,29,0,0
+BRDA:35,29,1,0
+BRDA:35,19,1,0
+LF:6
+LH:0
+BRF:8
+BRH:0
+FNF:3
+FNH:0
+end_of_record
+SF:I:\dev\web\KopiKala\KopiKala\Components\Pages\Weather.razor
+FN:8,System.Void KopiKala.Components.Pages.Weather::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
+FNDA:0,System.Void KopiKala.Components.Pages.Weather::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
+DA:9,0
+DA:10,0
+DA:12,0
+DA:14,0
+DA:25,0
+DA:26,0
+DA:28,0
+DA:29,0
+DA:30,0
+DA:31,0
+DA:33,0
+DA:36,0
+BRDA:9,110,0,0
+BRDA:9,110,1,0
+BRDA:25,447,1,0
+BRDA:25,447,0,0
+FN:60,System.Int32 KopiKala.Components.Pages.Weather/WeatherForecast::get_TemperatureF()
+FNDA:0,System.Int32 KopiKala.Components.Pages.Weather/WeatherForecast::get_TemperatureF()
+DA:61,0
+LF:13
+LH:0
+BRF:4
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:I:\dev\web\KopiKala\KopiKala\Components\Pages\Account\Login.razor
+FN:108,System.Void KopiKala.Components.Pages.Account.Login::OnInitialized()
+FNDA:0,System.Void KopiKala.Components.Pages.Account.Login::OnInitialized()
+DA:109,0
+DA:110,0
+DA:111,0
+DA:112,0
+DA:113,0
+FN:103,System.Void KopiKala.Components.Pages.Account.Login::.ctor()
+FNDA:0,System.Void KopiKala.Components.Pages.Account.Login::.ctor()
+DA:104,0
+LF:6
+LH:0
+BRF:0
+BRH:0
+FNF:2
+FNH:0
+end_of_record
+SF:I:\dev\web\KopiKala\KopiKala\Components\Layout\RedirectToLogin.razor
+FN:4,System.Void KopiKala.Components.Layout.RedirectToLogin::OnInitialized()
+FNDA:0,System.Void KopiKala.Components.Layout.RedirectToLogin::OnInitialized()
+DA:5,0
+DA:6,0
+DA:7,0
+DA:8,0
+LF:4
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:I:\dev\web\KopiKala\KopiKala\Components\Layout\MainLayout.razor
+FN:18,System.Void KopiKala.Components.Layout.MainLayout::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
+FNDA:0,System.Void KopiKala.Components.Layout.MainLayout::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
+DA:19,0
+LF:1
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:I:\dev\web\KopiKala\KopiKala\Components\Layout\NavMenu.razor
+FN:75,System.Void KopiKala.Components.Layout.NavMenu::OnInitialized()
+FNDA:0,System.Void KopiKala.Components.Layout.NavMenu::OnInitialized()
+DA:76,0
+DA:77,0
+DA:78,0
+DA:79,0
+FN:81,System.Void KopiKala.Components.Layout.NavMenu::OnLocationChanged(System.Object,Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs)
+FNDA:0,System.Void KopiKala.Components.Layout.NavMenu::OnLocationChanged(System.Object,Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs)
+DA:82,0
+DA:83,0
+DA:84,0
+DA:85,0
+FN:87,System.Void KopiKala.Components.Layout.NavMenu::Dispose()
+FNDA:0,System.Void KopiKala.Components.Layout.NavMenu::Dispose()
+DA:88,0
+DA:89,0
+DA:90,0
+LF:11
+LH:0
+BRF:0
+BRH:0
+FNF:3
+FNH:0
+end_of_record
+SF:I:\dev\web\KopiKala\KopiKala\Services\AuthService.cs
+FN:174,System.Security.Claims.ClaimsPrincipal KopiKala.Services.AuthService::CreateClaimsPrincipal(KopiKala.Models.User)
+FNDA:3,System.Security.Claims.ClaimsPrincipal KopiKala.Services.AuthService::CreateClaimsPrincipal(KopiKala.Models.User)
+DA:175,3
+DA:176,3
+DA:177,3
+DA:178,3
+DA:179,3
+DA:180,3
+DA:181,3
+DA:183,15
+DA:184,3
+DA:185,3
+DA:186,3
+DA:188,3
+DA:189,3
+DA:190,3
+DA:191,3
+DA:193,11
+DA:194,1
+DA:195,1
+DA:196,1
+DA:198,3
+DA:199,3
+DA:200,3
+BRDA:183,148,1,3
+BRDA:183,148,0,3
+BRDA:193,297,1,1
+BRDA:193,297,0,3
+FN:15,System.Void KopiKala.Services.AuthService::.ctor(KopiKala.Data.AppDbContext,Microsoft.Extensions.Logging.ILogger`1<KopiKala.Services.AuthService>)
+FNDA:8,System.Void KopiKala.Services.AuthService::.ctor(KopiKala.Data.AppDbContext,Microsoft.Extensions.Logging.ILogger`1<KopiKala.Services.AuthService>)
+DA:16,8
+DA:17,8
+DA:18,8
+DA:19,8
+DA:20,8
+LF:27
+LH:27
+BRF:4
+BRH:4
+FNF:2
+FNH:2
+end_of_record
+SF:I:\dev\web\KopiKala\KopiKala\Helpers\CurrencyHelper.cs
+FN:5,System.String KopiKala.Helpers.CurrencyHelper::ToRupiah(System.Decimal)
+FNDA:0,System.String KopiKala.Helpers.CurrencyHelper::ToRupiah(System.Decimal)
+DA:6,0
+DA:7,0
+DA:8,0
+LF:3
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:I:\dev\web\KopiKala\KopiKala\Helpers\PasswordHelper.cs
+FN:8,System.String KopiKala.Helpers.PasswordHelper::HashPassword(System.String)
+FNDA:4,System.String KopiKala.Helpers.PasswordHelper::HashPassword(System.String)
+DA:9,4
+DA:10,4
+DA:11,4
+DA:12,4
+DA:13,4
+DA:14,4
+DA:15,4
+DA:16,4
+DA:18,4
+DA:19,4
+FN:21,System.Boolean KopiKala.Helpers.PasswordHelper::VerifyPassword(System.String,System.String)
+FNDA:2,System.Boolean KopiKala.Helpers.PasswordHelper::VerifyPassword(System.String,System.String)
+DA:22,2
+DA:23,2
+DA:24,2
+DA:26,2
+DA:27,2
+DA:29,2
+DA:30,2
+DA:31,2
+DA:32,2
+DA:33,2
+DA:34,2
+DA:36,2
+DA:37,2
+DA:38,2
+DA:39,2
+BRDA:24,25,0,0
+BRDA:24,25,1,2
+LF:25
+LH:25
+BRF:2
+BRH:1
+FNF:2
+FNH:2
+end_of_record
+SF:I:\dev\web\KopiKala\KopiKala\Helpers\PermissionAuthorizationHandler.cs
+FN:7,System.Threading.Tasks.Task KopiKala.Helpers.PermissionAuthorizationHandler::HandleRequirementAsync(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,KopiKala.Helpers.PermissionRequirement)
+FNDA:0,System.Threading.Tasks.Task KopiKala.Helpers.PermissionAuthorizationHandler::HandleRequirementAsync(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,KopiKala.Helpers.PermissionRequirement)
+DA:8,0
+DA:10,0
+DA:11,0
+DA:12,0
+DA:13,0
+DA:17,0
+DA:18,0
+DA:19,0
+DA:20,0
+DA:22,0
+DA:23,0
+BRDA:10,37,0,0
+BRDA:10,37,1,0
+BRDA:17,86,0,0
+BRDA:17,86,1,0
+LF:11
+LH:0
+BRF:4
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:I:\dev\web\KopiKala\KopiKala\Helpers\PermissionPolicyProvider.cs
+FN:15,System.Threading.Tasks.Task`1<Microsoft.AspNetCore.Authorization.AuthorizationPolicy> KopiKala.Helpers.PermissionPolicyProvider::GetDefaultPolicyAsync()
+FNDA:0,System.Threading.Tasks.Task`1<Microsoft.AspNetCore.Authorization.AuthorizationPolicy> KopiKala.Helpers.PermissionPolicyProvider::GetDefaultPolicyAsync()
+DA:16,0
+FN:18,System.Threading.Tasks.Task`1<Microsoft.AspNetCore.Authorization.AuthorizationPolicy> KopiKala.Helpers.PermissionPolicyProvider::GetFallbackPolicyAsync()
+FNDA:0,System.Threading.Tasks.Task`1<Microsoft.AspNetCore.Authorization.AuthorizationPolicy> KopiKala.Helpers.PermissionPolicyProvider::GetFallbackPolicyAsync()
+DA:19,0
+FN:21,System.Threading.Tasks.Task`1<Microsoft.AspNetCore.Authorization.AuthorizationPolicy> KopiKala.Helpers.PermissionPolicyProvider::GetPolicyAsync(System.String)
+FNDA:0,System.Threading.Tasks.Task`1<Microsoft.AspNetCore.Authorization.AuthorizationPolicy> KopiKala.Helpers.PermissionPolicyProvider::GetPolicyAsync(System.String)
+DA:22,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:27,0
+DA:31,0
+DA:32,0
+DA:33,0
+DA:34,0
+BRDA:25,25,0,0
+BRDA:25,25,1,0
+FN:9,System.Void KopiKala.Helpers.PermissionPolicyProvider::.ctor(Microsoft.Extensions.Options.IOptions`1<Microsoft.AspNetCore.Authorization.AuthorizationOptions>)
+FNDA:0,System.Void KopiKala.Helpers.PermissionPolicyProvider::.ctor(Microsoft.Extensions.Options.IOptions`1<Microsoft.AspNetCore.Authorization.AuthorizationOptions>)
+DA:10,0
+DA:11,0
+DA:12,0
+DA:13,0
+LF:15
+LH:0
+BRF:2
+BRH:0
+FNF:4
+FNH:0
+end_of_record
+SF:I:\dev\web\KopiKala\KopiKala\Helpers\PermissionRequirement.cs
+FN:8,System.Void KopiKala.Helpers.PermissionRequirement::.ctor(System.String)
+FNDA:0,System.Void KopiKala.Helpers.PermissionRequirement::.ctor(System.String)
+DA:9,0
+DA:10,0
+DA:11,0
+DA:12,0
+LF:4
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record
+SF:I:\dev\web\KopiKala\KopiKala\Data\AppDbContext.cs
+FN:17,System.Void KopiKala.Data.AppDbContext::OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)
+FNDA:8,System.Void KopiKala.Data.AppDbContext::OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)
+DA:18,8
+DA:19,8
+DA:20,0
+DA:21,0
+DA:22,0
+DA:23,0
+DA:24,0
+DA:25,0
+DA:26,0
+DA:28,0
+DA:29,0
+DA:30,0
+DA:31,8
+BRDA:19,12,0,0
+BRDA:19,12,1,8
+FN:49,System.Void KopiKala.Data.AppDbContext::OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)
+FNDA:1,System.Void KopiKala.Data.AppDbContext::OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)
+DA:50,1
+DA:51,1
+DA:53,1
+DA:54,1
+DA:55,1
+DA:56,1
+DA:57,1
+DA:58,1
+DA:59,1
+DA:60,1
+DA:61,1
+DA:62,1
+DA:63,1
+DA:64,1
+DA:65,1
+DA:66,1
+DA:67,1
+DA:68,1
+DA:69,1
+DA:70,1
+DA:71,1
+DA:72,1
+DA:73,1
+DA:74,1
+DA:75,1
+DA:76,1
+DA:77,1
+DA:78,1
+DA:79,1
+DA:80,1
+DA:81,1
+DA:82,1
+DA:83,1
+DA:84,1
+DA:85,1
+DA:86,1
+DA:87,1
+DA:88,1
+DA:89,1
+DA:90,1
+DA:91,1
+DA:92,1
+DA:93,1
+DA:94,1
+DA:95,1
+DA:96,1
+DA:97,1
+DA:98,1
+DA:99,1
+DA:100,1
+DA:101,1
+DA:102,1
+DA:103,1
+DA:104,1
+DA:105,1
+DA:106,1
+DA:107,1
+DA:108,1
+DA:109,1
+DA:110,1
+DA:111,1
+DA:112,1
+DA:113,1
+DA:114,1
+DA:116,1
+DA:117,1
+DA:118,1
+DA:119,1
+DA:120,1
+DA:121,1
+DA:122,1
+DA:123,1
+DA:124,1
+DA:125,1
+DA:126,1
+DA:127,1
+DA:128,1
+DA:129,1
+DA:130,1
+DA:131,1
+DA:132,1
+DA:133,1
+DA:134,1
+DA:135,1
+DA:136,1
+DA:137,1
+DA:138,1
+DA:139,1
+DA:140,1
+DA:141,1
+DA:142,1
+DA:143,1
+DA:144,1
+DA:145,1
+DA:146,1
+DA:147,1
+DA:149,1
+DA:150,1
+DA:151,1
+DA:152,1
+DA:153,1
+DA:154,1
+DA:155,1
+DA:156,1
+DA:157,1
+DA:158,1
+DA:159,1
+DA:160,1
+DA:161,1
+DA:162,1
+DA:163,1
+DA:164,1
+DA:165,1
+DA:166,1
+DA:167,1
+DA:168,1
+DA:169,1
+DA:170,1
+DA:172,1
+DA:173,1
+DA:174,1
+DA:175,1
+DA:176,1
+DA:177,1
+DA:178,1
+DA:179,1
+DA:180,1
+DA:181,1
+DA:182,1
+DA:183,1
+DA:184,1
+DA:185,1
+DA:186,1
+DA:187,1
+DA:188,1
+DA:189,1
+DA:190,1
+DA:191,1
+DA:192,1
+DA:193,1
+DA:194,1
+DA:195,1
+DA:196,1
+DA:197,1
+DA:199,1
+DA:200,1
+DA:201,1
+DA:202,1
+DA:203,1
+DA:204,1
+DA:205,1
+DA:206,1
+DA:207,1
+DA:208,1
+DA:209,1
+DA:210,1
+DA:211,1
+DA:212,1
+DA:213,1
+DA:214,1
+DA:216,1
+DA:217,1
+DA:218,1
+DA:219,1
+DA:220,1
+DA:221,1
+DA:222,1
+DA:223,1
+DA:224,1
+DA:225,1
+DA:226,1
+DA:227,1
+DA:228,1
+DA:229,1
+DA:230,1
+DA:231,1
+DA:232,1
+DA:233,1
+DA:234,1
+DA:235,1
+DA:236,1
+DA:237,1
+DA:238,1
+DA:239,1
+DA:240,1
+DA:241,1
+DA:242,1
+DA:243,1
+DA:244,1
+DA:245,1
+DA:246,1
+DA:247,1
+DA:248,1
+DA:249,1
+DA:251,1
+DA:252,1
+DA:253,1
+DA:254,1
+DA:255,1
+DA:256,1
+DA:257,1
+DA:258,1
+DA:259,1
+DA:260,1
+DA:261,1
+DA:262,1
+DA:263,1
+DA:265,1
+DA:266,1
+DA:267,1
+DA:268,1
+DA:269,1
+DA:270,1
+DA:271,1
+DA:272,1
+DA:273,1
+DA:274,1
+DA:275,1
+DA:276,1
+DA:277,1
+DA:278,1
+DA:279,1
+DA:280,1
+DA:281,1
+DA:282,1
+DA:283,1
+DA:284,1
+DA:285,1
+DA:286,1
+DA:287,1
+DA:288,1
+DA:289,1
+DA:290,1
+DA:291,1
+DA:292,1
+DA:293,1
+DA:294,1
+DA:295,1
+DA:296,1
+DA:297,1
+DA:298,1
+DA:299,1
+DA:300,1
+DA:301,1
+DA:302,1
+DA:303,1
+DA:304,1
+DA:305,1
+DA:306,1
+DA:307,1
+DA:308,1
+DA:309,1
+DA:310,1
+DA:311,1
+DA:312,1
+DA:315,1
+FN:7,System.Void KopiKala.Data.AppDbContext::.ctor()
+FNDA:0,System.Void KopiKala.Data.AppDbContext::.ctor()
+DA:8,0
+DA:9,0
+DA:10,0
+FN:12,System.Void KopiKala.Data.AppDbContext::.ctor(Microsoft.EntityFrameworkCore.DbContextOptions`1<KopiKala.Data.AppDbContext>)
+FNDA:8,System.Void KopiKala.Data.AppDbContext::.ctor(Microsoft.EntityFrameworkCore.DbContextOptions`1<KopiKala.Data.AppDbContext>)
+DA:13,8
+DA:14,8
+DA:15,8
+LF:275
+LH:262
+BRF:2
+BRH:1
+FNF:4
+FNH:3
+end_of_record
+SF:I:\dev\web\KopiKala\KopiKala\Data\ApplicationDbContext.cs
+FN:6,System.Void KopiKala.Data.ApplicationDbContext::.ctor(Microsoft.EntityFrameworkCore.DbContextOptions`1<KopiKala.Data.ApplicationDbContext>)
+FNDA:0,System.Void KopiKala.Data.ApplicationDbContext::.ctor(Microsoft.EntityFrameworkCore.DbContextOptions`1<KopiKala.Data.ApplicationDbContext>)
+DA:7,0
+LF:1
+LH:0
+BRF:0
+BRH:0
+FNF:1
+FNH:0
+end_of_record

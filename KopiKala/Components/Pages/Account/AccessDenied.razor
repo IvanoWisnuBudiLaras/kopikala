@@ -1,0 +1,26 @@
+@page "/Account/AccessDenied"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center justify-center" Style="min-height: 80vh;">
+    <MudCard Class="pa-8 text-center" Style="border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.12);">
+        <MudCardContent>
+            <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Large" Color="Color.Error" Style="font-size: 80px;" />
+            <MudText Typo="Typo.h4" Class="mt-6 mb-4" Color="Color.Error">
+                Akses Ditolak
+            </MudText>
+            <MudText Typo="Typo.body1" Class="mb-6" Color="Color.Default">
+                Maaf, Anda tidak memiliki izin yang cukup untuk mengakses halaman ini.
+            </MudText>
+            <MudAlert Severity="Severity.Warning" Class="mb-6" Variant="Variant.Outlined">
+                <MudText Typo="Typo.body2">
+                    Hubungi SuperAdmin jika Anda memerlukan akses ke area ini.
+                </MudText>
+            </MudAlert>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large"
+                       Href="/" StartIcon="@Icons.Material.Filled.Home">
+                Kembali ke Beranda
+            </MudButton>
+        </MudCardContent>
+    </MudCard>
+</MudContainer>

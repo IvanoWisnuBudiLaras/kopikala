@@ -1,0 +1,12 @@
+@page "/Staff"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Policy = "StaffAccess")]
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <MudText Typo="Typo.h4" Class="mb-4">Area Staf</MudText>
+    <MudAlert Severity="Severity.Info" Variant="Variant.Filled">
+        <MudText Typo="Typo.body1">
+            Selamat datang di portal staf KopiKala. Menu dinamis akan ditampilkan sesuai izin akses Anda.
+        </MudText>
+    </MudAlert>
+</MudContainer>

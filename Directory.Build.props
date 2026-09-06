@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <CollectCoverage>true</CollectCoverage>
+    <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+    <CoverletOutput>../TestResults/coverage/</CoverletOutput>
+    <Include>[KopiKala]*</Include>
+    <ExcludeByAttribute>GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
+    <ExcludeByFile>**/Program.cs</ExcludeByFile>
+  </PropertyGroup>
+</Project>

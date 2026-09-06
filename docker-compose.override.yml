@@ -1,0 +1,3 @@
+# Override ini dikosongkan agar docker-compose.yml hanya menjalankan PostgreSQL saja
+# Aplikasi Blazor dijalankan langsung via dotnet run / F5 Visual Studio (bukan di container)
+services: {}
