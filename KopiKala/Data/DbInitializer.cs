@@ -126,9 +126,10 @@ public static class DbInitializer
         AppDbContext context, Role role,
         string fullName, string email, string phone, string password)
     {
-        if (!await context.Users.AnyAsync(u => u.Email == email))
+        var user = await context.Users.Include(u => u.Roles).FirstOrDefaultAsync(u => u.Email == email);
+        if (user == null)
         {
-            var user = new User
+            user = new User
             {
                 FullName     = fullName,
                 Email        = email,
@@ -138,7 +139,17 @@ public static class DbInitializer
             };
             user.Roles.Add(role);
             context.Users.Add(user);
-            await context.SaveChangesAsync();
         }
+        else
+        {
+            user.FullName = fullName;
+            user.PhoneNumber = phone;
+            user.PasswordHash = PasswordHelper.HashPassword(password);
+            if (!user.Roles.Any(r => r.Id == role.Id || r.Name == role.Name))
+            {
+                user.Roles.Add(role);
+            }
+        }
+        await context.SaveChangesAsync();
     }
 }

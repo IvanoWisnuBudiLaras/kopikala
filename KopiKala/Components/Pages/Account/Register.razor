@@ -2,11 +2,7 @@
 @using System.Web
 @using KopiKala.DTOs.Auth
 @using KopiKala.Services
-@using Microsoft.AspNetCore.Authentication
-@using Microsoft.AspNetCore.Authentication.Cookies
 @inject NavigationManager Navigation
-@inject IAuthService AuthService
-@inject IHttpContextAccessor HttpContextAccessor
 
 <PageTitle>Daftar Akun — KopiKala</PageTitle>
 
@@ -29,73 +25,84 @@
             </MudAlert>
         }
 
-        <EditForm Model="@_registerDto" OnValidSubmit="HandleRegisterSubmitAsync">
-            <DataAnnotationsValidator />
+        <form method="post" action="/auth/register-submit">
+            <div class="mb-3">
+                <MudText Typo="Typo.caption" Color="Color.Secondary" Class="d-block mb-1 font-weight-medium">Nama Lengkap</MudText>
+                <div class="mud-input-control mud-input-input-control">
+                    <div class="mud-input mud-input-outlined">
+                        <input type="text"
+                               name="fullName"
+                               required
+                               placeholder="Nama lengkap Anda"
+                               class="mud-input-slot mud-input-root mud-input-root-outlined pa-3"
+                               style="width: 100%; border: 1px solid var(--mud-palette-lines-default); border-radius: 8px; font-size: 14px; background: transparent; color: inherit;" />
+                    </div>
+                </div>
+            </div>
 
-            <MudTextField @bind-Value="_registerDto.FullName"
-                          Label="Nama Lengkap"
-                          Placeholder="Nama lengkap Anda"
-                          Variant="Variant.Outlined"
-                          Class="mb-3"
-                          For="@(() => _registerDto.FullName)"
-                          Adornment="Adornment.Start"
-                          AdornmentIcon="@Icons.Material.Filled.Person" />
+            <div class="mb-3">
+                <MudText Typo="Typo.caption" Color="Color.Secondary" Class="d-block mb-1 font-weight-medium">Alamat Email</MudText>
+                <div class="mud-input-control mud-input-input-control">
+                    <div class="mud-input mud-input-outlined">
+                        <input type="email"
+                               name="email"
+                               required
+                               placeholder="contoh@email.com"
+                               class="mud-input-slot mud-input-root mud-input-root-outlined pa-3"
+                               style="width: 100%; border: 1px solid var(--mud-palette-lines-default); border-radius: 8px; font-size: 14px; background: transparent; color: inherit;" />
+                    </div>
+                </div>
+            </div>
 
-            <MudTextField @bind-Value="_registerDto.Email"
-                          Label="Alamat Email"
-                          Placeholder="contoh@email.com"
-                          Variant="Variant.Outlined"
-                          Class="mb-3"
-                          For="@(() => _registerDto.Email)"
-                          Adornment="Adornment.Start"
-                          AdornmentIcon="@Icons.Material.Filled.Email" />
+            <div class="mb-3">
+                <MudText Typo="Typo.caption" Color="Color.Secondary" Class="d-block mb-1 font-weight-medium">Nomor Telepon / WhatsApp</MudText>
+                <div class="mud-input-control mud-input-input-control">
+                    <div class="mud-input mud-input-outlined">
+                        <input type="tel"
+                               name="phoneNumber"
+                               required
+                               placeholder="081234567890"
+                               class="mud-input-slot mud-input-root mud-input-root-outlined pa-3"
+                               style="width: 100%; border: 1px solid var(--mud-palette-lines-default); border-radius: 8px; font-size: 14px; background: transparent; color: inherit;" />
+                    </div>
+                </div>
+            </div>
 
-            <MudTextField @bind-Value="_registerDto.PhoneNumber"
-                          Label="Nomor Telepon / WhatsApp"
-                          Placeholder="081234567890"
-                          Variant="Variant.Outlined"
-                          Class="mb-3"
-                          For="@(() => _registerDto.PhoneNumber)"
-                          Adornment="Adornment.Start"
-                          AdornmentIcon="@Icons.Material.Filled.Phone" />
+            <div class="mb-3">
+                <MudText Typo="Typo.caption" Color="Color.Secondary" Class="d-block mb-1 font-weight-medium">Kata Sandi</MudText>
+                <div class="mud-input-control mud-input-input-control">
+                    <div class="mud-input mud-input-outlined">
+                        <input type="password"
+                               name="password"
+                               required
+                               minlength="6"
+                               placeholder="Minimal 6 karakter"
+                               class="mud-input-slot mud-input-root mud-input-root-outlined pa-3"
+                               style="width: 100%; border: 1px solid var(--mud-palette-lines-default); border-radius: 8px; font-size: 14px; background: transparent; color: inherit;" />
+                    </div>
+                </div>
+            </div>
 
-            <MudTextField @bind-Value="_registerDto.Password"
-                          Label="Kata Sandi"
-                          InputType="InputType.Password"
-                          Placeholder="Minimal 6 karakter"
-                          Variant="Variant.Outlined"
-                          Class="mb-3"
-                          For="@(() => _registerDto.Password)"
-                          Adornment="Adornment.Start"
-                          AdornmentIcon="@Icons.Material.Filled.Lock" />
+            <div class="mb-4">
+                <MudText Typo="Typo.caption" Color="Color.Secondary" Class="d-block mb-1 font-weight-medium">Konfirmasi Kata Sandi</MudText>
+                <div class="mud-input-control mud-input-input-control">
+                    <div class="mud-input mud-input-outlined">
+                        <input type="password"
+                               name="confirmPassword"
+                               required
+                               minlength="6"
+                               placeholder="Ulangi kata sandi"
+                               class="mud-input-slot mud-input-root mud-input-root-outlined pa-3"
+                               style="width: 100%; border: 1px solid var(--mud-palette-lines-default); border-radius: 8px; font-size: 14px; background: transparent; color: inherit;" />
+                    </div>
+                </div>
+            </div>
 
-            <MudTextField @bind-Value="_registerDto.ConfirmPassword"
-                          Label="Konfirmasi Kata Sandi"
-                          InputType="InputType.Password"
-                          Placeholder="Ulangi kata sandi"
-                          Variant="Variant.Outlined"
-                          Class="mb-4"
-                          For="@(() => _registerDto.ConfirmPassword)"
-                          Adornment="Adornment.Start"
-                          AdornmentIcon="@Icons.Material.Filled.LockClock" />
-
-            <MudButton ButtonType="ButtonType.Submit"
-                       Variant="Variant.Filled"
-                       Color="Color.Primary"
-                       Size="Size.Large"
-                       FullWidth="true"
-                       Disabled="_isLoading"
-                       Class="mb-4"
-                       Style="height: 48px; font-size: 16px; font-weight: 600;">
-                @if (_isLoading)
-                {
-                    <MudProgressCircular Indeterminate="true" Size="Size.Small" Class="ms-2" Color="Color.Inherit" />
-                }
-                else
-                {
-                    @:Daftar Sekarang
-                }
-            </MudButton>
+            <button type="submit"
+                    class="mud-button-root mud-button mud-button-filled mud-button-filled-primary mud-button-size-large mud-width-full mb-4"
+                    style="height: 48px; font-size: 16px; font-weight: 600; border-radius: 8px; width: 100%; cursor: pointer;">
+                <span class="mud-button-label">Daftar Sekarang</span>
+            </button>
 
             <MudDivider Class="my-3" />
             <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Secondary" Class="mb-3">atau</MudText>
@@ -108,13 +115,13 @@
                        Style="height: 48px; font-size: 15px;"
                        Href="/auth/google">
                 <MudImage Src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                         Alt="Google"
-                         Height="20"
-                         Width="20"
-                         Class="me-2" />
+                          Alt="Google"
+                          Height="20"
+                          Width="20"
+                          Class="me-2" />
                 Daftar dengan Google
             </MudButton>
-        </EditForm>
+        </form>
 
         <MudText Typo="Typo.body2" Align="Align.Center" Class="mt-3" Color="Color.Secondary">
             Sudah punya akun?
@@ -124,42 +131,12 @@
 </MudContainer>
 
 @code {
-    private RegisterRequestDto _registerDto = new();
     private string? _errorMessage;
-    private bool _isLoading;
 
-    private async Task HandleRegisterSubmitAsync()
+    protected override void OnInitialized()
     {
-        _isLoading = true;
-        _errorMessage = null;
-
-        try
-        {
-            var result = await AuthService.RegisterAndLoginAsync(_registerDto);
-            if (!result.Success || result.Principal == null)
-            {
-                _errorMessage = result.ErrorMessage ?? "Registrasi gagal.";
-                return;
-            }
-
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = true,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30)
-            };
-
-            await HttpContextAccessor.HttpContext!.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme, result.Principal, authProperties);
-
-            Navigation.NavigateTo("/");
-        }
-        catch (Exception ex)
-        {
-            _errorMessage = ex.Message;
-        }
-        finally
-        {
-            _isLoading = false;
-        }
+        var uri = new Uri(Navigation.Uri);
+        var query = HttpUtility.ParseQueryString(uri.Query);
+        _errorMessage = query["error"];
     }
 }

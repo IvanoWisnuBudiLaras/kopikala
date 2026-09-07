@@ -141,6 +141,97 @@ public class Program
             return Results.Challenge(properties, [GoogleDefaults.AuthenticationScheme]);
         });
 
+        // Endpoint Login Form POST resmi
+        app.MapPost("/auth/login-submit", async (HttpContext context, IAuthService authService) =>
+        {
+            var form = await context.Request.ReadFormAsync();
+            var email = form["email"].ToString();
+            var password = form["password"].ToString();
+            var rememberMe = form["rememberMe"].ToString().Equals("true", StringComparison.OrdinalIgnoreCase);
+            var returnUrl = form["returnUrl"].ToString();
+
+            var result = await authService.LoginAsync(new DTOs.Auth.LoginRequestDto
+            {
+                Email = email,
+                Password = password,
+                RememberMe = rememberMe
+            });
+
+            if (!result.Success || result.Principal == null)
+            {
+                var error = Uri.EscapeDataString(result.ErrorMessage ?? "Login gagal.");
+                var redirect = string.IsNullOrEmpty(returnUrl)
+                    ? $"/Account/Login?error={error}"
+                    : $"/Account/Login?error={error}&returnUrl={Uri.EscapeDataString(returnUrl)}";
+                return Results.Redirect(redirect);
+            }
+
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = rememberMe,
+                ExpiresUtc = rememberMe ? DateTimeOffset.UtcNow.AddDays(30) : null
+            };
+
+            await context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, result.Principal, authProperties);
+
+            if (!string.IsNullOrWhiteSpace(returnUrl) && returnUrl.StartsWith("/") && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/#"))
+            {
+                return Results.Redirect(returnUrl);
+            }
+
+            if (result.Principal.HasClaim("Permission", "Sistem.Kelola"))
+            {
+                return Results.Redirect("/SuperAdmin");
+            }
+            if (result.Principal.HasClaim(c => c.Type == "Permission" && new[] { "Meja.Kelola", "Pembayaran.Verifikasi", "Dapur.Antrean", "Laporan.Lihat" }.Contains(c.Value)))
+            {
+                return Results.Redirect("/Staff");
+            }
+
+            return Results.Redirect("/");
+        }).DisableAntiforgery();
+
+        // Endpoint Register Form POST resmi
+        app.MapPost("/auth/register-submit", async (HttpContext context, IAuthService authService) =>
+        {
+            var form = await context.Request.ReadFormAsync();
+            var fullName = form["fullName"].ToString();
+            var email = form["email"].ToString();
+            var phoneNumber = form["phoneNumber"].ToString();
+            var password = form["password"].ToString();
+            var confirmPassword = form["confirmPassword"].ToString();
+
+            if (password != confirmPassword)
+            {
+                var err = Uri.EscapeDataString("Konfirmasi kata sandi tidak cocok.");
+                return Results.Redirect($"/Account/Register?error={err}");
+            }
+
+            var result = await authService.RegisterAndLoginAsync(new DTOs.Auth.RegisterRequestDto
+            {
+                FullName = fullName,
+                Email = email,
+                PhoneNumber = phoneNumber,
+                Password = password,
+                ConfirmPassword = confirmPassword
+            });
+
+            if (!result.Success || result.Principal == null)
+            {
+                var err = Uri.EscapeDataString(result.ErrorMessage ?? "Registrasi gagal.");
+                return Results.Redirect($"/Account/Register?error={err}");
+            }
+
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30)
+            };
+
+            await context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, result.Principal, authProperties);
+            return Results.Redirect("/");
+        }).DisableAntiforgery();
+
         // Endpoint Logout resmi
         app.MapGet("/auth/logout", async (HttpContext context) =>
         {

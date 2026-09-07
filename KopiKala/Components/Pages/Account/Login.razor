@@ -2,11 +2,7 @@
 @using System.Web
 @using KopiKala.DTOs.Auth
 @using KopiKala.Services
-@using Microsoft.AspNetCore.Authentication
-@using Microsoft.AspNetCore.Authentication.Cookies
 @inject NavigationManager Navigation
-@inject IAuthService AuthService
-@inject IHttpContextAccessor HttpContextAccessor
 
 <PageTitle>Masuk — KopiKala</PageTitle>
 
@@ -29,55 +25,58 @@
             </MudAlert>
         }
 
-        <EditForm Model="@_loginDto" OnValidSubmit="HandleLoginSubmitAsync">
-            <DataAnnotationsValidator />
+        <form method="post" action="/auth/login-submit">
+            <input type="hidden" name="returnUrl" value="@_returnUrl" />
 
-            <MudTextField @bind-Value="_loginDto.Email"
-                          Label="Alamat Email"
-                          Placeholder="contoh@email.com"
-                          Variant="Variant.Outlined"
-                          Class="mb-4"
-                          For="@(() => _loginDto.Email)"
-                          Adornment="Adornment.Start"
-                          AdornmentIcon="@Icons.Material.Filled.Email" />
+            <div class="mb-4">
+                <MudText Typo="Typo.caption" Color="Color.Secondary" Class="d-block mb-1 font-weight-medium">Alamat Email</MudText>
+                <div class="mud-input-control mud-input-input-control">
+                    <div class="mud-input mud-input-outlined mud-input-adorned-start">
+                        <div class="mud-input-adornment mud-input-adornment-start">
+                            <MudIcon Icon="@Icons.Material.Filled.Email" Size="Size.Small" Color="Color.Default" />
+                        </div>
+                        <input type="email"
+                               name="email"
+                               required
+                               placeholder="contoh@email.com"
+                               class="mud-input-slot mud-input-root mud-input-root-outlined mud-input-root-adorned-start pa-3"
+                               style="width: 100%; border: 1px solid var(--mud-palette-lines-default); border-radius: 8px; font-size: 14px; background: transparent; color: inherit;" />
+                    </div>
+                </div>
+            </div>
 
-            <MudTextField @bind-Value="_loginDto.Password"
-                          Label="Kata Sandi"
-                          InputType="InputType.Password"
-                          Placeholder="Masukkan kata sandi"
-                          Variant="Variant.Outlined"
-                          Class="mb-4"
-                          For="@(() => _loginDto.Password)"
-                          Adornment="Adornment.Start"
-                          AdornmentIcon="@Icons.Material.Filled.Lock" />
+            <div class="mb-4">
+                <MudText Typo="Typo.caption" Color="Color.Secondary" Class="d-block mb-1 font-weight-medium">Kata Sandi</MudText>
+                <div class="mud-input-control mud-input-input-control">
+                    <div class="mud-input mud-input-outlined mud-input-adorned-start">
+                        <div class="mud-input-adornment mud-input-adornment-start">
+                            <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Small" Color="Color.Default" />
+                        </div>
+                        <input type="password"
+                               name="password"
+                               required
+                               placeholder="Masukkan kata sandi"
+                               class="mud-input-slot mud-input-root mud-input-root-outlined mud-input-root-adorned-start pa-3"
+                               style="width: 100%; border: 1px solid var(--mud-palette-lines-default); border-radius: 8px; font-size: 14px; background: transparent; color: inherit;" />
+                    </div>
+                </div>
+            </div>
 
             <div class="d-flex justify-space-between align-center mb-4">
-                <MudCheckBox @bind-Value="_loginDto.RememberMe"
-                             Label="Ingat Saya"
-                             Color="Color.Primary"
-                             Dense="true" />
+                <label class="d-flex align-center cursor-pointer" style="font-size: 14px; color: var(--mud-palette-text-secondary);">
+                    <input type="checkbox" name="rememberMe" value="true" class="mr-2" style="accent-color: var(--mud-palette-primary);" />
+                    Ingat Saya
+                </label>
                 <MudLink Href="/Account/ForgotPassword" Color="Color.Primary" Typo="Typo.body2">
                     Lupa kata sandi?
                 </MudLink>
             </div>
 
-            <MudButton ButtonType="ButtonType.Submit"
-                       Variant="Variant.Filled"
-                       Color="Color.Primary"
-                       Size="Size.Large"
-                       FullWidth="true"
-                       Disabled="_isLoading"
-                       Class="mb-4"
-                       Style="height: 48px; font-size: 16px; font-weight: 600;">
-                @if (_isLoading)
-                {
-                    <MudProgressCircular Indeterminate="true" Size="Size.Small" Class="ms-2" Color="Color.Inherit" />
-                }
-                else
-                {
-                    @:Masuk
-                }
-            </MudButton>
+            <button type="submit"
+                    class="mud-button-root mud-button mud-button-filled mud-button-filled-primary mud-button-size-large mud-width-full mb-4"
+                    style="height: 48px; font-size: 16px; font-weight: 600; border-radius: 8px; width: 100%; cursor: pointer;">
+                <span class="mud-button-label">Masuk</span>
+            </button>
 
             <MudDivider Class="my-4" />
             <MudText Typo="Typo.body2" Align="Align.Center" Color="Color.Secondary" Class="mb-4">atau</MudText>
@@ -90,13 +89,13 @@
                        Style="height: 48px; font-size: 15px;"
                        Href="/auth/google">
                 <MudImage Src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                         Alt="Google"
-                         Height="20"
-                         Width="20"
-                         Class="me-2" />
+                          Alt="Google"
+                          Height="20"
+                          Width="20"
+                          Class="me-2" />
                 Masuk dengan Google
             </MudButton>
-        </EditForm>
+        </form>
 
         <MudText Typo="Typo.body2" Align="Align.Center" Class="mt-4" Color="Color.Secondary">
             Belum punya akun?
@@ -106,9 +105,7 @@
 </MudContainer>
 
 @code {
-    private LoginRequestDto _loginDto = new();
     private string? _errorMessage;
-    private bool _isLoading;
     private string? _returnUrl;
 
     protected override void OnInitialized()
@@ -117,72 +114,5 @@
         var query = HttpUtility.ParseQueryString(uri.Query);
         _errorMessage = query["error"];
         _returnUrl = query["returnUrl"];
-    }
-
-    private async Task HandleLoginSubmitAsync()
-    {
-        _isLoading = true;
-        _errorMessage = null;
-
-        try
-        {
-            var result = await AuthService.LoginAsync(_loginDto);
-            if (!result.Success || result.Principal == null)
-            {
-                _errorMessage = result.ErrorMessage ?? "Login gagal.";
-                return;
-            }
-
-            // SignIn langsung di komponen Blazor
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = _loginDto.RememberMe,
-                ExpiresUtc = _loginDto.RememberMe ? DateTimeOffset.UtcNow.AddDays(30) : null
-            };
-
-            await HttpContextAccessor.HttpContext!.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme, result.Principal, authProperties);
-
-            // Redirect: prioritaskan returnUrl jika tersedia dan aman
-            if (!string.IsNullOrWhiteSpace(_returnUrl) && IsLocalUrl(_returnUrl))
-            {
-                Navigation.NavigateTo(_returnUrl);
-                return;
-            }
-
-            // Fallback: Redirect berdasarkan permission
-            if (result.Principal.HasClaim("Permission", "Sistem.Kelola"))
-            {
-                Navigation.NavigateTo("/SuperAdmin");
-            }
-            else if (result.Principal.HasClaim(c => c.Type == "Permission" && new[] { "Meja.Kelola", "Pembayaran.Verifikasi", "Dapur.Antrean", "Laporan.Lihat" }.Contains(c.Value)))
-            {
-                Navigation.NavigateTo("/Staff");
-            }
-            else
-            {
-                Navigation.NavigateTo("/");
-            }
-        }
-        catch (Exception ex)
-        {
-            _errorMessage = ex.Message;
-        }
-        finally
-        {
-            _isLoading = false;
-        }
-    }
-
-    private static bool IsLocalUrl(string url)
-    {
-        if (string.IsNullOrEmpty(url)) return false;
-        if (url.StartsWith("//") || url.StartsWith("/#")) return false;
-
-        if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
-            return uri.Authority.Equals("localhost", StringComparison.OrdinalIgnoreCase)
-                || uri.Authority.Equals("127.0.0.1", StringComparison.OrdinalIgnoreCase);
-
-        return url.StartsWith("/");
     }
 }
