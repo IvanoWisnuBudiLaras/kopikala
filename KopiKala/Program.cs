@@ -80,6 +80,15 @@ public class Program
                     context.User.HasClaim("Permission", "Sistem.Kelola") ||
                     context.User.HasClaim(c => c.Type == "Permission" &&
                         new[] { "Meja.Kelola", "Pembayaran.Verifikasi", "Dapur.Antrean", "Laporan.Lihat" }.Contains(c.Value))));
+
+            // Policy Khusus Pelanggan (Customer)
+            options.AddPolicy("CustomerOnly", policy =>
+                policy.RequireAssertion(context =>
+                    context.User.IsInRole("Customer") ||
+                    context.User.HasClaim(System.Security.Claims.ClaimTypes.Role, "Customer") ||
+                    (!context.User.HasClaim("Permission", "Sistem.Kelola") &&
+                     !context.User.HasClaim(c => c.Type == "Permission" &&
+                        new[] { "Meja.Kelola", "Pembayaran.Verifikasi", "Dapur.Antrean", "Laporan.Lihat" }.Contains(c.Value)))));
         });
 
         // 7. Konfigurasi OpenIddict (Internal OAuth 2.1 Server + PKCE)
