@@ -38,6 +38,7 @@ public class Program
         builder.Services.AddSingleton(TimeProvider.System);
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<IBookingService, BookingService>();
+        builder.Services.AddScoped<ICashierService, CashierService>();
         builder.Services.AddHttpClient();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddControllers();

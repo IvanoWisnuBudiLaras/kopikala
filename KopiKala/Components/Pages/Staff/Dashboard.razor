@@ -1,12 +1,1008 @@
 @page "/Staff"
 @using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims
+@using KopiKala.DTOs.Booking
+@using KopiKala.DTOs.Staff
+@using KopiKala.Helpers
+@using KopiKala.Services
 @attribute [Authorize(Policy = "StaffAccess")]
+@inject ICashierService CashierService
+@inject IBookingService BookingService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@inject AuthenticationStateProvider AuthStateProvider
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
-    <MudText Typo="Typo.h4" Class="mb-4">Area Staf</MudText>
-    <MudAlert Severity="Severity.Info" Variant="Variant.Filled">
-        <MudText Typo="Typo.body1">
-            Selamat datang di portal staf KopiKala. Menu dinamis akan ditampilkan sesuai izin akses Anda.
-        </MudText>
-    </MudAlert>
+<PageTitle>Portal Staf — KopiKala</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="my-4">
+    <!-- Header Area -->
+    <MudPaper Elevation="0" Class="pa-4 mb-4 rounded-lg d-flex justify-space-between align-center flex-wrap gap-4" Style="background: linear-gradient(135deg, #3E2723, #4E342E); color: #FFF;">
+        <div>
+            <MudText Typo="Typo.h5" Class="font-weight-bold d-flex align-center gap-2">
+                <MudIcon Icon="@Icons.Material.Filled.PointOfSale" Size="Size.Large" Color="Color.Warning" />
+                Portal Operasional Staf
+            </MudText>
+            <MudText Typo="Typo.body2" Style="opacity: 0.85;">
+                Kelola denah meja, verifikasi bukti transfer, check-in tamu, dan pesanan tambahan di tempat.
+            </MudText>
+        </div>
+        <div class="d-flex align-center gap-2">
+            <MudChip T="string" Color="Color.Warning" Variant="Variant.Filled" Icon="@Icons.Material.Filled.AccessTime">
+                @SelectedDate.ToString("dd MMM yyyy")
+            </MudChip>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.PersonAdd" OnClick="OpenWalkInDialog">
+                Tamu Walk-In
+            </MudButton>
+        </div>
+    </MudPaper>
+
+    <!-- Main Navigation Tabs -->
+    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-4" Color="Color.Surface">
+        <!-- TAB 1: DENAH MEJA KASIR -->
+        <MudTabPanel Text="Denah Meja & Status" Icon="@Icons.Material.Filled.TableBar">
+            <!-- Filter Tanggal & Sesi -->
+            <MudPaper Elevation="0" Class="pa-3 mb-4 rounded-lg d-flex align-center flex-wrap gap-4" Style="background: rgba(0,0,0,0.03);">
+                <MudDatePicker Label="Pilih Tanggal" @bind-Date="SelectedDateNullable" DateFormat="yyyy-MM-dd" Class="mr-2" Style="max-width: 200px;" Variant="Variant.Outlined" Margin="Margin.Dense" />
+                <MudSelect T="int" Label="Sesi Jam Kafe" Value="SelectedTimeslotId" ValueChanged="OnTimeslotChanged" Variant="Variant.Outlined" Margin="Margin.Dense" Style="max-width: 260px;">
+                    @foreach (var ts in Timeslots)
+                    {
+                        <MudSelectItem Value="@ts.Id">@ts.SessionName (@ts.StartTime.ToString("HH:mm") - @ts.EndTime.ToString("HH:mm"))</MudSelectItem>
+                    }
+                </MudSelect>
+                <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Refresh" OnClick="RefreshTableStatusesAsync">
+                    Muat Ulang
+                </MudButton>
+            </MudPaper>
+
+            <!-- Legend Status Meja -->
+            <div class="d-flex flex-wrap gap-2 mb-4">
+                <MudChip T="string" Color="Color.Success" Size="Size.Small" Variant="Variant.Filled">Tersedia</MudChip>
+                <MudChip T="string" Color="Color.Info" Size="Size.Small" Variant="Variant.Filled">Dikonfirmasi (Menunggu Tamu)</MudChip>
+                <MudChip T="string" Color="Color.Warning" Size="Size.Small" Variant="Variant.Filled">Menunggu Verifikasi</MudChip>
+                <MudChip T="string" Color="Color.Default" Size="Size.Small" Variant="Variant.Filled">Menunggu Bayar</MudChip>
+                <MudChip T="string" Color="Color.Secondary" Size="Size.Small" Variant="Variant.Filled">Sedang Digunakan (Seated)</MudChip>
+            </div>
+
+            <!-- Grid Meja 2D -->
+            @if (IsLoadingTables)
+            {
+                <div class="d-flex justify-center my-8">
+                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+                </div>
+            }
+            else
+            {
+                <!-- Section Indoor -->
+                <MudText Typo="Typo.h6" Class="font-weight-bold mb-2 d-flex align-center gap-1">
+                    <MudIcon Icon="@Icons.Material.Filled.AcUnit" Color="Color.Info" /> Area Indoor (AC)
+                </MudText>
+                <MudGrid Class="mb-6">
+                    @foreach (var table in TableStatuses.Where(t => t.Area == "Indoor"))
+                    {
+                        <MudItem xs="12" sm="6" md="4" lg="3">
+                            <MudCard Elevation="3" Class="rounded-lg" Style="@GetTableCardStyle(table.DisplayStatus)">
+                                <MudCardHeader>
+                                    <CardHeaderAvatar>
+                                        <MudAvatar Color="@GetTableAvatarColor(table.DisplayStatus)">
+                                            @table.TableNumber
+                                        </MudAvatar>
+                                    </CardHeaderAvatar>
+                                    <CardHeaderContent>
+                                        <MudText Typo="Typo.subtitle1" Class="font-weight-bold">Meja @table.TableNumber</MudText>
+                                        <MudText Typo="Typo.caption">Kapasitas @table.Capacity Orang</MudText>
+                                    </CardHeaderContent>
+                                    <CardHeaderActions>
+                                        <MudChip T="string" Color="@GetTableAvatarColor(table.DisplayStatus)" Size="Size.Small" Variant="Variant.Filled">
+                                            @table.DisplayStatus
+                                        </MudChip>
+                                    </CardHeaderActions>
+                                </MudCardHeader>
+                                <MudCardContent Class="pt-0">
+                                    @if (table.CurrentBookingId.HasValue)
+                                    {
+                                        <MudDivider Class="my-2" />
+                                        <MudText Typo="Typo.body2"><strong>Tamu:</strong> @table.CurrentRepresentativeName</MudText>
+                                        <MudText Typo="Typo.caption" Color="Color.Secondary">Inv: @table.CurrentInvoiceCode</MudText>
+                                        <br />
+                                        <MudText Typo="Typo.caption">
+                                            <strong>Waktu:</strong> @(table.StartTime?.ToString("HH:mm") ?? "-") - @(table.EndTime?.ToString("HH:mm") ?? "-")
+                                        </MudText>
+                                        <br />
+                                        <MudText Typo="Typo.body2" Color="Color.Primary" Class="font-weight-bold">
+                                            Total: @table.TotalAmount.ToRupiah()
+                                        </MudText>
+                                    }
+                                    else
+                                    {
+                                        <MudText Typo="Typo.caption" Color="Color.Secondary">Meja kosong siap digunakan.</MudText>
+                                    }
+                                </MudCardContent>
+                                <MudCardActions Class="d-flex justify-space-between flex-wrap gap-1">
+                                    @if (table.CurrentBookingId.HasValue)
+                                    {
+                                        @if (table.DisplayStatus == "Dikonfirmasi" || table.DisplayStatus == "MenungguVerifikasi")
+                                        {
+                                            <MudButton Variant="Variant.Filled" Color="Color.Success" Size="Size.Small" StartIcon="@Icons.Material.Filled.HowToReg" OnClick="@(() => CheckInGuestAsync(table.CurrentBookingId.Value))">
+                                                Check-In
+                                            </MudButton>
+                                        }
+                                        else if (table.DisplayStatus == "SedangDigunakan")
+                                        {
+                                            <MudMenu Label="Aksi Meja" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" EndIcon="@Icons.Material.Filled.KeyboardArrowDown">
+                                                <MudMenuItem Icon="@Icons.Material.Filled.AddShoppingCart" OnClick="@(() => OpenAddOnDialog(table.CurrentBookingId.Value))">
+                                                    Tambah Menu (Add-on)
+                                                </MudMenuItem>
+                                                <MudMenuItem Icon="@Icons.Material.Filled.SwapHoriz" OnClick="@(() => OpenSubstituteDialog(table.CurrentBookingId.Value))">
+                                                    Ganti Menu Pre-Order
+                                                </MudMenuItem>
+                                                <MudMenuItem Icon="@Icons.Material.Filled.MoreTime" OnClick="@(() => OpenExtendDialog(table.CurrentBookingId.Value))">
+                                                    Perpanjang Waktu (+1 Jam)
+                                                </MudMenuItem>
+                                                <MudDivider />
+                                                <MudMenuItem Icon="@Icons.Material.Filled.CheckCircle" OnClick="@(() => CompleteSessionAsync(table.CurrentBookingId.Value))">
+                                                    Selesai Sesi (Checkout)
+                                                </MudMenuItem>
+                                            </MudMenu>
+                                        }
+                                        <MudButton Variant="Variant.Text" Color="Color.Default" Size="Size.Small" OnClick="@(() => OpenDetailDialog(table.CurrentBookingId.Value))">
+                                            Detail
+                                        </MudButton>
+                                    }
+                                    else
+                                    {
+                                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" StartIcon="@Icons.Material.Filled.PersonAdd" OnClick="@(() => OpenWalkInDialogWithTable(table.TableId))">
+                                            Buka Meja
+                                        </MudButton>
+                                    }
+                                </MudCardActions>
+                            </MudCard>
+                        </MudItem>
+                    }
+                </MudGrid>
+
+                <!-- Section Outdoor -->
+                <MudText Typo="Typo.h6" Class="font-weight-bold mb-2 d-flex align-center gap-1">
+                    <MudIcon Icon="@Icons.Material.Filled.WbSunny" Color="Color.Warning" /> Area Outdoor (Smoking)
+                </MudText>
+                <MudGrid>
+                    @foreach (var table in TableStatuses.Where(t => t.Area == "Outdoor"))
+                    {
+                        <MudItem xs="12" sm="6" md="4" lg="3">
+                            <MudCard Elevation="3" Class="rounded-lg" Style="@GetTableCardStyle(table.DisplayStatus)">
+                                <MudCardHeader>
+                                    <CardHeaderAvatar>
+                                        <MudAvatar Color="@GetTableAvatarColor(table.DisplayStatus)">
+                                            @table.TableNumber
+                                        </MudAvatar>
+                                    </CardHeaderAvatar>
+                                    <CardHeaderContent>
+                                        <MudText Typo="Typo.subtitle1" Class="font-weight-bold">Meja @table.TableNumber</MudText>
+                                        <MudText Typo="Typo.caption">Kapasitas @table.Capacity Orang</MudText>
+                                    </CardHeaderContent>
+                                    <CardHeaderActions>
+                                        <MudChip T="string" Color="@GetTableAvatarColor(table.DisplayStatus)" Size="Size.Small" Variant="Variant.Filled">
+                                            @table.DisplayStatus
+                                        </MudChip>
+                                    </CardHeaderActions>
+                                </MudCardHeader>
+                                <MudCardContent Class="pt-0">
+                                    @if (table.CurrentBookingId.HasValue)
+                                    {
+                                        <MudDivider Class="my-2" />
+                                        <MudText Typo="Typo.body2"><strong>Tamu:</strong> @table.CurrentRepresentativeName</MudText>
+                                        <MudText Typo="Typo.caption" Color="Color.Secondary">Inv: @table.CurrentInvoiceCode</MudText>
+                                        <br />
+                                        <MudText Typo="Typo.caption">
+                                            <strong>Waktu:</strong> @(table.StartTime?.ToString("HH:mm") ?? "-") - @(table.EndTime?.ToString("HH:mm") ?? "-")
+                                        </MudText>
+                                        <br />
+                                        <MudText Typo="Typo.body2" Color="Color.Primary" Class="font-weight-bold">
+                                            Total: @table.TotalAmount.ToRupiah()
+                                        </MudText>
+                                    }
+                                    else
+                                    {
+                                        <MudText Typo="Typo.caption" Color="Color.Secondary">Meja kosong siap digunakan.</MudText>
+                                    }
+                                </MudCardContent>
+                                <MudCardActions Class="d-flex justify-space-between flex-wrap gap-1">
+                                    @if (table.CurrentBookingId.HasValue)
+                                    {
+                                        @if (table.DisplayStatus == "Dikonfirmasi" || table.DisplayStatus == "MenungguVerifikasi")
+                                        {
+                                            <MudButton Variant="Variant.Filled" Color="Color.Success" Size="Size.Small" StartIcon="@Icons.Material.Filled.HowToReg" OnClick="@(() => CheckInGuestAsync(table.CurrentBookingId.Value))">
+                                                Check-In
+                                            </MudButton>
+                                        }
+                                        else if (table.DisplayStatus == "SedangDigunakan")
+                                        {
+                                            <MudMenu Label="Aksi Meja" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" EndIcon="@Icons.Material.Filled.KeyboardArrowDown">
+                                                <MudMenuItem Icon="@Icons.Material.Filled.AddShoppingCart" OnClick="@(() => OpenAddOnDialog(table.CurrentBookingId.Value))">
+                                                    Tambah Menu (Add-on)
+                                                </MudMenuItem>
+                                                <MudMenuItem Icon="@Icons.Material.Filled.SwapHoriz" OnClick="@(() => OpenSubstituteDialog(table.CurrentBookingId.Value))">
+                                                    Ganti Menu Pre-Order
+                                                </MudMenuItem>
+                                                <MudMenuItem Icon="@Icons.Material.Filled.MoreTime" OnClick="@(() => OpenExtendDialog(table.CurrentBookingId.Value))">
+                                                    Perpanjang Waktu (+1 Jam)
+                                                </MudMenuItem>
+                                                <MudDivider />
+                                                <MudMenuItem Icon="@Icons.Material.Filled.CheckCircle" OnClick="@(() => CompleteSessionAsync(table.CurrentBookingId.Value))">
+                                                    Selesai Sesi (Checkout)
+                                                </MudMenuItem>
+                                            </MudMenu>
+                                        }
+                                        <MudButton Variant="Variant.Text" Color="Color.Default" Size="Size.Small" OnClick="@(() => OpenDetailDialog(table.CurrentBookingId.Value))">
+                                            Detail
+                                        </MudButton>
+                                    }
+                                    else
+                                    {
+                                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" StartIcon="@Icons.Material.Filled.PersonAdd" OnClick="@(() => OpenWalkInDialogWithTable(table.TableId))">
+                                            Buka Meja
+                                        </MudButton>
+                                    }
+                                </MudCardActions>
+                            </MudCard>
+                        </MudItem>
+                    }
+                </MudGrid>
+            }
+        </MudTabPanel>
+
+        <!-- TAB 2: VERIFIKASI TRANSFER -->
+        <MudTabPanel Text="@($"Verifikasi Transfer ({PendingVerifications.Count})")" Icon="@Icons.Material.Filled.FactCheck" BadgeColor="Color.Error" BadgeData="@(PendingVerifications.Count > 0 ? PendingVerifications.Count : null)">
+            <MudPaper Elevation="0" Class="pa-4 rounded-lg mb-4" Style="background: rgba(0,0,0,0.02);">
+                <MudText Typo="Typo.h6" Class="font-weight-bold mb-1">Daftar Bukti Transfer Menunggu Verifikasi</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    Periksa kebenaran bukti transfer bank pelanggan, lalu klik tombol Verifikasi untuk konfirmasi lunas atau Tolak jika tidak valid.
+                </MudText>
+            </MudPaper>
+
+            @if (PendingVerifications.Count == 0)
+            {
+                <MudAlert Severity="Severity.Success" Variant="Variant.Outlined" Class="my-4">
+                    Tidak ada bukti pembayaran transfer yang perlu diverifikasi saat ini.
+                </MudAlert>
+            }
+            else
+            {
+                <MudTable Items="@PendingVerifications" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="2" Class="rounded-lg">
+                    <HeaderContent>
+                        <MudTh>Kode Invoice</MudTh>
+                        <MudTh>Nama Perwakilan</MudTh>
+                        <MudTh>Meja & Waktu</MudTh>
+                        <MudTh>Total Tagihan</MudTh>
+                        <MudTh>Bukti Bayar</MudTh>
+                        <MudTh Style="text-align: right;">Aksi Kasir</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Kode Invoice">
+                            <MudText Typo="Typo.subtitle2" Class="font-weight-bold">@context.InvoiceCode</MudText>
+                            <MudText Typo="Typo.caption" Color="Color.Secondary">@context.CreatedAt.ToString("dd MMM HH:mm")</MudText>
+                        </MudTd>
+                        <MudTd DataLabel="Nama Perwakilan">
+                            <MudText Typo="Typo.body2">@context.RepresentativeName</MudText>
+                            <MudText Typo="Typo.caption" Color="Color.Secondary">Telp: @(string.IsNullOrEmpty(context.CustomerPhone) ? "-" : context.CustomerPhone)</MudText>
+                        </MudTd>
+                        <MudTd DataLabel="Meja & Waktu">
+                            <MudChip T="string" Color="Color.Primary" Size="Size.Small" Variant="Variant.Outlined">Meja @context.TableNumber</MudChip>
+                            <MudText Typo="Typo.caption">@context.BookingDate.ToString("dd/MM") | @context.StartTime.ToString("HH:mm")</MudText>
+                        </MudTd>
+                        <MudTd DataLabel="Total Tagihan">
+                            <MudText Typo="Typo.subtitle2" Color="Color.Primary" Class="font-weight-bold">
+                                @context.TotalAmount.ToRupiah()
+                            </MudText>
+                        </MudTd>
+                        <MudTd DataLabel="Bukti Bayar">
+                            @if (!string.IsNullOrEmpty(context.PaymentProofUrl))
+                            {
+                                <MudButton Variant="Variant.Outlined" Color="Color.Info" Size="Size.Small" StartIcon="@Icons.Material.Filled.Image" OnClick="@(() => OpenProofPreview(context.PaymentProofUrl, context.InvoiceCode))">
+                                    Lihat Bukti
+                                </MudButton>
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.caption" Color="Color.Error">Belum ada file</MudText>
+                            }
+                        </MudTd>
+                        <MudTd DataLabel="Aksi" Style="text-align: right;">
+                            <MudButtonGroup Variant="Variant.Filled" Size="Size.Small">
+                                <MudButton Color="Color.Success" StartIcon="@Icons.Material.Filled.Check" OnClick="@(() => VerifyPaymentAsync(context.BookingId, true))">
+                                    Lunas
+                                </MudButton>
+                                <MudButton Color="Color.Error" StartIcon="@Icons.Material.Filled.Close" OnClick="@(() => VerifyPaymentAsync(context.BookingId, false))">
+                                    Tolak
+                                </MudButton>
+                            </MudButtonGroup>
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+            }
+        </MudTabPanel>
+
+        <!-- TAB 3: PENCARIAN & RIWAYAT TRANSAKSI -->
+        <MudTabPanel Text="Cari Transaksi / Tamu" Icon="@Icons.Material.Filled.Search">
+            <MudPaper Elevation="0" Class="pa-4 mb-4 rounded-lg" Style="background: rgba(0,0,0,0.02);">
+                <MudGrid>
+                    <MudItem xs="12" md="6">
+                        <MudTextField @bind-Value="SearchQuery" Label="Cari Nama Perwakilan, Kode Invoice, No Meja, atau No WhatsApp..." Variant="Variant.Outlined" Margin="Margin.Dense" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Immediate="true" OnKeyUp="OnSearchKeyUp" />
+                    </MudItem>
+                    <MudItem xs="12" md="4">
+                        <MudDatePicker Label="Filter Tanggal Transaksi" @bind-Date="SearchDateNullable" DateFormat="yyyy-MM-dd" Variant="Variant.Outlined" Margin="Margin.Dense" Clearable="true" />
+                    </MudItem>
+                    <MudItem xs="12" md="2" Class="d-flex align-center">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="PerformSearchAsync">
+                            Cari
+                        </MudButton>
+                    </MudItem>
+                </MudGrid>
+            </MudPaper>
+
+            <MudTable Items="@SearchResults" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="2" Class="rounded-lg">
+                <HeaderContent>
+                    <MudTh>Kode Invoice</MudTh>
+                    <MudTh>Nama Perwakilan</MudTh>
+                    <MudTh>Meja & Jadwal</MudTh>
+                    <MudTh>Status</MudTh>
+                    <MudTh>Total</MudTh>
+                    <MudTh Style="text-align: right;">Aksi</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Kode Invoice">
+                        <MudText Typo="Typo.subtitle2" Class="font-weight-bold">@context.InvoiceCode</MudText>
+                        <MudText Typo="Typo.caption" Color="Color.Secondary">@context.PaymentMethod</MudText>
+                    </MudTd>
+                    <MudTd DataLabel="Nama Perwakilan">
+                        <MudText Typo="Typo.body2">@context.RepresentativeName</MudText>
+                        <MudText Typo="Typo.caption" Color="Color.Secondary">@context.CustomerPhone</MudText>
+                    </MudTd>
+                    <MudTd DataLabel="Meja & Jadwal">
+                        <MudText Typo="Typo.body2">Meja @context.TableNumber (@context.TableArea)</MudText>
+                        <MudText Typo="Typo.caption">@context.BookingDate.ToString("dd/MM/yyyy") | @context.StartTime.ToString("HH:mm") - @context.EndTime.ToString("HH:mm")</MudText>
+                    </MudTd>
+                    <MudTd DataLabel="Status">
+                        <MudChip T="string" Color="@GetStatusChipColor(context.Status)" Size="Size.Small" Variant="Variant.Filled">
+                            @context.Status
+                        </MudChip>
+                    </MudTd>
+                    <MudTd DataLabel="Total">
+                        <MudText Typo="Typo.subtitle2" Color="Color.Primary" Class="font-weight-bold">
+                            @context.TotalAmount.ToRupiah()
+                        </MudText>
+                    </MudTd>
+                    <MudTd DataLabel="Aksi" Style="text-align: right;">
+                        <div class="d-flex justify-end gap-1">
+                            @if (context.Status == "Dikonfirmasi" || context.Status == "MenungguVerifikasiKasir")
+                            {
+                                <MudButton Variant="Variant.Filled" Color="Color.Success" Size="Size.Small" StartIcon="@Icons.Material.Filled.HowToReg" OnClick="@(() => CheckInGuestAsync(context.BookingId))">
+                                    Check-In
+                                </MudButton>
+                            }
+                            <MudButton Variant="Variant.Outlined" Color="Color.Default" Size="Size.Small" OnClick="@(() => OpenDetailDialog(context.BookingId))">
+                                Rincian
+                            </MudButton>
+                        </div>
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+        </MudTabPanel>
+    </MudTabs>
 </MudContainer>
+
+<!-- DIALOG 1: PREVIEW BUKTI TRANSFER -->
+<MudDialog @bind-Visible="IsProofDialogOpen" Options="DialogOptions">
+    <TitleContent>
+        <MudText Typo="Typo.h6">Bukti Transfer — @SelectedInvoiceCode</MudText>
+    </TitleContent>
+    <DialogContent>
+        <div class="d-flex justify-center pa-2">
+            <MudImage Src="@SelectedProofUrl" Alt="Bukti Transfer" Elevation="2" Class="rounded-lg" Style="max-height: 450px; max-width: 100%; object-fit: contain;" />
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@(() => IsProofDialogOpen = false)">Tutup</MudButton>
+    </DialogActions>
+</MudDialog>
+
+<!-- DIALOG 2: TAMU WALK-IN OFFLINE -->
+<MudDialog @bind-Visible="IsWalkInDialogOpen" Options="LargeDialogOptions">
+    <TitleContent>
+        <MudText Typo="Typo.h6" Class="d-flex align-center gap-2">
+            <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Color="Color.Primary" />
+            Buka Meja Tamu Walk-In (Offline)
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudGrid>
+            <MudItem xs="12" sm="6">
+                <MudSelect T="Guid" Label="Pilih Meja Tersedia" @bind-Value="WalkInDto.TableId" Variant="Variant.Outlined" Required="true">
+                    @foreach (var table in AvailableWalkInTables)
+                    {
+                        <MudSelectItem Value="@table.Id">Meja @table.TableNumber (@table.Area - @table.Capacity Kursi)</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudSelect T="int" Label="Sesi Jam Kafe" @bind-Value="WalkInDto.TimeslotId" Variant="Variant.Outlined" Required="true">
+                    @foreach (var ts in Timeslots)
+                    {
+                        <MudSelectItem Value="@ts.Id">@ts.SessionName (@ts.StartTime.ToString("HH:mm") - @ts.EndTime.ToString("HH:mm"))</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField @bind-Value="WalkInDto.RepresentativeName" Label="Nama Perwakilan Tamu" Variant="Variant.Outlined" Required="true" />
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudTextField @bind-Value="WalkInDto.CustomerPhone" Label="Nomor WhatsApp (Opsional)" Variant="Variant.Outlined" />
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudSelect T="int" Label="Durasi Duduk" @bind-Value="WalkInDto.DurationHours" Variant="Variant.Outlined">
+                    <MudSelectItem Value="1">1 Jam</MudSelectItem>
+                    <MudSelectItem Value="2">2 Jam</MudSelectItem>
+                    <MudSelectItem Value="3">3 Jam</MudSelectItem>
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                <MudSelect T="string" Label="Metode Pembayaran" @bind-Value="WalkInDto.PaymentMethod" Variant="Variant.Outlined">
+                    <MudSelectItem Value="@("Tunai")">Tunai (Cash)</MudSelectItem>
+                    <MudSelectItem Value="@("QRIS")">QRIS</MudSelectItem>
+                    <MudSelectItem Value="@("BayarDiTempat")">Bayar di Tempat</MudSelectItem>
+                </MudSelect>
+            </MudItem>
+        </MudGrid>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@(() => IsWalkInDialogOpen = false)">Batal</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="SubmitWalkInBookingAsync">
+            Buka Meja Sekarang
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+<!-- DIALOG 3: TAMBAH PESANAN (ADD-ON ORDER) -->
+<MudDialog @bind-Visible="IsAddOnDialogOpen" Options="LargeDialogOptions">
+    <TitleContent>
+        <MudText Typo="Typo.h6" Class="d-flex align-center gap-2">
+            <MudIcon Icon="@Icons.Material.Filled.AddShoppingCart" Color="Color.Primary" />
+            Tambah Pesanan Menu (Add-On)
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText Typo="Typo.body2" Class="mb-3">Pilih menu tambahan untuk meja yang sedang aktif nongkrong:</MudText>
+        <div style="max-height: 350px; overflow-y: auto;">
+            <MudGrid>
+                @foreach (var menu in AllMenuItems)
+                {
+                    <MudItem xs="12" sm="6">
+                        <MudPaper Elevation="1" Class="pa-2 d-flex justify-space-between align-center rounded-lg">
+                            <div>
+                                <MudText Typo="Typo.subtitle2" Class="font-weight-bold">@menu.Name</MudText>
+                                <MudText Typo="Typo.caption" Color="Color.Primary">@menu.Price.ToRupiah()</MudText>
+                            </div>
+                            <div class="d-flex align-center gap-1">
+                                <MudIconButton Icon="@Icons.Material.Filled.Remove" Size="Size.Small" OnClick="@(() => DecrementAddOnQty(menu.Id))" Disabled="@(GetAddOnQty(menu.Id) == 0)" />
+                                <MudText Typo="Typo.body2" Class="mx-1 font-weight-bold">@GetAddOnQty(menu.Id)</MudText>
+                                <MudIconButton Icon="@Icons.Material.Filled.Add" Size="Size.Small" Color="Color.Primary" OnClick="@(() => IncrementAddOnQty(menu.Id))" />
+                            </div>
+                        </MudPaper>
+                    </MudItem>
+                }
+            </MudGrid>
+        </div>
+        <MudDivider Class="my-3" />
+        <div class="d-flex justify-space-between align-center">
+            <MudText Typo="Typo.subtitle1">Total Tambahan:</MudText>
+            <MudText Typo="Typo.h6" Color="Color.Primary" Class="font-weight-bold">
+                @CalculateAddOnTotal().ToRupiah()
+            </MudText>
+        </div>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@(() => IsAddOnDialogOpen = false)">Batal</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="SubmitAddOnOrderAsync" Disabled="@(CalculateAddOnTotal() == 0)">
+            Simpan Pesanan Tambahan
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+<!-- DIALOG 4: GANTI MENU (SUBSTITUTION) -->
+<MudDialog @bind-Visible="IsSubstituteDialogOpen" Options="DialogOptions">
+    <TitleContent>
+        <MudText Typo="Typo.h6" Class="d-flex align-center gap-2">
+            <MudIcon Icon="@Icons.Material.Filled.SwapHoriz" Color="Color.Warning" />
+            Tukar / Ganti Menu Pre-Order
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        @if (ActiveBookingForEdit != null)
+        {
+            <MudSelect T="Guid" Label="Pilih Item yang Ingin Ditukar" @bind-Value="SubstituteDto.OldDetailId" Variant="Variant.Outlined" Class="mb-3">
+                @foreach (var item in ActiveBookingForEdit.Items)
+                {
+                    <MudSelectItem Value="@item.DetailId">@item.Quantity x @item.MenuItemName (@item.SubTotal.ToRupiah())</MudSelectItem>
+                }
+            </MudSelect>
+
+            <MudSelect T="Guid" Label="Pilih Menu Pengganti" @bind-Value="SubstituteDto.NewMenuItemId" Variant="Variant.Outlined" Class="mb-3">
+                @foreach (var menu in AllMenuItems)
+                {
+                    <MudSelectItem Value="@menu.Id">@menu.Name (@menu.Price.ToRupiah())</MudSelectItem>
+                }
+            </MudSelect>
+
+            <MudNumericField T="int" Label="Jumlah Porsi" @bind-Value="SubstituteDto.NewQuantity" Min="1" Max="20" Variant="Variant.Outlined" Class="mb-3" />
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@(() => IsSubstituteDialogOpen = false)">Batal</MudButton>
+        <MudButton Color="Color.Warning" Variant="Variant.Filled" OnClick="SubmitSubstitutionAsync">
+            Konfirmasi Pergantian
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+<!-- DIALOG 5: PERPANJANG WAKTU -->
+<MudDialog @bind-Visible="IsExtendDialogOpen" Options="DialogOptions">
+    <TitleContent>
+        <MudText Typo="Typo.h6" Class="d-flex align-center gap-2">
+            <MudIcon Icon="@Icons.Material.Filled.MoreTime" Color="Color.Primary" />
+            Perpanjang Waktu Duduk Meja
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText Typo="Typo.body2" Class="mb-3">
+            Pilih durasi tambahan waktu nongkrong untuk meja ini. Sistem akan otomatis memvalidasi apakah sesi berikutnya belum dipesan orang lain.
+        </MudText>
+        <MudSelect T="int" Label="Tambahan Durasi" @bind-Value="ExtendDto.AdditionalHours" Variant="Variant.Outlined">
+            <MudSelectItem Value="1">+1 Jam</MudSelectItem>
+            <MudSelectItem Value="2">+2 Jam</MudSelectItem>
+        </MudSelect>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@(() => IsExtendDialogOpen = false)">Batal</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="SubmitExtensionAsync">
+            Perpanjang Sekarang
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+<!-- DIALOG 6: RINCIAN DETAIL TRANSAKSI -->
+<MudDialog @bind-Visible="IsDetailDialogOpen" Options="LargeDialogOptions">
+    <TitleContent>
+        <MudText Typo="Typo.h6">Rincian Nota — @SelectedBookingDetail?.InvoiceCode</MudText>
+    </TitleContent>
+    <DialogContent>
+        @if (SelectedBookingDetail != null)
+        {
+            <MudGrid Class="mb-2">
+                <MudItem xs="6">
+                    <MudText Typo="Typo.caption" Color="Color.Secondary">Nama Perwakilan</MudText>
+                    <MudText Typo="Typo.body2" Class="font-weight-bold">@SelectedBookingDetail.RepresentativeName</MudText>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudText Typo="Typo.caption" Color="Color.Secondary">Status Nota</MudText>
+                    <MudChip T="string" Color="@GetStatusChipColor(SelectedBookingDetail.Status)" Size="Size.Small" Variant="Variant.Filled">
+                        @SelectedBookingDetail.Status
+                    </MudChip>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudText Typo="Typo.caption" Color="Color.Secondary">Nomor Meja</MudText>
+                    <MudText Typo="Typo.body2">Meja @SelectedBookingDetail.TableNumber (@SelectedBookingDetail.TableArea)</MudText>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudText Typo="Typo.caption" Color="Color.Secondary">Waktu Kunjungan</MudText>
+                    <MudText Typo="Typo.body2">@SelectedBookingDetail.BookingDate.ToString("dd/MM/yyyy") | @SelectedBookingDetail.StartTime.ToString("HH:mm") - @SelectedBookingDetail.EndTime.ToString("HH:mm")</MudText>
+                </MudItem>
+            </MudGrid>
+
+            <MudDivider Class="my-2" />
+            <MudText Typo="Typo.subtitle2" Class="font-weight-bold mb-2">Daftar Item F&B:</MudText>
+            <MudSimpleTable Dense="true" Hover="true" Class="mb-3">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Tipe</th>
+                        <th>Qty</th>
+                        <th>Harga</th>
+                        <th style="text-align: right;">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in SelectedBookingDetail.Items)
+                    {
+                        <tr>
+                            <td>@item.MenuItemName</td>
+                            <td>
+                                <MudChip T="string" Size="Size.Small" Variant="Variant.Text" Color="@(item.OrderType == "AddOn" ? Color.Warning : Color.Default)">
+                                    @item.OrderType
+                                </MudChip>
+                            </td>
+                            <td>@item.Quantity</td>
+                            <td>@item.UnitPrice.ToRupiah()</td>
+                            <td style="text-align: right;">@item.SubTotal.ToRupiah()</td>
+                        </tr>
+                    }
+                </tbody>
+            </MudSimpleTable>
+
+            <div class="d-flex justify-space-between align-center pa-2 rounded-lg" style="background: rgba(0,0,0,0.04);">
+                <MudText Typo="Typo.subtitle1" Class="font-weight-bold">Total Pembayaran:</MudText>
+                <MudText Typo="Typo.h6" Color="Color.Primary" Class="font-weight-bold">
+                    @SelectedBookingDetail.TotalAmount.ToRupiah()
+                </MudText>
+            </div>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@(() => IsDetailDialogOpen = false)">Tutup</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private DateTime? SelectedDateNullable = DateTime.Today;
+    private DateOnly SelectedDate => DateOnly.FromDateTime(SelectedDateNullable ?? DateTime.Today);
+    private int SelectedTimeslotId = 1;
+    private bool IsLoadingTables = true;
+
+    private List<TimeslotDto> Timeslots = new();
+    private List<CashierTableStatusDto> TableStatuses = new();
+    private List<CashierBookingDto> PendingVerifications = new();
+    private List<CashierBookingDto> SearchResults = new();
+    private List<MenuItemDto> AllMenuItems = new();
+    private List<DiningTableDto> AvailableWalkInTables = new();
+
+    private string SearchQuery = string.Empty;
+    private DateTime? SearchDateNullable;
+
+    // Dialog Controls
+    private bool IsProofDialogOpen;
+    private string SelectedProofUrl = string.Empty;
+    private string SelectedInvoiceCode = string.Empty;
+
+    private bool IsWalkInDialogOpen;
+    private WalkInBookingRequestDto WalkInDto = new();
+
+    private bool IsAddOnDialogOpen;
+    private Guid ActiveBookingIdForAddOn;
+    private Dictionary<Guid, int> AddOnCart = new();
+
+    private bool IsSubstituteDialogOpen;
+    private CashierBookingDto? ActiveBookingForEdit;
+    private SubstituteItemRequestDto SubstituteDto = new();
+
+    private bool IsExtendDialogOpen;
+    private ExtendDurationRequestDto ExtendDto = new();
+
+    private bool IsDetailDialogOpen;
+    private CashierBookingDto? SelectedBookingDetail;
+
+    private DialogOptions DialogOptions = new() { MaxWidth = MaxWidth.Small, FullWidth = true, CloseButton = true };
+    private DialogOptions LargeDialogOptions = new() { MaxWidth = MaxWidth.Medium, FullWidth = true, CloseButton = true };
+
+    protected override async Task OnInitializedAsync()
+    {
+        Timeslots = await BookingService.GetTimeslotsAsync();
+        if (Timeslots.Any())
+        {
+            SelectedTimeslotId = Timeslots.First().Id;
+        }
+
+        AllMenuItems = await BookingService.GetAvailableMenuItemsAsync();
+        await LoadAllDataAsync();
+    }
+
+    private async Task LoadAllDataAsync()
+    {
+        await RefreshTableStatusesAsync();
+        await RefreshPendingVerificationsAsync();
+        await PerformSearchAsync();
+    }
+
+    private async Task OnTimeslotChanged(int newTimeslotId)
+    {
+        SelectedTimeslotId = newTimeslotId;
+        await RefreshTableStatusesAsync();
+    }
+
+    private async Task RefreshTableStatusesAsync()
+    {
+        IsLoadingTables = true;
+        TableStatuses = await CashierService.GetTableStatusesAsync(SelectedDate, SelectedTimeslotId);
+        IsLoadingTables = false;
+    }
+
+    private async Task RefreshPendingVerificationsAsync()
+    {
+        PendingVerifications = await CashierService.GetPendingVerificationsAsync();
+    }
+
+    private async Task OnSearchKeyUp(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await PerformSearchAsync();
+        }
+    }
+
+    private async Task PerformSearchAsync()
+    {
+        DateOnly? searchDate = SearchDateNullable.HasValue ? DateOnly.FromDateTime(SearchDateNullable.Value) : null;
+        SearchResults = await CashierService.SearchBookingsAsync(SearchQuery, searchDate);
+    }
+
+    private async Task VerifyPaymentAsync(Guid bookingId, bool approved)
+    {
+        var success = await CashierService.VerifyPaymentAsync(bookingId, approved);
+        if (success)
+        {
+            Snackbar.Add(approved ? "Pembayaran berhasil diverifikasi (Lunas)." : "Pembayaran ditolak (Batal).", approved ? Severity.Success : Severity.Warning);
+            await LoadAllDataAsync();
+        }
+    }
+
+    private async Task CheckInGuestAsync(Guid bookingId)
+    {
+        try
+        {
+            var success = await CashierService.CheckInGuestAsync(bookingId);
+            if (success)
+            {
+                Snackbar.Add("Tamu berhasil di-check-in ke meja.", Severity.Success);
+                await LoadAllDataAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Gagal check-in: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private void OpenProofPreview(string proofUrl, string invoiceCode)
+    {
+        SelectedProofUrl = proofUrl;
+        SelectedInvoiceCode = invoiceCode;
+        IsProofDialogOpen = true;
+    }
+
+    private async Task OpenWalkInDialog()
+    {
+        AvailableWalkInTables = await BookingService.GetAvailableTablesAsync(SelectedDate, SelectedTimeslotId);
+        AvailableWalkInTables = AvailableWalkInTables.Where(t => t.IsAvailable).ToList();
+
+        WalkInDto = new WalkInBookingRequestDto
+        {
+            TimeslotId = SelectedTimeslotId,
+            DurationHours = 2,
+            PaymentMethod = "Tunai"
+        };
+        if (AvailableWalkInTables.Any())
+        {
+            WalkInDto.TableId = AvailableWalkInTables.First().Id;
+        }
+
+        IsWalkInDialogOpen = true;
+    }
+
+    private async Task OpenWalkInDialogWithTable(Guid tableId)
+    {
+        AvailableWalkInTables = await BookingService.GetAvailableTablesAsync(SelectedDate, SelectedTimeslotId);
+        AvailableWalkInTables = AvailableWalkInTables.Where(t => t.IsAvailable).ToList();
+
+        WalkInDto = new WalkInBookingRequestDto
+        {
+            TableId = tableId,
+            TimeslotId = SelectedTimeslotId,
+            DurationHours = 2,
+            PaymentMethod = "Tunai"
+        };
+
+        IsWalkInDialogOpen = true;
+    }
+
+    private async Task SubmitWalkInBookingAsync()
+    {
+        if (string.IsNullOrWhiteSpace(WalkInDto.RepresentativeName))
+        {
+            Snackbar.Add("Nama perwakilan tamu wajib diisi.", Severity.Warning);
+            return;
+        }
+
+        try
+        {
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+            var userIdStr = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var cashierId = Guid.TryParse(userIdStr, out var id) ? id : Guid.NewGuid();
+
+            var bookingId = await CashierService.CreateWalkInBookingAsync(WalkInDto, cashierId);
+            Snackbar.Add("Meja walk-in berhasil dibuka.", Severity.Success);
+            IsWalkInDialogOpen = false;
+            await LoadAllDataAsync();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Gagal membuka meja: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private void OpenAddOnDialog(Guid bookingId)
+    {
+        ActiveBookingIdForAddOn = bookingId;
+        AddOnCart.Clear();
+        IsAddOnDialogOpen = true;
+    }
+
+    private int GetAddOnQty(Guid menuItemId) => AddOnCart.TryGetValue(menuItemId, out var qty) ? qty : 0;
+
+    private void IncrementAddOnQty(Guid menuItemId)
+    {
+        if (AddOnCart.ContainsKey(menuItemId)) AddOnCart[menuItemId]++;
+        else AddOnCart[menuItemId] = 1;
+    }
+
+    private void DecrementAddOnQty(Guid menuItemId)
+    {
+        if (AddOnCart.ContainsKey(menuItemId))
+        {
+            AddOnCart[menuItemId]--;
+            if (AddOnCart[menuItemId] <= 0) AddOnCart.Remove(menuItemId);
+        }
+    }
+
+    private decimal CalculateAddOnTotal()
+    {
+        decimal total = 0;
+        foreach (var kvp in AddOnCart)
+        {
+            var item = AllMenuItems.FirstOrDefault(m => m.Id == kvp.Key);
+            if (item != null) total += item.Price * kvp.Value;
+        }
+        return total;
+    }
+
+    private async Task SubmitAddOnOrderAsync()
+    {
+        var items = AddOnCart.Select(kvp => new OrderItemDto
+        {
+            MenuItemId = kvp.Key,
+            Quantity = kvp.Value,
+            UnitPrice = AllMenuItems.First(m => m.Id == kvp.Key).Price
+        }).ToList();
+
+        try
+        {
+            var success = await CashierService.AddOrderToActiveBookingAsync(new AddOnOrderRequestDto
+            {
+                BookingId = ActiveBookingIdForAddOn,
+                Items = items
+            });
+
+            if (success)
+            {
+                Snackbar.Add("Pesanan tambahan berhasil dicatat ke nota meja.", Severity.Success);
+                IsAddOnDialogOpen = false;
+                await LoadAllDataAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Gagal menambah pesanan: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private async Task OpenSubstituteDialog(Guid bookingId)
+    {
+        ActiveBookingForEdit = await CashierService.GetBookingDetailsAsync(bookingId);
+        if (ActiveBookingForEdit != null && ActiveBookingForEdit.Items.Any())
+        {
+            SubstituteDto = new SubstituteItemRequestDto
+            {
+                BookingId = bookingId,
+                OldDetailId = ActiveBookingForEdit.Items.First().DetailId,
+                NewMenuItemId = AllMenuItems.First().Id,
+                NewQuantity = ActiveBookingForEdit.Items.First().Quantity
+            };
+            IsSubstituteDialogOpen = true;
+        }
+        else
+        {
+            Snackbar.Add("Tidak ada item pre-order yang dapat ditukar.", Severity.Info);
+        }
+    }
+
+    private async Task SubmitSubstitutionAsync()
+    {
+        try
+        {
+            var success = await CashierService.SubstituteMenuItemAsync(SubstituteDto);
+            if (success)
+            {
+                Snackbar.Add("Item menu berhasil ditukar dan tagihan diperbarui.", Severity.Success);
+                IsSubstituteDialogOpen = false;
+                await LoadAllDataAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Gagal menukar menu: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private void OpenExtendDialog(Guid bookingId)
+    {
+        ExtendDto = new ExtendDurationRequestDto
+        {
+            BookingId = bookingId,
+            AdditionalHours = 1
+        };
+        IsExtendDialogOpen = true;
+    }
+
+    private async Task SubmitExtensionAsync()
+    {
+        try
+        {
+            var success = await CashierService.ExtendBookingDurationAsync(ExtendDto);
+            if (success)
+            {
+                Snackbar.Add("Durasi duduk meja berhasil diperpanjang.", Severity.Success);
+                IsExtendDialogOpen = false;
+                await LoadAllDataAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Gagal memperpanjang waktu: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private async Task CompleteSessionAsync(Guid bookingId)
+    {
+        var success = await CashierService.CompleteBookingSessionAsync(bookingId);
+        if (success)
+        {
+            Snackbar.Add("Sesi meja selesai. Meja kini kembali tersedia.", Severity.Success);
+            await LoadAllDataAsync();
+        }
+    }
+
+    private async Task OpenDetailDialog(Guid bookingId)
+    {
+        SelectedBookingDetail = await CashierService.GetBookingDetailsAsync(bookingId);
+        if (SelectedBookingDetail != null)
+        {
+            IsDetailDialogOpen = true;
+        }
+    }
+
+    private Color GetTableAvatarColor(string status) => status switch
+    {
+        "Tersedia" => Color.Success,
+        "Dikonfirmasi" => Color.Info,
+        "MenungguVerifikasi" => Color.Warning,
+        "MenungguBayar" => Color.Default,
+        "SedangDigunakan" => Color.Secondary,
+        _ => Color.Dark
+    };
+
+    private string GetTableCardStyle(string status) => status switch
+    {
+        "SedangDigunakan" => "border-left: 6px solid var(--mud-palette-secondary); background: rgba(156, 39, 176, 0.04);",
+        "Dikonfirmasi" => "border-left: 6px solid var(--mud-palette-info); background: rgba(33, 150, 243, 0.04);",
+        "MenungguVerifikasi" => "border-left: 6px solid var(--mud-palette-warning); background: rgba(255, 152, 0, 0.04);",
+        "Tersedia" => "border-left: 6px solid var(--mud-palette-success); background: rgba(76, 175, 80, 0.04);",
+        _ => "border-left: 6px solid var(--mud-palette-grey);"
+    };
+
+    private Color GetStatusChipColor(string status) => status switch
+    {
+        "Dikonfirmasi" => Color.Info,
+        "SedangDigunakan" => Color.Secondary,
+        "MenungguVerifikasiKasir" => Color.Warning,
+        "MenungguBayar" => Color.Default,
+        "Selesai" => Color.Success,
+        "Batal" => Color.Error,
+        _ => Color.Default
+    };
+}
