@@ -26,35 +26,25 @@ public class KopiKalaServerFixture : IAsyncLifetime
         BaseUrl = $"http://127.0.0.1:{port}";
 
         var projectPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "KopiKala"));
-        var binPath = Path.Combine(projectPath, "bin", "Debug", "net10.0");
-        var dllPath = Path.Combine(binPath, "KopiKala.dll");
 
         var startInfo = new ProcessStartInfo
         {
             FileName = "dotnet",
-            Arguments = $"exec \"{dllPath}\" --urls \"{BaseUrl}\"",
+            Arguments = $"run --no-build --urls \"{BaseUrl}\"",
             WorkingDirectory = projectPath,
             UseShellExecute = false,
-            CreateNoWindow = true,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true
+            CreateNoWindow = true
         };
+        startInfo.EnvironmentVariables["ASPNETCORE_ENVIRONMENT"] = "Development";
+        startInfo.EnvironmentVariables["DOTNET_ENVIRONMENT"] = "Development";
 
-        _serverProcess = new Process { StartInfo = startInfo };
-        _serverProcess.Start();
+        _serverProcess = Process.Start(startInfo);
 
         // 2. Tunggu server siap merespons HTTP (maks 30 detik)
         using var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(2) };
         var isReady = false;
         for (var i = 0; i < 30; i++)
         {
-            if (_serverProcess.HasExited)
-            {
-                var err = await _serverProcess.StandardError.ReadToEndAsync();
-                var outStr = await _serverProcess.StandardOutput.ReadToEndAsync();
-                throw new InvalidOperationException($"Server KopiKala terminated unexpectedly.\nSTDOUT:\n{outStr}\nSTDERR:\n{err}");
-            }
-
             try
             {
                 var response = await httpClient.GetAsync(BaseUrl);
