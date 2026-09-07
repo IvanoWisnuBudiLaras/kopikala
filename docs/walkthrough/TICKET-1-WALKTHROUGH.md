@@ -38,8 +38,8 @@ Membangun fondasi fisik proyek KopiKala berbasis Monolith Blazor Web App C# .NET
    - `OpenIddict.AspNetCore` & `OpenIddict.EntityFrameworkCore` (v6.1.1).
 
 3. **Setup Docker & Database PostgreSQL**:
-   - `docker-compose.yml`: Service `kopikala-db` (`postgres:16-alpine`, container `kopikala-postgres`, port 5432, healthcheck `pg_isready -U kopikala_user -d kopikala_db`) dan service `kopikala-web`.
-   - `Dockerfile`: Multi-stage build .NET 10 untuk Blazor Web App.
+   - `docker-compose.yml`: Service `kopikala-db` (`postgres:16-alpine`, container `kopikala-postgres`, port 5432, healthcheck `pg_isready -U kopikala_user -d kopikala_db`) dan service `kopikala-web` dengan volume `kopikala_uploads:/app/wwwroot/uploads` untuk persistensi foto bukti transfer pembayaran.
+   - `Dockerfile`: Multi-stage build .NET 10 (base, build, publish, final) untuk deployment container Blazor Web App.
 
 4. **Konfigurasi Database & Program.cs**:
    - `appsettings.json`: Connection string `Host=localhost;Port=5432;Database=kopikala_db;Username=kopikala_user;Password=kopikala_password123`.

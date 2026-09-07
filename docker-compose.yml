@@ -22,7 +22,7 @@ services:
   kopikala-web:
     build:
       context: .
-      dockerfile: KopiKala/Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     environment:
@@ -30,7 +30,11 @@ services:
     depends_on:
       kopikala-db:
         condition: service_healthy
+    volumes:
+      - kopikala_uploads:/app/wwwroot/uploads
 
 volumes:
   kopikala_pgdata:
+    driver: local
+  kopikala_uploads:
     driver: local
