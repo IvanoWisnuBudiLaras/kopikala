@@ -77,7 +77,7 @@
                     <MudIcon Icon="@Icons.Material.Filled.AcUnit" Color="Color.Info" /> Area Indoor (AC)
                 </MudText>
                 <MudGrid Class="mb-6">
-                    @foreach (var table in TableStatuses.Where(t => t.Area == "Indoor"))
+                    @foreach (var table in TableStatuses.Where(t => t.Area.Contains("Indoor")))
                     {
                         <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudCard Elevation="3" Class="rounded-lg" Style="@GetTableCardStyle(table.DisplayStatus)">
@@ -165,7 +165,7 @@
                     <MudIcon Icon="@Icons.Material.Filled.WbSunny" Color="Color.Warning" /> Area Outdoor (Smoking)
                 </MudText>
                 <MudGrid>
-                    @foreach (var table in TableStatuses.Where(t => t.Area == "Outdoor"))
+                    @foreach (var table in TableStatuses.Where(t => t.Area.Contains("Outdoor")))
                     {
                         <MudItem xs="12" sm="6" md="4" lg="3">
                             <MudCard Elevation="3" Class="rounded-lg" Style="@GetTableCardStyle(table.DisplayStatus)">
