@@ -25,5 +25,6 @@
   <Folder Name="/docs/walkthrough/">
     <File Path="docs/walkthrough/TICKET-1-WALKTHROUGH.md" />
     <File Path="docs/walkthrough/TICKET-2-WALKTHROUGH.md" />
+    <File Path="docs/walkthrough/TICKET-3-WALKTHROUGH.md" />
   </Folder>
 </Solution>
