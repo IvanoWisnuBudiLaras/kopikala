@@ -17,33 +17,44 @@ public class KopiKalaServerFixture : IAsyncLifetime
     public bool Headless { get; } =
         !string.Equals(Environment.GetEnvironmentVariable("PLAYWRIGHT_HEADED"), "true", StringComparison.OrdinalIgnoreCase) &&
         !string.Equals(Environment.GetEnvironmentVariable("CI"), "true", StringComparison.OrdinalIgnoreCase)
-        ? false // Default to headed for live developer view as requested in PRD/TICKET-3
+        ? false
         : true;
 
     public async Task InitializeAsync()
     {
-        // 1. Pilih port bebas dinamis untuk mencegah tabrakan port
         var port = GetFreePort();
-        BaseUrl = $"http://localhost:{port}";
+        BaseUrl = $"http://127.0.0.1:{port}";
 
         var projectPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "KopiKala"));
+        var binPath = Path.Combine(projectPath, "bin", "Debug", "net10.0");
+        var dllPath = Path.Combine(binPath, "KopiKala.dll");
 
         var startInfo = new ProcessStartInfo
         {
             FileName = "dotnet",
-            Arguments = $"run --no-build --urls \"{BaseUrl}\"",
+            Arguments = $"exec \"{dllPath}\" --urls \"{BaseUrl}\"",
             WorkingDirectory = projectPath,
             UseShellExecute = false,
-            CreateNoWindow = true
+            CreateNoWindow = true,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true
         };
 
-        _serverProcess = Process.Start(startInfo);
+        _serverProcess = new Process { StartInfo = startInfo };
+        _serverProcess.Start();
 
         // 2. Tunggu server siap merespons HTTP (maks 30 detik)
         using var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(2) };
         var isReady = false;
         for (var i = 0; i < 30; i++)
         {
+            if (_serverProcess.HasExited)
+            {
+                var err = await _serverProcess.StandardError.ReadToEndAsync();
+                var outStr = await _serverProcess.StandardOutput.ReadToEndAsync();
+                throw new InvalidOperationException($"Server KopiKala terminated unexpectedly.\nSTDOUT:\n{outStr}\nSTDERR:\n{err}");
+            }
+
             try
             {
                 var response = await httpClient.GetAsync(BaseUrl);
@@ -55,7 +66,7 @@ public class KopiKalaServerFixture : IAsyncLifetime
             }
             catch
             {
-                // Server belum siap
+                // Server warming up
             }
             await Task.Delay(1000);
         }
@@ -70,7 +81,7 @@ public class KopiKalaServerFixture : IAsyncLifetime
         Browser = await PlaywrightInstance.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
         {
             Headless = Headless,
-            SlowMo = Headless ? 0 : 75 // 75ms slowMo agar pergerakan terlihat live
+            SlowMo = Headless ? 0 : 75
         });
     }
 
@@ -101,7 +112,7 @@ public class KopiKalaServerFixture : IAsyncLifetime
             }
             catch
             {
-                // Process cleanup fallback
+                // Process cleanup
             }
         }
     }
