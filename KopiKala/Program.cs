@@ -24,17 +24,21 @@ public class Program
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
 
-        // 3. Daftarkan Database PostgreSQL (Npgsql)
+        // 3. Daftarkan Database PostgreSQL (Npgsql) + OpenIddict
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
         builder.Services.AddDbContext<AppDbContext>(options =>
-            options.UseNpgsql(connectionString));
+        {
+            options.UseNpgsql(connectionString);
+            options.UseOpenIddict();
+        });
 
-        // 4. Layanan Bisnis & Otentikasi
+        // 4. Layanan Bisnis, Otentikasi & API Controllers
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddHttpClient();
         builder.Services.AddHttpContextAccessor();
+        builder.Services.AddControllers();
 
         // 5. Konfigurasi Otentikasi Berbasis Cookie & Google OAuth
         builder.Services.AddAuthentication(options =>
@@ -88,14 +92,18 @@ public class Program
             .AddServer(options =>
             {
                 options.SetAuthorizationEndpointUris("/connect/authorize")
-                       .SetTokenEndpointUris("/connect/token");
+                       .SetTokenEndpointUris("/connect/token")
+                       .SetUserInfoEndpointUris("/connect/userinfo");
                 options.AllowAuthorizationCodeFlow()
                        .RequireProofKeyForCodeExchange(); // PKCE wajib
+                options.RegisterScopes("openid", "email", "profile", "roles", "permissions");
                 options.AddDevelopmentEncryptionCertificate()
                        .AddDevelopmentSigningCertificate();
                 options.UseAspNetCore()
                        .EnableAuthorizationEndpointPassthrough()
-                       .EnableTokenEndpointPassthrough();
+                       .EnableTokenEndpointPassthrough()
+                       .EnableUserInfoEndpointPassthrough()
+                       .DisableTransportSecurityRequirement();
             })
             .AddValidation(options =>
             {
@@ -111,7 +119,7 @@ public class Program
         using (var scope = app.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            await DbInitializer.SeedAsync(db);
+            await DbInitializer.SeedAsync(db, scope.ServiceProvider);
         }
 
         // Endpoint pemicu Google Login resmi (Challenge)
@@ -146,6 +154,7 @@ public class Program
         app.UseAuthorization();
         app.UseAntiforgery();
 
+        app.MapControllers();
         app.MapStaticAssets();
         app.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode();

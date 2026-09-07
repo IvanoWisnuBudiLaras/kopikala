@@ -50,6 +50,9 @@ public partial class AppDbContext : DbContext
     {
         modelBuilder.HasPostgresExtension("pgcrypto");
 
+        // 4 Tabel OpenIddict (Applications, Authorizations, Scopes, Tokens)
+        modelBuilder.UseOpenIddict();
+
         modelBuilder.Entity<Booking>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("bookings_pkey");

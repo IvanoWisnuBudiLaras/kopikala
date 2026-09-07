@@ -1,12 +1,15 @@
 using KopiKala.Helpers;
 using KopiKala.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using OpenIddict.Abstractions;
+using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace KopiKala.Data;
 
 public static class DbInitializer
 {
-    public static async Task SeedAsync(AppDbContext context)
+    public static async Task SeedAsync(AppDbContext context, IServiceProvider serviceProvider)
     {
         // 1. Pastikan 5 Controlled Core Permissions ada
         var corePermissions = new List<(string Code, string GroupName)>
@@ -82,6 +85,41 @@ public static class DbInitializer
 
         await UpsertUserAsync(context, baristaRole,
             "Barista Demo", "barista@kopikala.com", "081234567892", "BaristaKopi123!");
+
+        // 4. Seed OpenIddict OAuth 2.1 Client (PKCE Required)
+        var appManager = serviceProvider.GetService<IOpenIddictApplicationManager>();
+        if (appManager != null && await appManager.FindByClientIdAsync("kopikala-client") == null)
+        {
+            await appManager.CreateAsync(new OpenIddictApplicationDescriptor
+            {
+                ClientId = "kopikala-client",
+                DisplayName = "KopiKala Web & Mobile OAuth 2.1 Client",
+                ClientType = ClientTypes.Public,
+                ConsentType = ConsentTypes.Implicit,
+                RedirectUris =
+                {
+                    new Uri("https://localhost:5001/oauth/callback"),
+                    new Uri("http://localhost:5080/oauth/callback"),
+                    new Uri("http://localhost:5081/oauth/callback")
+                },
+                Permissions =
+                {
+                    Permissions.Endpoints.Authorization,
+                    Permissions.Endpoints.Token,
+                    Permissions.GrantTypes.AuthorizationCode,
+                    Permissions.GrantTypes.RefreshToken,
+                    Permissions.ResponseTypes.Code,
+                    Permissions.Scopes.Email,
+                    Permissions.Scopes.Profile,
+                    Permissions.Scopes.Roles,
+                    Permissions.Prefixes.Scope + "permissions"
+                },
+                Requirements =
+                {
+                    Requirements.Features.ProofKeyForCodeExchange // PKCE Wajib
+                }
+            });
+        }
     }
 
     private static async Task UpsertUserAsync(
