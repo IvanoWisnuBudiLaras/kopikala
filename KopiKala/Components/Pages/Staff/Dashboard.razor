@@ -11,6 +11,7 @@
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 @inject AuthenticationStateProvider AuthStateProvider
+@inject ILogger<Dashboard> Logger
 
 <PageTitle>Portal Staf — KopiKala</PageTitle>
 
@@ -432,10 +433,10 @@
                 </MudSelect>
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField @bind-Value="WalkInDto.RepresentativeName" Label="Nama Perwakilan Tamu" Variant="Variant.Outlined" Required="true" />
+                <MudTextField @bind-Value="WalkInDto.RepresentativeName" Label="Nama Perwakilan Tamu" Variant="Variant.Outlined" Required="true" Immediate="true" />
             </MudItem>
             <MudItem xs="12" sm="6">
-                <MudTextField @bind-Value="WalkInDto.CustomerPhone" Label="Nomor WhatsApp (Opsional)" Variant="Variant.Outlined" />
+                <MudTextField @bind-Value="WalkInDto.CustomerPhone" Label="Nomor WhatsApp (Opsional)" Variant="Variant.Outlined" Immediate="true" />
             </MudItem>
             <MudItem xs="12" sm="6">
                 <MudSelect T="int" Label="Durasi Duduk" @bind-Value="WalkInDto.DurationHours" Variant="Variant.Outlined">
@@ -764,6 +765,7 @@
         SelectedProofUrl = proofUrl;
         SelectedInvoiceCode = invoiceCode;
         IsProofDialogOpen = true;
+        StateHasChanged();
     }
 
     private async Task OpenWalkInDialog()
@@ -783,6 +785,7 @@
         }
 
         IsWalkInDialogOpen = true;
+        StateHasChanged();
     }
 
     private async Task OpenWalkInDialogWithTable(Guid tableId)
@@ -799,6 +802,7 @@
         };
 
         IsWalkInDialogOpen = true;
+        StateHasChanged();
     }
 
     private async Task SubmitWalkInBookingAsync()
@@ -819,10 +823,19 @@
             Snackbar.Add("Meja walk-in berhasil dibuka.", Severity.Success);
             IsWalkInDialogOpen = false;
             await LoadAllDataAsync();
+            StateHasChanged();
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Gagal membuka meja: {ex.Message}", Severity.Error);
+            var fullMsg = ex.Message;
+            var inner = ex.InnerException;
+            while (inner != null)
+            {
+                fullMsg += " --> " + inner.Message;
+                inner = inner.InnerException;
+            }
+            Logger.LogError(ex, "Gagal membuka meja: {Error}", fullMsg);
+            Snackbar.Add($"Gagal membuka meja: {fullMsg}", Severity.Error);
         }
     }
 
@@ -831,6 +844,7 @@
         ActiveBookingIdForAddOn = bookingId;
         AddOnCart.Clear();
         IsAddOnDialogOpen = true;
+        StateHasChanged();
     }
 
     private int GetAddOnQty(Guid menuItemId) => AddOnCart.TryGetValue(menuItemId, out var qty) ? qty : 0;
@@ -904,6 +918,7 @@
                 NewQuantity = ActiveBookingForEdit.Items.First().Quantity
             };
             IsSubstituteDialogOpen = true;
+            StateHasChanged();
         }
         else
         {
@@ -937,6 +952,7 @@
             AdditionalHours = 1
         };
         IsExtendDialogOpen = true;
+        StateHasChanged();
     }
 
     private async Task SubmitExtensionAsync()
@@ -973,6 +989,7 @@
         if (SelectedBookingDetail != null)
         {
             IsDetailDialogOpen = true;
+            StateHasChanged();
         }
     }
 

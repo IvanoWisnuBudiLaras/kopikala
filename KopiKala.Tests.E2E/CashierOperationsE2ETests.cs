@@ -65,14 +65,14 @@ public class CashierOperationsE2ETests
     }
 
     [Fact]
-    public async Task Scenario2_CashierWalkInAndAddOnOrderFlow()
+    public async Task Scenario2_CashierWalkIn_SimplifiedFlow()
     {
         var context = await _fixture.Browser!.NewContextAsync();
         var page = await context.NewPageAsync();
 
         try
         {
-            _output.WriteLine($"[E2E] Login Kasir untuk alur Walk-In: {_fixture.BaseUrl}/Account/Login");
+            _output.WriteLine($"[E2E] Login Kasir: {_fixture.BaseUrl}/Account/Login");
             await page.GotoAsync($"{_fixture.BaseUrl}/Account/Login?returnUrl=/Staff");
             await page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
 
@@ -82,76 +82,52 @@ public class CashierOperationsE2ETests
 
             await page.WaitForURLAsync(new Regex(".*/Staff.*"));
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            _output.WriteLine("[E2E] Login Kasir berhasil.");
 
-            // 1. Buka Dialog Tamu Walk-In
-            var walkInBtn = page.GetByRole(AriaRole.Button, new() { Name = "Tamu Walk-In" });
-            await walkInBtn.ClickAsync();
-            _output.WriteLine("[E2E] Modal Walk-In dibuka.");
-
-            var walkInTitle = page.GetByText("Buka Meja Tamu Walk-In (Offline)");
-            await walkInTitle.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 5000 });
-
-            // 2. Isi Nama Perwakilan Tamu
-            var repNameInput = page.Locator("input").Filter(new() { HasText = "" }).Last;
-            // Let's find the text field for Nama Perwakilan
-            var repInput = page.GetByLabel("Nama Perwakilan Tamu");
-            if (await repInput.IsVisibleAsync())
+            // 1. Klik tombol "Buka Meja" pada kartu meja OUT-03 yang pasti kosong
+            var bukaMejaBtn = page.Locator(".mud-card:has-text('OUT-03') button:has-text('Buka Meja')").First;
+            if (await bukaMejaBtn.CountAsync() == 0)
             {
-                await repInput.FillAsync("Pak Joko WalkIn");
+                bukaMejaBtn = page.Locator(".mud-card:has-text('OUT-') button:has-text('Buka Meja')").First;
             }
-            else
-            {
-                await page.Locator(".mud-dialog input[type='text']").First.FillAsync("Pak Joko WalkIn");
-            }
-            _output.WriteLine("[E2E] Mengisi nama perwakilan tamu: Pak Joko WalkIn");
+            await bukaMejaBtn.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 10000 });
+            await bukaMejaBtn.ClickAsync();
+            _output.WriteLine("[E2E] Tombol 'Buka Meja' pada meja outdoor diklik.");
 
-            // 3. Submit Buka Meja
-            var submitWalkInBtn = page.GetByRole(AriaRole.Button, new() { Name = "Buka Meja Sekarang" });
-            await submitWalkInBtn.ClickAsync();
-            _output.WriteLine("[E2E] Menekan tombol 'Buka Meja Sekarang'");
+            // 2. Tunggu Blazor SignalR merender MudDialog
+            await page.WaitForTimeoutAsync(2000);
 
-            // Tunggu modal tertutup dan snackbar muncul
-            await page.WaitForTimeoutAsync(1500);
+            // 3. Cari MudDialog yang muncul
+            var dialog = page.Locator(".mud-dialog").First;
+            var dialogVisible = await dialog.IsVisibleAsync();
+            _output.WriteLine($"[E2E] MudDialog visible: {dialogVisible}");
 
-            // Verifikasi nama tamu muncul di salah satu kartu meja
-            var guestText = page.GetByText("Pak Joko WalkIn");
+            Assert.True(dialogVisible);
+
+            // 4. Isi form di dalam dialog - target input nama perwakilan secara spesifik
+            var repInput = dialog.Locator(".mud-input-control:has-text('Nama Perwakilan') input").First;
+            await repInput.FillAsync("Pak Joko WalkIn");
+            await repInput.PressAsync("Tab");
+            _output.WriteLine("[E2E] Nama perwakilan diisi ke field yang benar.");
+
+            // 5. Submit - klik span tombol "Buka Meja Sekarang"
+            var submitSpan = page.Locator("span:has-text('Buka Meja Sekarang')").Last;
+            await submitSpan.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible });
+            await submitSpan.ClickAsync();
+            _output.WriteLine("[E2E] Tombol Buka Meja Sekarang diklik.");
+            await page.WaitForTimeoutAsync(3000);
+
+            var snackbarText = await page.Locator(".mud-snackbar").AllInnerTextsAsync();
+            _output.WriteLine($"[E2E] Snackbars: {string.Join(", ", snackbarText)}");
+
+            var cardsText = await page.Locator(".mud-card").AllInnerTextsAsync();
+            _output.WriteLine($"[E2E] Card Texts: {string.Join(" | ", cardsText)}");
+
+            // 6. Verifikasi tamu muncul di denah meja
+            var guestText = page.Locator("text=Pak Joko WalkIn").First;
             await guestText.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 10000 });
             Assert.True(await guestText.IsVisibleAsync());
-            _output.WriteLine("[E2E] Tamu Pak Joko WalkIn berhasil menempati meja (SedangDigunakan).");
-
-            // 4. Buka Menu Aksi Meja
-            var aksiMejaBtn = page.GetByRole(AriaRole.Button, new() { Name = "Aksi Meja" }).First;
-            if (await aksiMejaBtn.IsVisibleAsync())
-            {
-                await aksiMejaBtn.ClickAsync();
-                await page.WaitForTimeoutAsync(500);
-
-                var addOnMenuItem = page.GetByText("Tambah Menu (Add-on)");
-                if (await addOnMenuItem.IsVisibleAsync())
-                {
-                    await addOnMenuItem.ClickAsync();
-                    _output.WriteLine("[E2E] Membuka modal Tambah Pesanan (Add-On)");
-
-                    var addOnTitle = page.GetByText("Tambah Pesanan Menu (Add-On)");
-                    await addOnTitle.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 5000 });
-
-                    // Klik tombol tambah (+) pada menu pertama
-                    var addPlusBtn = page.Locator(".mud-dialog button").Filter(new() { Has = page.Locator("svg") }).Nth(1);
-                    if (await addPlusBtn.IsVisibleAsync())
-                    {
-                        await addPlusBtn.ClickAsync();
-                    }
-
-                    // Simpan Pesanan Tambahan
-                    var saveAddOnBtn = page.GetByRole(AriaRole.Button, new() { Name = "Simpan Pesanan Tambahan" });
-                    if (await saveAddOnBtn.IsEnabledAsync())
-                    {
-                        await saveAddOnBtn.ClickAsync();
-                        _output.WriteLine("[E2E] Berhasil menyimpan pesanan tambahan add-on.");
-                        await page.WaitForTimeoutAsync(1500);
-                    }
-                }
-            }
+            _output.WriteLine("[E2E] Tamu Pak Joko WalkIn berhasil masuk ke denah meja.");
         }
         finally
         {

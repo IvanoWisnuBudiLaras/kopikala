@@ -3,23 +3,24 @@ using KopiKala.DTOs.Booking;
 using KopiKala.Helpers;
 using KopiKala.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace KopiKala.Services;
 
 public class BookingService : IBookingService
 {
-    private readonly AppDbContext _context;
+    private readonly IServiceScopeFactory _scopeFactory;
     private readonly IWebHostEnvironment _env;
     private readonly TimeProvider _timeProvider;
     private readonly ILogger<BookingService> _logger;
 
     public BookingService(
-        AppDbContext context,
+        IServiceScopeFactory scopeFactory,
         IWebHostEnvironment env,
         TimeProvider timeProvider,
         ILogger<BookingService> logger)
     {
-        _context = context;
+        _scopeFactory = scopeFactory;
         _env = env;
         _timeProvider = timeProvider;
         _logger = logger;
@@ -27,12 +28,15 @@ public class BookingService : IBookingService
 
     public async Task<List<DiningTableDto>> GetAvailableTablesAsync(DateOnly date, int timeslotId)
     {
-        var tables = await _context.DiningTables
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var tables = await context.DiningTables
             .Where(t => t.IsActive)
             .OrderBy(t => t.TableNumber)
             .ToListAsync();
 
-        var bookedTableIds = await _context.Bookings
+        var bookedTableIds = await context.Bookings
             .Where(b => b.BookingDate == date &&
                         b.TimeslotId == timeslotId &&
                         b.Status != "Batal" &&
@@ -55,7 +59,10 @@ public class BookingService : IBookingService
 
     public async Task<List<TimeslotDto>> GetTimeslotsAsync()
     {
-        return await _context.Timeslots
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        return await context.Timeslots
             .OrderBy(ts => ts.StartTime)
             .Select(ts => new TimeslotDto
             {
@@ -69,7 +76,10 @@ public class BookingService : IBookingService
 
     public async Task<List<MenuItemDto>> GetAvailableMenuItemsAsync()
     {
-        return await _context.MenuItems
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        return await context.MenuItems
             .Where(m => m.IsAvailable)
             .OrderBy(m => m.Category)
             .ThenBy(m => m.Name)
@@ -88,16 +98,19 @@ public class BookingService : IBookingService
 
     public async Task<Guid> CreateBookingAsync(CreateBookingRequestDto dto, Guid userId)
     {
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
         var today = DateOnly.FromDateTime(_timeProvider.GetUtcNow().LocalDateTime);
         if (dto.BookingDate < today)
         {
             throw new ArgumentException("Tanggal reservasi tidak boleh di masa lalu.");
         }
 
-        var table = await _context.DiningTables.FirstOrDefaultAsync(t => t.Id == dto.TableId && t.IsActive)
+        var table = await context.DiningTables.FirstOrDefaultAsync(t => t.Id == dto.TableId && t.IsActive)
             ?? throw new InvalidOperationException("Meja yang dipilih tidak valid atau tidak aktif.");
 
-        var timeslot = await _context.Timeslots.FirstOrDefaultAsync(ts => ts.Id == dto.TimeslotId)
+        var timeslot = await context.Timeslots.FirstOrDefaultAsync(ts => ts.Id == dto.TimeslotId)
             ?? throw new InvalidOperationException("Sesi waktu yang dipilih tidak valid.");
 
         if (dto.DurationHours < 1 || dto.DurationHours > 3)
@@ -106,7 +119,7 @@ public class BookingService : IBookingService
         }
 
         // Check if table is already booked for this slot
-        var isAlreadyBooked = await _context.Bookings.AnyAsync(b =>
+        var isAlreadyBooked = await context.Bookings.AnyAsync(b =>
             b.TableId == dto.TableId &&
             b.BookingDate == dto.BookingDate &&
             b.TimeslotId == dto.TimeslotId &&
@@ -121,7 +134,7 @@ public class BookingService : IBookingService
 
         // Calculate F&B items
         var itemIds = dto.SelectedItems.Select(x => x.MenuItemId).Distinct().ToList();
-        var menuItems = await _context.MenuItems
+        var menuItems = await context.MenuItems
             .Where(m => itemIds.Contains(m.Id))
             .ToDictionaryAsync(m => m.Id, m => m);
 
@@ -170,8 +183,8 @@ public class BookingService : IBookingService
 
         try
         {
-            _context.Bookings.Add(booking);
-            await _context.SaveChangesAsync();
+            context.Bookings.Add(booking);
+            await context.SaveChangesAsync();
             _logger.LogInformation("Booking created successfully with ID: {BookingId}, Code: {InvoiceCode}", booking.Id, booking.InvoiceCode);
             return booking.Id;
         }
@@ -184,7 +197,10 @@ public class BookingService : IBookingService
 
     public async Task<InvoiceResponseDto?> GetInvoiceAsync(Guid bookingId)
     {
-        var booking = await _context.Bookings
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var booking = await context.Bookings
             .Include(b => b.Table)
             .Include(b => b.Timeslot)
             .Include(b => b.User)
@@ -194,14 +210,17 @@ public class BookingService : IBookingService
 
         if (booking == null) return null;
 
-        await CheckAndExpireBookingInternalAsync(booking);
+        await CheckAndExpireBookingInternalAsync(booking, context);
 
         return MapToInvoiceDto(booking);
     }
 
     public async Task<InvoiceResponseDto?> GetInvoiceByCodeAsync(string invoiceCode)
     {
-        var booking = await _context.Bookings
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var booking = await context.Bookings
             .Include(b => b.Table)
             .Include(b => b.Timeslot)
             .Include(b => b.User)
@@ -211,14 +230,17 @@ public class BookingService : IBookingService
 
         if (booking == null) return null;
 
-        await CheckAndExpireBookingInternalAsync(booking);
+        await CheckAndExpireBookingInternalAsync(booking, context);
 
         return MapToInvoiceDto(booking);
     }
 
     public async Task<bool> UploadPaymentProofAsync(Guid bookingId, Stream fileStream, string fileName)
     {
-        var booking = await _context.Bookings.FirstOrDefaultAsync(b => b.Id == bookingId);
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var booking = await context.Bookings.FirstOrDefaultAsync(b => b.Id == bookingId);
         if (booking == null) return false;
 
         if (booking.Status is "Batal" or "Kedaluwarsa" or "Lunas")
@@ -250,7 +272,7 @@ public class BookingService : IBookingService
 
         booking.PaymentProofUrl = $"/uploads/payments/{safeFileName}";
         booking.Status = "MenungguVerifikasiKasir";
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         _logger.LogInformation("Payment proof uploaded for Booking: {BookingId}, File: {FileName}", bookingId, safeFileName);
         return true;
@@ -258,26 +280,35 @@ public class BookingService : IBookingService
 
     public async Task<bool> ConfirmPayOnSiteAsync(Guid bookingId)
     {
-        var booking = await _context.Bookings.FirstOrDefaultAsync(b => b.Id == bookingId);
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var booking = await context.Bookings.FirstOrDefaultAsync(b => b.Id == bookingId);
         if (booking == null) return false;
 
         booking.PaymentMethod = "BayarDiTempat";
         booking.Status = "Dikonfirmasi";
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
         return true;
     }
 
     public async Task<bool> CheckAndExpireBookingAsync(Guid bookingId)
     {
-        var booking = await _context.Bookings.FirstOrDefaultAsync(b => b.Id == bookingId);
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var booking = await context.Bookings.FirstOrDefaultAsync(b => b.Id == bookingId);
         if (booking == null) return false;
 
-        return await CheckAndExpireBookingInternalAsync(booking);
+        return await CheckAndExpireBookingInternalAsync(booking, context);
     }
 
     public async Task<List<InvoiceResponseDto>> GetUserBookingsAsync(Guid userId)
     {
-        var bookings = await _context.Bookings
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var bookings = await context.Bookings
             .Include(b => b.Table)
             .Include(b => b.Timeslot)
             .Include(b => b.User)
@@ -289,50 +320,52 @@ public class BookingService : IBookingService
 
         foreach (var b in bookings)
         {
-            await CheckAndExpireBookingInternalAsync(b);
+            await CheckAndExpireBookingInternalAsync(b, context);
         }
 
         return bookings.Select(MapToInvoiceDto).ToList();
     }
 
-    private async Task<bool> CheckAndExpireBookingInternalAsync(Booking booking)
+    private async Task<bool> CheckAndExpireBookingInternalAsync(Booking booking, AppDbContext context)
     {
         var now = _timeProvider.GetUtcNow().UtcDateTime;
         if (booking.Status == "MenungguBayar" && now > booking.ExpiresAt)
         {
             booking.Status = "Kedaluwarsa";
-            await _context.SaveChangesAsync();
-            _logger.LogInformation("Booking {BookingId} expired automatically at {Now}", booking.Id, now);
+            await context.SaveChangesAsync();
+            _logger.LogInformation("Booking {BookingId} ({InvoiceCode}) marked as Kedaluwarsa.", booking.Id, booking.InvoiceCode);
             return true;
         }
         return false;
     }
 
-    private static InvoiceResponseDto MapToInvoiceDto(Booking b)
+    private static InvoiceResponseDto MapToInvoiceDto(Booking booking)
     {
-        var startSpan = b.Timeslot != null ? b.Timeslot.StartTime.ToTimeSpan() : TimeSpan.Zero;
-        var endSpan = startSpan + TimeSpan.FromHours(b.DurationHours);
+        var endTime = booking.Timeslot.StartTime.AddHours(booking.DurationHours);
+
+        var startTimeSpan = booking.Timeslot?.StartTime.ToTimeSpan() ?? TimeSpan.Zero;
+        var endTimeSpan = startTimeSpan + TimeSpan.FromHours(booking.DurationHours);
 
         return new InvoiceResponseDto
         {
-            BookingId = b.Id,
-            InvoiceCode = b.InvoiceCode,
-            TableNumber = b.Table?.TableNumber ?? "-",
-            Area = b.Table?.Area ?? "-",
-            Capacity = b.Table?.Capacity ?? 0,
-            RepresentativeName = b.RepresentativeName,
-            CustomerPhone = b.User?.PhoneNumber ?? "-",
-            BookingDate = b.BookingDate,
-            StartTime = startSpan,
-            EndTime = endSpan,
-            DurationHours = b.DurationHours,
-            TotalAmount = b.TotalAmount,
-            Status = b.Status,
-            PaymentMethod = b.PaymentMethod,
-            PaymentProofUrl = b.PaymentProofUrl,
-            ExpiresAt = b.ExpiresAt,
-            CreatedAt = b.CreatedAt,
-            Items = b.BookingDetails.Select(d => new OrderItemDto
+            BookingId = booking.Id,
+            InvoiceCode = booking.InvoiceCode,
+            TableNumber = booking.Table?.TableNumber ?? "-",
+            Area = booking.Table?.Area ?? "-",
+            Capacity = booking.Table?.Capacity ?? 0,
+            RepresentativeName = booking.RepresentativeName,
+            CustomerPhone = booking.User?.PhoneNumber ?? "-",
+            BookingDate = booking.BookingDate,
+            StartTime = startTimeSpan,
+            EndTime = endTimeSpan,
+            DurationHours = booking.DurationHours,
+            Status = booking.Status,
+            PaymentMethod = booking.PaymentMethod,
+            PaymentProofUrl = booking.PaymentProofUrl,
+            TotalAmount = booking.TotalAmount,
+            ExpiresAt = booking.ExpiresAt,
+            CreatedAt = booking.CreatedAt,
+            Items = booking.BookingDetails.Select(d => new OrderItemDto
             {
                 MenuItemId = d.MenuItemId,
                 Name = d.MenuItem?.Name ?? "-",

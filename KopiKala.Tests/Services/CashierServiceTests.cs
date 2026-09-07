@@ -4,6 +4,7 @@ using KopiKala.DTOs.Staff;
 using KopiKala.Models;
 using KopiKala.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Time.Testing;
 using Moq;
@@ -13,7 +14,8 @@ namespace KopiKala.Tests.Services;
 
 public class CashierServiceTests
 {
-    private readonly AppDbContext _context;
+    private readonly ServiceProvider _serviceProvider;
+    private readonly IServiceScopeFactory _scopeFactory;
     private readonly FakeTimeProvider _timeProvider;
     private readonly Mock<ILogger<CashierService>> _loggerMock;
     private readonly CashierService _sut;
@@ -27,22 +29,28 @@ public class CashierServiceTests
 
     public CashierServiceTests()
     {
-        var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-            .Options;
+        var dbName = Guid.NewGuid().ToString();
+        var services = new ServiceCollection();
+        services.AddDbContext<AppDbContext>(options =>
+            options.UseInMemoryDatabase(databaseName: dbName));
 
-        _context = new AppDbContext(options);
+        _serviceProvider = services.BuildServiceProvider();
+        _scopeFactory = _serviceProvider.GetRequiredService<IServiceScopeFactory>();
+
         _timeProvider = new FakeTimeProvider();
         _timeProvider.SetUtcNow(new DateTimeOffset(2026, 9, 7, 10, 0, 0, TimeSpan.Zero));
         _loggerMock = new Mock<ILogger<CashierService>>();
 
-        _sut = new CashierService(_context, _timeProvider, _loggerMock.Object);
+        _sut = new CashierService(_scopeFactory, _timeProvider, _loggerMock.Object);
 
         SeedData();
     }
 
+    private AppDbContext GetContext() => _serviceProvider.CreateScope().ServiceProvider.GetRequiredService<AppDbContext>();
+
     private void SeedData()
     {
+        using var context = GetContext();
         var cashier = new User
         {
             Id = _cashierId,
@@ -117,11 +125,11 @@ public class CashierServiceTests
             IsAvailable = true
         };
 
-        _context.Users.AddRange(cashier, customer);
-        _context.DiningTables.AddRange(table1, table2);
-        _context.Timeslots.AddRange(ts1, ts2);
-        _context.MenuItems.AddRange(menu1, menu2);
-        _context.SaveChanges();
+        context.Users.AddRange(cashier, customer);
+        context.DiningTables.AddRange(table1, table2);
+        context.Timeslots.AddRange(ts1, ts2);
+        context.MenuItems.AddRange(menu1, menu2);
+        context.SaveChanges();
     }
 
     [Fact]
@@ -129,24 +137,27 @@ public class CashierServiceTests
     {
         var date = DateOnly.FromDateTime(_timeProvider.GetUtcNow().LocalDateTime);
 
-        var booking = new Booking
+        using (var context = GetContext())
         {
-            Id = Guid.NewGuid(),
-            InvoiceCode = "INV/20260907/001",
-            UserId = _customerUserId,
-            TableId = _table1Id,
-            TimeslotId = 1,
-            BookingDate = date,
-            DurationHours = 2,
-            RepresentativeName = "Kak Budi",
-            PaymentMethod = "TransferBank",
-            Status = "SedangDigunakan",
-            TotalAmount = 40000,
-            ExpiresAt = DateTime.UtcNow.AddHours(2),
-            CreatedAt = DateTime.UtcNow
-        };
-        _context.Bookings.Add(booking);
-        await _context.SaveChangesAsync();
+            var booking = new Booking
+            {
+                Id = Guid.NewGuid(),
+                InvoiceCode = "INV/20260907/001",
+                UserId = _customerUserId,
+                TableId = _table1Id,
+                TimeslotId = 1,
+                BookingDate = date,
+                DurationHours = 2,
+                RepresentativeName = "Kak Budi",
+                PaymentMethod = "TransferBank",
+                Status = "SedangDigunakan",
+                TotalAmount = 40000,
+                ExpiresAt = DateTime.UtcNow.AddHours(2),
+                CreatedAt = DateTime.UtcNow
+            };
+            context.Bookings.Add(booking);
+            await context.SaveChangesAsync();
+        }
 
         var statuses = await _sut.GetTableStatusesAsync(date, 1);
 
@@ -167,42 +178,45 @@ public class CashierServiceTests
     {
         var date = DateOnly.FromDateTime(_timeProvider.GetUtcNow().LocalDateTime);
 
-        var b1 = new Booking
+        using (var context = GetContext())
         {
-            Id = Guid.NewGuid(),
-            InvoiceCode = "INV/20260907/PV1",
-            UserId = _customerUserId,
-            TableId = _table1Id,
-            TimeslotId = 1,
-            BookingDate = date,
-            DurationHours = 2,
-            RepresentativeName = "Verif User",
-            PaymentMethod = "TransferBank",
-            Status = "MenungguVerifikasiKasir",
-            TotalAmount = 25000,
-            ExpiresAt = DateTime.UtcNow.AddMinutes(15),
-            CreatedAt = DateTime.UtcNow
-        };
+            var b1 = new Booking
+            {
+                Id = Guid.NewGuid(),
+                InvoiceCode = "INV/20260907/PV1",
+                UserId = _customerUserId,
+                TableId = _table1Id,
+                TimeslotId = 1,
+                BookingDate = date,
+                DurationHours = 2,
+                RepresentativeName = "Verif User",
+                PaymentMethod = "TransferBank",
+                Status = "MenungguVerifikasiKasir",
+                TotalAmount = 25000,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(15),
+                CreatedAt = DateTime.UtcNow
+            };
 
-        var b2 = new Booking
-        {
-            Id = Guid.NewGuid(),
-            InvoiceCode = "INV/20260907/PV2",
-            UserId = _customerUserId,
-            TableId = _table2Id,
-            TimeslotId = 1,
-            BookingDate = date,
-            DurationHours = 2,
-            RepresentativeName = "Confirmed User",
-            PaymentMethod = "TransferBank",
-            Status = "Dikonfirmasi",
-            TotalAmount = 50000,
-            ExpiresAt = DateTime.UtcNow.AddHours(2),
-            CreatedAt = DateTime.UtcNow
-        };
+            var b2 = new Booking
+            {
+                Id = Guid.NewGuid(),
+                InvoiceCode = "INV/20260907/PV2",
+                UserId = _customerUserId,
+                TableId = _table2Id,
+                TimeslotId = 1,
+                BookingDate = date,
+                DurationHours = 2,
+                RepresentativeName = "Confirmed User",
+                PaymentMethod = "TransferBank",
+                Status = "Dikonfirmasi",
+                TotalAmount = 50000,
+                ExpiresAt = DateTime.UtcNow.AddHours(2),
+                CreatedAt = DateTime.UtcNow
+            };
 
-        _context.Bookings.AddRange(b1, b2);
-        await _context.SaveChangesAsync();
+            context.Bookings.AddRange(b1, b2);
+            await context.SaveChangesAsync();
+        }
 
         var pending = await _sut.GetPendingVerificationsAsync();
 
@@ -213,117 +227,142 @@ public class CashierServiceTests
     [Fact]
     public async Task VerifyPaymentAsync_ApprovedTrue_SetsDikonfirmasi()
     {
-        var booking = new Booking
+        var bookingId = Guid.NewGuid();
+        using (var context = GetContext())
         {
-            Id = Guid.NewGuid(),
-            InvoiceCode = "INV/20260907/VER1",
-            UserId = _customerUserId,
-            TableId = _table1Id,
-            TimeslotId = 1,
-            BookingDate = DateOnly.FromDateTime(DateTime.Today),
-            DurationHours = 2,
-            RepresentativeName = "Test Verif",
-            PaymentMethod = "TransferBank",
-            Status = "MenungguVerifikasiKasir",
-            TotalAmount = 20000,
-            ExpiresAt = DateTime.UtcNow.AddMinutes(15),
-            CreatedAt = DateTime.UtcNow
-        };
-        _context.Bookings.Add(booking);
-        await _context.SaveChangesAsync();
+            var booking = new Booking
+            {
+                Id = bookingId,
+                InvoiceCode = "INV/20260907/VER1",
+                UserId = _customerUserId,
+                TableId = _table1Id,
+                TimeslotId = 1,
+                BookingDate = DateOnly.FromDateTime(DateTime.Today),
+                DurationHours = 2,
+                RepresentativeName = "Test Verif",
+                PaymentMethod = "TransferBank",
+                Status = "MenungguVerifikasiKasir",
+                TotalAmount = 20000,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(15),
+                CreatedAt = DateTime.UtcNow
+            };
+            context.Bookings.Add(booking);
+            await context.SaveChangesAsync();
+        }
 
-        var result = await _sut.VerifyPaymentAsync(booking.Id, true);
+        var result = await _sut.VerifyPaymentAsync(bookingId, true);
 
         Assert.True(result);
-        var updated = await _context.Bookings.FindAsync(booking.Id);
-        Assert.NotNull(updated);
-        Assert.Equal("Dikonfirmasi", updated.Status);
+        using (var context = GetContext())
+        {
+            var updated = await context.Bookings.FindAsync(bookingId);
+            Assert.NotNull(updated);
+            Assert.Equal("Dikonfirmasi", updated.Status);
+        }
     }
 
     [Fact]
     public async Task VerifyPaymentAsync_ApprovedFalse_SetsBatal()
     {
-        var booking = new Booking
+        var bookingId = Guid.NewGuid();
+        using (var context = GetContext())
         {
-            Id = Guid.NewGuid(),
-            InvoiceCode = "INV/20260907/VER2",
-            UserId = _customerUserId,
-            TableId = _table1Id,
-            TimeslotId = 1,
-            BookingDate = DateOnly.FromDateTime(DateTime.Today),
-            DurationHours = 2,
-            RepresentativeName = "Test Reject",
-            PaymentMethod = "TransferBank",
-            Status = "MenungguVerifikasiKasir",
-            TotalAmount = 20000,
-            ExpiresAt = DateTime.UtcNow.AddMinutes(15),
-            CreatedAt = DateTime.UtcNow
-        };
-        _context.Bookings.Add(booking);
-        await _context.SaveChangesAsync();
+            var booking = new Booking
+            {
+                Id = bookingId,
+                InvoiceCode = "INV/20260907/VER2",
+                UserId = _customerUserId,
+                TableId = _table1Id,
+                TimeslotId = 1,
+                BookingDate = DateOnly.FromDateTime(DateTime.Today),
+                DurationHours = 2,
+                RepresentativeName = "Test Reject",
+                PaymentMethod = "TransferBank",
+                Status = "MenungguVerifikasiKasir",
+                TotalAmount = 20000,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(15),
+                CreatedAt = DateTime.UtcNow
+            };
+            context.Bookings.Add(booking);
+            await context.SaveChangesAsync();
+        }
 
-        var result = await _sut.VerifyPaymentAsync(booking.Id, false);
+        var result = await _sut.VerifyPaymentAsync(bookingId, false);
 
         Assert.True(result);
-        var updated = await _context.Bookings.FindAsync(booking.Id);
-        Assert.NotNull(updated);
-        Assert.Equal("Batal", updated.Status);
+        using (var context = GetContext())
+        {
+            var updated = await context.Bookings.FindAsync(bookingId);
+            Assert.NotNull(updated);
+            Assert.Equal("Batal", updated.Status);
+        }
     }
 
     [Fact]
     public async Task CheckInGuestAsync_ValidBooking_SetsSedangDigunakanAndSeatedAt()
     {
-        var booking = new Booking
+        var bookingId = Guid.NewGuid();
+        using (var context = GetContext())
         {
-            Id = Guid.NewGuid(),
-            InvoiceCode = "INV/20260907/CHK1",
-            UserId = _customerUserId,
-            TableId = _table1Id,
-            TimeslotId = 1,
-            BookingDate = DateOnly.FromDateTime(DateTime.Today),
-            DurationHours = 2,
-            RepresentativeName = "Test Checkin",
-            PaymentMethod = "TransferBank",
-            Status = "Dikonfirmasi",
-            TotalAmount = 20000,
-            ExpiresAt = DateTime.UtcNow.AddHours(2),
-            CreatedAt = DateTime.UtcNow
-        };
-        _context.Bookings.Add(booking);
-        await _context.SaveChangesAsync();
+            var booking = new Booking
+            {
+                Id = bookingId,
+                InvoiceCode = "INV/20260907/CHK1",
+                UserId = _customerUserId,
+                TableId = _table1Id,
+                TimeslotId = 1,
+                BookingDate = DateOnly.FromDateTime(DateTime.Today),
+                DurationHours = 2,
+                RepresentativeName = "Test Checkin",
+                PaymentMethod = "TransferBank",
+                Status = "Dikonfirmasi",
+                TotalAmount = 20000,
+                ExpiresAt = DateTime.UtcNow.AddHours(2),
+                CreatedAt = DateTime.UtcNow
+            };
+            context.Bookings.Add(booking);
+            await context.SaveChangesAsync();
+        }
 
-        var result = await _sut.CheckInGuestAsync(booking.Id);
+        var result = await _sut.CheckInGuestAsync(bookingId);
 
         Assert.True(result);
-        var updated = await _context.Bookings.FindAsync(booking.Id);
-        Assert.NotNull(updated);
-        Assert.Equal("SedangDigunakan", updated.Status);
-        Assert.NotNull(updated.SeatedAt);
+        using (var context = GetContext())
+        {
+            var updated = await context.Bookings.FindAsync(bookingId);
+            Assert.NotNull(updated);
+            Assert.Equal("SedangDigunakan", updated.Status);
+            Assert.NotNull(updated.SeatedAt);
+        }
     }
 
     [Fact]
     public async Task CheckInGuestAsync_InvalidStatus_ThrowsInvalidOperationException()
     {
-        var booking = new Booking
+        var bookingId = Guid.NewGuid();
+        using (var context = GetContext())
         {
-            Id = Guid.NewGuid(),
-            InvoiceCode = "INV/20260907/CHK2",
-            UserId = _customerUserId,
-            TableId = _table1Id,
-            TimeslotId = 1,
-            BookingDate = DateOnly.FromDateTime(DateTime.Today),
-            DurationHours = 2,
-            RepresentativeName = "Test Batal",
-            PaymentMethod = "TransferBank",
-            Status = "Batal",
-            TotalAmount = 20000,
-            ExpiresAt = DateTime.UtcNow,
-            CreatedAt = DateTime.UtcNow
-        };
-        _context.Bookings.Add(booking);
-        await _context.SaveChangesAsync();
+            var booking = new Booking
+            {
+                Id = bookingId,
+                InvoiceCode = "INV/20260907/CHK2",
+                UserId = _customerUserId,
+                TableId = _table1Id,
+                TimeslotId = 1,
+                BookingDate = DateOnly.FromDateTime(DateTime.Today),
+                DurationHours = 2,
+                RepresentativeName = "Test Batal",
+                PaymentMethod = "TransferBank",
+                Status = "Batal",
+                TotalAmount = 20000,
+                ExpiresAt = DateTime.UtcNow,
+                CreatedAt = DateTime.UtcNow
+            };
+            context.Bookings.Add(booking);
+            await context.SaveChangesAsync();
+        }
 
-        await Assert.ThrowsAsync<InvalidOperationException>(() => _sut.CheckInGuestAsync(booking.Id));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _sut.CheckInGuestAsync(bookingId));
     }
 
     [Fact]
@@ -346,12 +385,15 @@ public class CashierServiceTests
         var bookingId = await _sut.CreateWalkInBookingAsync(dto, _cashierId);
 
         Assert.NotEqual(Guid.Empty, bookingId);
-        var created = await _context.Bookings.Include(b => b.BookingDetails).FirstOrDefaultAsync(b => b.Id == bookingId);
-        Assert.NotNull(created);
-        Assert.Equal("SedangDigunakan", created.Status);
-        Assert.Equal("Walkin Guest", created.RepresentativeName);
-        Assert.Equal(40000, created.TotalAmount);
-        Assert.Single(created.BookingDetails);
+        using (var context = GetContext())
+        {
+            var created = await context.Bookings.Include(b => b.BookingDetails).FirstOrDefaultAsync(b => b.Id == bookingId);
+            Assert.NotNull(created);
+            Assert.Equal("SedangDigunakan", created.Status);
+            Assert.Equal("Walkin Guest", created.RepresentativeName);
+            Assert.Equal(40000, created.TotalAmount);
+            Assert.Single(created.BookingDetails);
+        }
     }
 
     [Fact]
@@ -359,24 +401,27 @@ public class CashierServiceTests
     {
         var date = DateOnly.FromDateTime(_timeProvider.GetUtcNow().LocalDateTime);
 
-        var existing = new Booking
+        using (var context = GetContext())
         {
-            Id = Guid.NewGuid(),
-            InvoiceCode = "INV/20260907/OCC1",
-            UserId = _customerUserId,
-            TableId = _table1Id,
-            TimeslotId = 1,
-            BookingDate = date,
-            DurationHours = 2,
-            RepresentativeName = "Existing Guest",
-            PaymentMethod = "BayarDiTempat",
-            Status = "Dikonfirmasi",
-            TotalAmount = 20000,
-            ExpiresAt = DateTime.UtcNow.AddHours(2),
-            CreatedAt = DateTime.UtcNow
-        };
-        _context.Bookings.Add(existing);
-        await _context.SaveChangesAsync();
+            var existing = new Booking
+            {
+                Id = Guid.NewGuid(),
+                InvoiceCode = "INV/20260907/OCC1",
+                UserId = _customerUserId,
+                TableId = _table1Id,
+                TimeslotId = 1,
+                BookingDate = date,
+                DurationHours = 2,
+                RepresentativeName = "Existing Guest",
+                PaymentMethod = "BayarDiTempat",
+                Status = "Dikonfirmasi",
+                TotalAmount = 20000,
+                ExpiresAt = DateTime.UtcNow.AddHours(2),
+                CreatedAt = DateTime.UtcNow
+            };
+            context.Bookings.Add(existing);
+            await context.SaveChangesAsync();
+        }
 
         var dto = new WalkInBookingRequestDto
         {
@@ -393,28 +438,32 @@ public class CashierServiceTests
     [Fact]
     public async Task AddOrderToActiveBookingAsync_ValidItems_AddsAddOnDetailsAndIncreasesTotal()
     {
-        var booking = new Booking
+        var bookingId = Guid.NewGuid();
+        using (var context = GetContext())
         {
-            Id = Guid.NewGuid(),
-            InvoiceCode = "INV/20260907/ADD1",
-            UserId = _customerUserId,
-            TableId = _table1Id,
-            TimeslotId = 1,
-            BookingDate = DateOnly.FromDateTime(DateTime.Today),
-            DurationHours = 2,
-            RepresentativeName = "Active Guest",
-            PaymentMethod = "Tunai",
-            Status = "SedangDigunakan",
-            TotalAmount = 20000,
-            ExpiresAt = DateTime.UtcNow.AddHours(2),
-            CreatedAt = DateTime.UtcNow
-        };
-        _context.Bookings.Add(booking);
-        await _context.SaveChangesAsync();
+            var booking = new Booking
+            {
+                Id = bookingId,
+                InvoiceCode = "INV/20260907/ADD1",
+                UserId = _customerUserId,
+                TableId = _table1Id,
+                TimeslotId = 1,
+                BookingDate = DateOnly.FromDateTime(DateTime.Today),
+                DurationHours = 2,
+                RepresentativeName = "Active Guest",
+                PaymentMethod = "Tunai",
+                Status = "SedangDigunakan",
+                TotalAmount = 20000,
+                ExpiresAt = DateTime.UtcNow.AddHours(2),
+                CreatedAt = DateTime.UtcNow
+            };
+            context.Bookings.Add(booking);
+            await context.SaveChangesAsync();
+        }
 
         var addOnDto = new AddOnOrderRequestDto
         {
-            BookingId = booking.Id,
+            BookingId = bookingId,
             Items = new List<OrderItemDto>
             {
                 new() { MenuItemId = _menuItem2Id, Quantity = 2, UnitPrice = 25000 }
@@ -424,50 +473,57 @@ public class CashierServiceTests
         var result = await _sut.AddOrderToActiveBookingAsync(addOnDto);
 
         Assert.True(result);
-        var updated = await _context.Bookings.Include(b => b.BookingDetails).FirstOrDefaultAsync(b => b.Id == booking.Id);
-        Assert.NotNull(updated);
-        Assert.Equal(70000, updated.TotalAmount);
-        Assert.Contains(updated.BookingDetails, d => d.OrderType == "AddOn" && d.MenuItemId == _menuItem2Id);
+        using (var context = GetContext())
+        {
+            var updated = await context.Bookings.Include(b => b.BookingDetails).FirstOrDefaultAsync(b => b.Id == bookingId);
+            Assert.NotNull(updated);
+            Assert.Equal(70000, updated.TotalAmount);
+            Assert.Contains(updated.BookingDetails, d => d.OrderType == "AddOn" && d.MenuItemId == _menuItem2Id);
+        }
     }
 
     [Fact]
     public async Task SubstituteMenuItemAsync_ValidSubstitution_RecalculatesPriceDifference()
     {
+        var bookingId = Guid.NewGuid();
         var detailId = Guid.NewGuid();
-        var booking = new Booking
+        using (var context = GetContext())
         {
-            Id = Guid.NewGuid(),
-            InvoiceCode = "INV/20260907/SUB1",
-            UserId = _customerUserId,
-            TableId = _table1Id,
-            TimeslotId = 1,
-            BookingDate = DateOnly.FromDateTime(DateTime.Today),
-            DurationHours = 2,
-            RepresentativeName = "Swap Guest",
-            PaymentMethod = "Tunai",
-            Status = "SedangDigunakan",
-            TotalAmount = 20000,
-            ExpiresAt = DateTime.UtcNow.AddHours(2),
-            CreatedAt = DateTime.UtcNow,
-            BookingDetails = new List<BookingDetail>
+            var booking = new Booking
             {
-                new()
+                Id = bookingId,
+                InvoiceCode = "INV/20260907/SUB1",
+                UserId = _customerUserId,
+                TableId = _table1Id,
+                TimeslotId = 1,
+                BookingDate = DateOnly.FromDateTime(DateTime.Today),
+                DurationHours = 2,
+                RepresentativeName = "Swap Guest",
+                PaymentMethod = "Tunai",
+                Status = "SedangDigunakan",
+                TotalAmount = 20000,
+                ExpiresAt = DateTime.UtcNow.AddHours(2),
+                CreatedAt = DateTime.UtcNow,
+                BookingDetails = new List<BookingDetail>
                 {
-                    Id = detailId,
-                    MenuItemId = _menuItem1Id,
-                    Quantity = 1,
-                    UnitPrice = 20000,
-                    SubTotal = 20000,
-                    OrderType = "PreOrder"
+                    new()
+                    {
+                        Id = detailId,
+                        MenuItemId = _menuItem1Id,
+                        Quantity = 1,
+                        UnitPrice = 20000,
+                        SubTotal = 20000,
+                        OrderType = "PreOrder"
+                    }
                 }
-            }
-        };
-        _context.Bookings.Add(booking);
-        await _context.SaveChangesAsync();
+            };
+            context.Bookings.Add(booking);
+            await context.SaveChangesAsync();
+        }
 
         var subDto = new SubstituteItemRequestDto
         {
-            BookingId = booking.Id,
+            BookingId = bookingId,
             OldDetailId = detailId,
             NewMenuItemId = _menuItem2Id, // Price 25000 (+5000 diff)
             NewQuantity = 1
@@ -476,99 +532,119 @@ public class CashierServiceTests
         var result = await _sut.SubstituteMenuItemAsync(subDto);
 
         Assert.True(result);
-        var updated = await _context.Bookings.Include(b => b.BookingDetails).FirstOrDefaultAsync(b => b.Id == booking.Id);
-        Assert.NotNull(updated);
-        Assert.Equal(25000, updated.TotalAmount);
-        Assert.Equal(_menuItem2Id, updated.BookingDetails.First().MenuItemId);
+        using (var context = GetContext())
+        {
+            var updated = await context.Bookings.Include(b => b.BookingDetails).FirstOrDefaultAsync(b => b.Id == bookingId);
+            Assert.NotNull(updated);
+            Assert.Equal(25000, updated.TotalAmount);
+            Assert.Equal(_menuItem2Id, updated.BookingDetails.First().MenuItemId);
+        }
     }
 
     [Fact]
     public async Task ExtendBookingDurationAsync_ValidRequest_ExtendsDuration()
     {
-        var booking = new Booking
+        var bookingId = Guid.NewGuid();
+        using (var context = GetContext())
         {
-            Id = Guid.NewGuid(),
-            InvoiceCode = "INV/20260907/EXT1",
-            UserId = _customerUserId,
-            TableId = _table1Id,
-            TimeslotId = 1,
-            BookingDate = DateOnly.FromDateTime(DateTime.Today),
-            DurationHours = 1,
-            RepresentativeName = "Extend Guest",
-            PaymentMethod = "Tunai",
-            Status = "SedangDigunakan",
-            TotalAmount = 20000,
-            ExpiresAt = DateTime.UtcNow.AddHours(1),
-            CreatedAt = DateTime.UtcNow
-        };
-        _context.Bookings.Add(booking);
-        await _context.SaveChangesAsync();
+            var booking = new Booking
+            {
+                Id = bookingId,
+                InvoiceCode = "INV/20260907/EXT1",
+                UserId = _customerUserId,
+                TableId = _table1Id,
+                TimeslotId = 1,
+                BookingDate = DateOnly.FromDateTime(DateTime.Today),
+                DurationHours = 1,
+                RepresentativeName = "Extend Guest",
+                PaymentMethod = "Tunai",
+                Status = "SedangDigunakan",
+                TotalAmount = 20000,
+                ExpiresAt = DateTime.UtcNow.AddHours(1),
+                CreatedAt = DateTime.UtcNow
+            };
+            context.Bookings.Add(booking);
+            await context.SaveChangesAsync();
+        }
 
         var extendDto = new ExtendDurationRequestDto
         {
-            BookingId = booking.Id,
+            BookingId = bookingId,
             AdditionalHours = 1
         };
 
         var result = await _sut.ExtendBookingDurationAsync(extendDto);
 
         Assert.True(result);
-        var updated = await _context.Bookings.FindAsync(booking.Id);
-        Assert.NotNull(updated);
-        Assert.Equal(2, updated.DurationHours);
+        using (var context = GetContext())
+        {
+            var updated = await context.Bookings.FindAsync(bookingId);
+            Assert.NotNull(updated);
+            Assert.Equal(2, updated.DurationHours);
+        }
     }
 
     [Fact]
     public async Task CompleteBookingSessionAsync_ValidSeated_SetsSelesai()
     {
-        var booking = new Booking
+        var bookingId = Guid.NewGuid();
+        using (var context = GetContext())
         {
-            Id = Guid.NewGuid(),
-            InvoiceCode = "INV/20260907/DONE1",
-            UserId = _customerUserId,
-            TableId = _table1Id,
-            TimeslotId = 1,
-            BookingDate = DateOnly.FromDateTime(DateTime.Today),
-            DurationHours = 2,
-            RepresentativeName = "Done Guest",
-            PaymentMethod = "Tunai",
-            Status = "SedangDigunakan",
-            TotalAmount = 20000,
-            ExpiresAt = DateTime.UtcNow.AddHours(2),
-            CreatedAt = DateTime.UtcNow
-        };
-        _context.Bookings.Add(booking);
-        await _context.SaveChangesAsync();
+            var booking = new Booking
+            {
+                Id = bookingId,
+                InvoiceCode = "INV/20260907/DONE1",
+                UserId = _customerUserId,
+                TableId = _table1Id,
+                TimeslotId = 1,
+                BookingDate = DateOnly.FromDateTime(DateTime.Today),
+                DurationHours = 2,
+                RepresentativeName = "Done Guest",
+                PaymentMethod = "Tunai",
+                Status = "SedangDigunakan",
+                TotalAmount = 20000,
+                ExpiresAt = DateTime.UtcNow.AddHours(2),
+                CreatedAt = DateTime.UtcNow
+            };
+            context.Bookings.Add(booking);
+            await context.SaveChangesAsync();
+        }
 
-        var result = await _sut.CompleteBookingSessionAsync(booking.Id);
+        var result = await _sut.CompleteBookingSessionAsync(bookingId);
 
         Assert.True(result);
-        var updated = await _context.Bookings.FindAsync(booking.Id);
-        Assert.NotNull(updated);
-        Assert.Equal("Selesai", updated.Status);
+        using (var context = GetContext())
+        {
+            var updated = await context.Bookings.FindAsync(bookingId);
+            Assert.NotNull(updated);
+            Assert.Equal("Selesai", updated.Status);
+        }
     }
 
     [Fact]
     public async Task SearchBookingsAsync_ByQuery_ReturnsMatchingResults()
     {
-        var booking = new Booking
+        using (var context = GetContext())
         {
-            Id = Guid.NewGuid(),
-            InvoiceCode = "INV/20260907/SRCH99",
-            UserId = _customerUserId,
-            TableId = _table1Id,
-            TimeslotId = 1,
-            BookingDate = DateOnly.FromDateTime(DateTime.Today),
-            DurationHours = 2,
-            RepresentativeName = "Dimas Anggara",
-            PaymentMethod = "Tunai",
-            Status = "Dikonfirmasi",
-            TotalAmount = 20000,
-            ExpiresAt = DateTime.UtcNow.AddHours(2),
-            CreatedAt = DateTime.UtcNow
-        };
-        _context.Bookings.Add(booking);
-        await _context.SaveChangesAsync();
+            var booking = new Booking
+            {
+                Id = Guid.NewGuid(),
+                InvoiceCode = "INV/20260907/SRCH99",
+                UserId = _customerUserId,
+                TableId = _table1Id,
+                TimeslotId = 1,
+                BookingDate = DateOnly.FromDateTime(DateTime.Today),
+                DurationHours = 2,
+                RepresentativeName = "Dimas Anggara",
+                PaymentMethod = "Tunai",
+                Status = "Dikonfirmasi",
+                TotalAmount = 20000,
+                ExpiresAt = DateTime.UtcNow.AddHours(2),
+                CreatedAt = DateTime.UtcNow
+            };
+            context.Bookings.Add(booking);
+            await context.SaveChangesAsync();
+        }
 
         var searchByName = await _sut.SearchBookingsAsync("dimas");
         Assert.Single(searchByName);
