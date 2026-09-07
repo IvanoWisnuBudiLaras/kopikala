@@ -32,7 +32,7 @@ public class LandingPageAndAuthE2ETests : IClassFixture<KopiKalaServerFixture>
 
             // 2. Verifikasi Hero Banner Text
             var heroTitle = page.Locator(".kopi-hero-title");
-            Assert.True(await heroTitle.IsVisibleAsync(), "Judul Hero Banner harus tampil di halaman beranda.");
+            await heroTitle.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 10000 });
             var heroText = await heroTitle.InnerTextAsync();
             Assert.Contains("Nikmati Kopi Terbaik", heroText);
 
@@ -90,21 +90,31 @@ public class LandingPageAndAuthE2ETests : IClassFixture<KopiKalaServerFixture>
             await page.Locator("input[name='email']").FillAsync("superadmin@kopikala.com");
             await page.Locator("input[name='password']").FillAsync("AdminKopi123!");
 
-            // 4. Klik Submit Masuk dan tunggu navigasi
+            // 4. Submit form
             await page.Locator("button[type='submit']").ClickAsync();
-            await page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
 
-            _output.WriteLine($"[E2E] URL setelah login: {page.Url}");
-
-            // 5. Verifikasi Navbar Dinamis memunculkan tombol SuperAdmin
+            // 5. Tunggu tombol SuperAdmin muncul di Navbar
             var superAdminNavBtn = page.Locator(".kopi-appbar").GetByText("SuperAdmin");
+            await superAdminNavBtn.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 10000 });
             Assert.True(await superAdminNavBtn.IsVisibleAsync(), "Navbar SuperAdmin harus menampilkan tombol 'SuperAdmin'.");
 
             // 6. Verifikasi tombol Masuk tamu sudah hilang
             var masukBtn = page.Locator(".kopi-appbar").GetByText("Masuk");
             Assert.False(await masukBtn.IsVisibleAsync(), "Tombol Masuk tamu harus hilang setelah login.");
 
-            _output.WriteLine("[SUCCESS] Skenario 2 (SuperAdmin Auth & Dynamic Navbar) berhasil diverifikasi!");
+            _output.WriteLine($"[E2E SuperAdmin] URL setelah login: {page.Url}");
+
+            // 7. Logout via /auth/logout
+            await page.GotoAsync($"{_fixture.BaseUrl}/auth/logout");
+            await page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
+
+            // 8. Kembali ke beranda dan verifikasi navbar kembali ke mode tamu
+            await page.GotoAsync(_fixture.BaseUrl);
+            var masukNavBtn = page.Locator(".kopi-appbar").GetByText("Masuk");
+            await masukNavBtn.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 10000 });
+            Assert.True(await masukNavBtn.IsVisibleAsync(), "Setelah logout, navbar harus kembali memunculkan tombol 'Masuk'.");
+
+            _output.WriteLine("[SUCCESS] Skenario 2 (SuperAdmin Auth & Dynamic Navbar & Logout) berhasil diverifikasi!");
         }
         finally
         {
@@ -128,16 +138,15 @@ public class LandingPageAndAuthE2ETests : IClassFixture<KopiKalaServerFixture>
             await page.Locator("input[name='email']").FillAsync("kasir@kopikala.com");
             await page.Locator("input[name='password']").FillAsync("KasirKopi123!");
 
-            // 3. Submit dan tunggu navigasi
+            // 3. Submit form
             await page.Locator("button[type='submit']").ClickAsync();
-            await page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
 
-            _output.WriteLine($"[E2E Kasir] URL setelah login: {page.Url}");
-
-            // 4. Verifikasi Navbar memunculkan Portal Staf
+            // 4. Tunggu tombol Portal Staf muncul di Navbar
             var portalStafBtn = page.Locator(".kopi-appbar").GetByText("Portal Staf");
+            await portalStafBtn.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 10000 });
             Assert.True(await portalStafBtn.IsVisibleAsync(), "Navbar Staf Kasir harus menampilkan tombol 'Portal Staf'.");
 
+            _output.WriteLine($"[E2E Kasir] URL setelah login: {page.Url}");
             _output.WriteLine("[SUCCESS] Skenario 2 (Staf Kasir Dynamic Navbar) berhasil diverifikasi!");
         }
         finally

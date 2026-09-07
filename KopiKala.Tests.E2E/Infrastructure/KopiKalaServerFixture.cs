@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using System.Net;
+using System.Net.Sockets;
 using Microsoft.Playwright;
 using Xunit;
 
@@ -7,7 +9,7 @@ namespace KopiKala.Tests.E2E.Infrastructure;
 public class KopiKalaServerFixture : IAsyncLifetime
 {
     private Process? _serverProcess;
-    public string BaseUrl { get; private set; } = "http://localhost:5099";
+    public string BaseUrl { get; private set; } = "";
     public IPlaywright? PlaywrightInstance { get; private set; }
     public IBrowser? Browser { get; private set; }
 
@@ -20,16 +22,17 @@ public class KopiKalaServerFixture : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        // 1. Jalankan web server KopiKala di port 5099
+        // 1. Pilih port bebas dinamis untuk mencegah tabrakan port
+        var port = GetFreePort();
+        BaseUrl = $"http://localhost:{port}";
+
         var projectPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "KopiKala"));
 
         var startInfo = new ProcessStartInfo
         {
             FileName = "dotnet",
-            Arguments = $"run --no-build --no-restore --urls \"{BaseUrl}\"",
+            Arguments = $"run --urls \"{BaseUrl}\"",
             WorkingDirectory = projectPath,
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
             UseShellExecute = false,
             CreateNoWindow = true
         };
@@ -69,6 +72,15 @@ public class KopiKalaServerFixture : IAsyncLifetime
             Headless = Headless,
             SlowMo = Headless ? 0 : 75 // 75ms slowMo agar pergerakan terlihat live
         });
+    }
+
+    private static int GetFreePort()
+    {
+        using var listener = new TcpListener(IPAddress.Loopback, 0);
+        listener.Start();
+        var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+        listener.Stop();
+        return port;
     }
 
     public async Task DisposeAsync()
