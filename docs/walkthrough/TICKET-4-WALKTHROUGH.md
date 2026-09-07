@@ -104,3 +104,8 @@ dotnet test KopiKala.Tests/KopiKala.Tests.csproj /p:CollectCoverage=true /p:Incl
 18. `CreateBookingRequestDto_Validation_WorksCorrectly` (Passed)
 19. `CurrencyHelper_ToRupiah_FormatsCorrectly` (Passed)
 20. `FileSecurityHelper_ValidatesExtensionsAndFilenames` (Passed)
+
+### C. Pengujian Microsoft Playwright E2E & Monkey Testing (`KopiKala.Tests.E2E`)
+- **`CustomerBookingE2ETests.cs`**:
+  1. `Scenario1_CustomerBookingWizard_CompleteOrderAndGenerateInvoice`: Menjalankan alur penuh login -> pemilihan durasi duduk & jadwal -> pemilihan meja 2D (`IN-01`) -> penambahan item F&B pre-order -> input perwakilan rombongan -> checkout -> verifikasi penerbitan invoice dengan countdown timer 15 menit dan info nomor rekening BCA.
+  2. `Scenario2_MonkeyTesting_BookingWizardUI_Resilience`: Menjalankan stres uji acak (rapid step switching dan multi-table clicking) untuk memverifikasi sirkuit SignalR Blazor Server tidak putus dan OCC tidak memicu unhandled exception.
