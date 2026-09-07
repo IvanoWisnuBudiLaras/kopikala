@@ -86,13 +86,44 @@ dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
 
 dotnet add package Microsoft.EntityFrameworkCore.Tools
 
-dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet add package Microsoft.EntityFrameworkCore.Design  
+\# 4\. Paket OpenIddict untuk Keamanan & OAuth2
+
+dotnet add package OpenIddict.AspNetCore
+
+dotnet add package OpenIddict.EntityFrameworkCore
 
 ---
 
-### Task 3: Setup Docker Compose untuk PostgreSQL Database
+### Task 3: Setup Docker (Dockerfile & Docker Compose)
 
-Buat file baru bernama **`docker-compose.yml`** di direktori utama (*root*) proyek dengan konfigurasi:
+#### Task 3.1: Pembuatan Dockerfile multi-stage build
+
+Buat file bernama Dockerfile di root proyek untuk build .NET 10 Blazor Web App:
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base  
+WORKDIR /app  
+EXPOSE 8080
+
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build  
+WORKDIR /src  
+COPY \["KopiKala/KopiKala.csproj", "KopiKala/"\]  
+RUN dotnet restore "KopiKala/KopiKala.csproj"  
+COPY . .  
+WORKDIR "/src/KopiKala"  
+RUN dotnet build "KopiKala.csproj" \-c Release \-o /app/build
+
+FROM build AS publish  
+RUN dotnet publish "KopiKala.csproj" \-c Release \-o /app/publish
+
+FROM base AS final  
+WORKDIR /app  
+COPY \--from=publish /app/publish .  
+ENTRYPOINT \["dotnet", "KopiKala.dll"\]
+
+#### Task 3.2: Update docker-compose.yml Unified
+
+Perbarui docker-compose.yml untuk mencakup layanan database dan aplikasi:
 
 version: '3.8'
 
@@ -122,6 +153,20 @@ services:
 
       \- kopikala\_pgdata:/var/lib/postgresql/data
 
+  kopikala-web:  
+    build:  
+      context: .  
+      dockerfile: Dockerfile  
+    ports:  
+      \- "8080:8080"  
+    environment:  
+      \- ConnectionStrings\_\_DefaultConnection=Host=kopikala-db;Port=5432;Database=kopikala\_db;Username=kopikala\_user;Password=kopikala\_password123  
+    depends\_on:  
+      kopikala-db:  
+        condition: service\_healthy  
+    volumes:  
+      \- kopikala\_uploads:/app/wwwroot/uploads
+
     healthcheck:
 
       test: \["CMD-SHELL", "pg\_isready \-U kopikala\_user \-d kopikala\_db"\]
@@ -136,7 +181,11 @@ volumes:
 
   kopikala\_pgdata:
 
+    driver: local  
+  kopikala\_uploads:  
     driver: local
+
+*Catatan: Hal ini memastikan semua foto bukti pembayaran pelanggan yang tersimpan di wwwroot/uploads/payments/ tetap bertahan secara permanen meskipun container dijalankan ulang.*
 
 #### Cara Menjalankan Docker:
 
@@ -291,7 +340,7 @@ Serta di `Components/Layout/MainLayout.razor`, tambahkan provider bawaan:
 
 Tiket ini dinyatakan selesai (*Done*) jika seluruh kondisi berikut terpenuhi:
 
-1. Container Docker `kopikala-postgres` berjalan normal di port `5432` dan bisa diakses dari localhost.  
+1. Seluruh container (`kopikala-postgres` dan `kopikala-web`) berhasil dibangun dan berjalan normal via `docker compose up -d`.  
 2. Seluruh paket NuGet (`MudBlazor`, `Npgsql.EntityFrameworkCore.PostgreSQL`, `Microsoft.EntityFrameworkCore.Tools`) terpasang tanpa bentrok versi.  
 3. Struktur folder proyek telah dibuat lengkap sesuai Task 1\.  
 4. Perintah migrasi awal Entity Framework berhasil dijalankan di terminal:  

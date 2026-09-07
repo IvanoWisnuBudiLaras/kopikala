@@ -51,7 +51,7 @@ Buat file class model berikut di dalam folder **`Models/`**:
    * `UserId` (Foreign Key ke `Users`)  
    * `RoleId` (Foreign Key ke `Roles`)
 
-Perbarui file **`Data/AppDbContext.cs`** untuk mendaftarkan kelima entitas ini (`DbSet<T>`) dan mendefinisikan kunci gabungan (*composite primary key*) untuk tabel pivot pada method `OnModelCreating`.
+Perbarui file **`Data/AppDbContext.cs`** untuk mendaftarkan kelima entitas ini (`DbSet<T>`) dan mendefinisikan kunci gabungan (*composite primary key*) untuk tabel pivot pada method `OnModelCreating`. Pastikan menambahkan `options.UseOpenIddict()` agar EF Core membuat 4 tabel OpenIddict (Applications, Authorizations, Scopes, Tokens) bersama tabel Identity.
 
 ### Task 1.5: Pembuatan DTOs Autentikasi (Folder DTOs/Auth/)
 
@@ -72,7 +72,14 @@ Buat class kontrak data form di dalam folder **`DTOs/Auth/`**:
    * FullName (string)  
    * Email (string)  
    * Roles (List\<string\>)  
-   * Permissions (List\<string\>)
+   * Permissions (List\<string\>)  
+4. **`ForgotPasswordRequestDto.cs`**:  
+   * Email (string, required, email format)  
+5. **`ResetPasswordRequestDto.cs`**:  
+   * Email (string, required, email format)  
+   * Token (string, required)  
+   * NewPassword (string, required, min 6 chars)  
+   * ConfirmNewPassword (string, compare to NewPassword)
 
 ---
 
@@ -109,6 +116,8 @@ Buat kontrak dan implementasi di folder **`Services/`**:
   {  
       Task\<bool\> LoginAsync(LoginRequestDto dto);  
       Task\<bool\> RegisterCustomerAsync(RegisterRequestDto dto);  
+      Task\<string\> GeneratePasswordResetTokenAsync(string email);  
+      Task\<bool\> ResetPasswordAsync(ResetPasswordRequestDto dto);  
     
       Task LogoutAsync();  
     
@@ -121,7 +130,8 @@ Buat kontrak dan implementasi di folder **`Services/`**:
 * **`Services/AuthService.cs`**:  
   * Menginjeksi `UserManager<ApplicationUser>`, `SignInManager<ApplicationUser>`, dan `AppDbContext`.  
   * Pada saat login berhasil: Ambil seluruh `Permission.Code` yang dimiliki oleh Role akun tersebut dari tabel `RolePermissions`, lalu sematkan ke dalam **Claims** sesi pengguna (`ClaimTypes.Role` dan custom claim `Permission`).  
-  * Catat riwayat login staf ke log sistem (*Audit Log*).
+  * Catat riwayat login staf ke log sistem (*Audit Log*).  
+  * Implementasi reset password menggunakan `UserManager.GeneratePasswordResetTokenAsync` dan `UserManager.ResetPasswordAsync`.
 
 ---
 
@@ -141,7 +151,8 @@ builder.Services.AddAuthorization(options \=\>
     options.AddPolicy("SuperAdminOnly", policy \=\> policy.RequireClaim("Permission", "Sistem.Kelola"));  
     options.AddPolicy("StaffAccess", policy \=\> policy.RequireAssertion(context \=\>  
         context.User.HasClaim(c \=\> c.Type \== "Permission" &&   
-        new\[\] { "Meja.Kelola", "Pembayaran.Verifikasi", "Dapur.Antrean", "Laporan.Lihat" }.Contains(c.Value))));
+        new\[\] { "Meja.Kelola", "Pembayaran.Verifikasi", "Dapur.Antrean", "Laporan.Lihat" }.Contains(c.Value))));  
+builder.Services.AddOpenIddict().AddCore(options \=\> options.UseEntityFrameworkCore().UseDbContext\<AppDbContext\>()).AddServer(options \=\> { options.SetAuthorizationEndpointUris("/connect/authorize").SetTokenEndpointUris("/connect/token"); options.AllowAuthorizationCodeFlow().RequireProofKeyForCodeExchange(); options.AddDevelopmentEncryptionCertificate().AddDevelopmentSigningCertificate(); options.UseAspNetCore().EnableAuthorizationEndpointPassthrough().EnableTokenEndpointPassthrough(); }).AddValidation(options \=\> { options.UseLocalServer(); options.UseAspNetCore(); });
 
 });
 
@@ -188,9 +199,15 @@ Buat antarmuka login yang bersih dan nyaman:
 
 * Kotak kartu `MudCard` di tengah layar bertema kopi hangat.  
 * Input Email (`MudTextField`), Password (`MudTextField` mode password), dan Checkbox *"Ingat Saya"* (`MudCheckBox`).  
+* Link teks *"Lupa Password?"* di bawah field password yang mengarah ke `/Account/ForgotPassword`.  
 * Tombol utama `MudButton` *"Masuk"*.  
 * Pemisah garis horizontal (*Divider*) dengan tulisan *"atau"*.  
 * Tombol sekunder `MudButton` dengan logo Google: *"Masuk dengan Google"* (memicu rute `/Account/PerformExternalLogin?provider=Google`).
+
+### Task 6.5: Halaman Lupa & Reset Password (MudBlazor)
+
+**`Components/Pages/Account/ForgotPassword.razor`**: Form input email untuk meminta link/token reset.  
+**`Components/Pages/Account/ResetPassword.razor`**: Form input password baru dan konfirmasi password.
 
 ---
 
@@ -210,7 +227,9 @@ Tiket ini dinyatakan selesai (*Done*) jika seluruh kondisi berikut teruji:
 3. Pengguna yang login sebagai SuperAdmin dapat membuka halaman `/SuperAdmin` dengan sukses.  
 4. Pengguna biasa (Customer) atau pengunjung yang belum login yang mencoba mengetik URL `/Staff` atau `/SuperAdmin` **otomatis dicegat dan diarahkan ke halaman AccessDenied atau Login**.  
 5. Tombol Logout berfungsi menghapus sesi Cookie dan mengembalikan pengguna ke halaman publik.  
-6. Alur Google OAuth 2.1 teruji: Mengklik tombol login Google menginisiasi *OAuth challenge* dan mengarahkan pengguna ke *Google sign-in endpoint*.
+6. Alur Google OAuth 2.1 teruji: Mengklik tombol login Google menginisiasi *OAuth challenge* dan mengarahkan pengguna ke *Google sign-in endpoint*.  
+7. Verifikasi endpoint OpenIddict (`/connect/authorize` dan `/connect/token`) dapat diakses dan mewajibkan penggunaan PKCE (Proof Key for Code Exchange).  
+8. Seluruh pengujian E2E Playwright pada modul login, form lupa password, dan pencegatan rute 403 berjalan sukses (Passed / Hijau) di browser Chromium live.
 
 ---
 
@@ -226,7 +245,23 @@ Tiket ini dinyatakan selesai (*Done*) jika seluruh kondisi berikut teruji:
 
 * Pustaka: `Microsoft.AspNetCore.Mvc.Testing` (`WebApplicationFactory`), `Microsoft.Extensions.TimeProvider.Testing` (`FakeTimeProvider`), dan `ITestOutputHelper`.  
 * Mekanisme Time Traveler (TimeProvider): Menggunakan `FakeTimeProvider` bawaan .NET 10 untuk memajukan waktu (*Advance time*) secara instan dalam pengujian:  
-  * Menguji masa berlaku token login dan token reset password (maju 15-30 menit tanpa menunggu waktu nyata).  
+  * Menguji masa berlaku token login dan token reset password (maju 15-30 menit menggunakan `FakeTimeProvider` untuk memverifikasi token menjadi tidak valid tanpa menunggu waktu nyata).  
   * Menguji penguncian akun (lockout).  
 * Standar Logging: Setiap pengujian endpoint wajib mencatat status HTTP, durasi eksekusi (ms), dan payload response secara terstruktur pada log pengujian.
+
+### C. End-to-End (E2E) Browser Test via Microsoft Playwright
+
+* **Mode Eksekusi**: Live Headed Browser (Headless \= false dengan slowMo 50-100ms) sehingga pengembang dapat menyaksikan langsung robot menguji form login dan pencegatan rute.  
+* **Skenario 1 (Uji Form Login & Validasi)**:  
+  * Robot membuka `/Account/Login`.  
+  * Mengetik email salah/password salah \-\> memverifikasi munculnya notifikasi validasi error MudBlazor.  
+  * Mengetik kredensial SuperAdmin valid (`superadmin@kopikala.com`) \-\> memverifikasi login berhasil.  
+* **Skenario 2 (Uji Pencegatan Akses Ilegal / Route Tampering)**:  
+  * Robot membuka browser baru tanpa login (unauthenticated).  
+  * Mencoba langsung mengetik URL terlarang: `/Staff` atau `/SuperAdmin`.  
+  * Memverifikasi secara visual bahwa sistem seketika mencegat akses dan mengarahkan robot ke halaman `/Account/AccessDenied` (403) atau `/Account/Login`.  
+* **Skenario 3 (Uji Alur Lupa Password)**:  
+  * Robot membuka `/Account/ForgotPassword`, mengisi email, menekan submit, dan memverifikasi pesan notifikasi sukses.  
+* **Skenario 4 (Monkey Testing Form Login)**:  
+  * Menjalankan pengetikan cepat string acak dan klik tombol submit bertubi-tubi untuk memastikan form tidak hang atau melempar unhandled exception.
 
