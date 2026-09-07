@@ -40,7 +40,9 @@ public class Program
         builder.Services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                // DefaultChallenge = Cookie agar unauthenticated user di-redirect ke Login
+                // bukan langsung ke Google. Google hanya dipicu eksplisit via /auth/google
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddCookie(options =>
             {
@@ -56,8 +58,6 @@ public class Program
                 options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? "";
                 options.CallbackPath = "/signin-google";
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                // Authorized redirect URI yang harus cocok persis dengan Google Cloud Console
-                // Pastikan https://localhost:5001/signin-google terdaftar di Google Cloud Console
             });
 
         // 6. Konfigurasi Controlled Dynamic PBAC (Custom Policy Provider & Handler)
@@ -77,6 +77,31 @@ public class Program
                     context.User.HasClaim(c => c.Type == "Permission" &&
                         new[] { "Meja.Kelola", "Pembayaran.Verifikasi", "Dapur.Antrean", "Laporan.Lihat" }.Contains(c.Value))));
         });
+
+        // 7. Konfigurasi OpenIddict (Internal OAuth 2.1 Server + PKCE)
+        builder.Services.AddOpenIddict()
+            .AddCore(options =>
+            {
+                options.UseEntityFrameworkCore()
+                       .UseDbContext<AppDbContext>();
+            })
+            .AddServer(options =>
+            {
+                options.SetAuthorizationEndpointUris("/connect/authorize")
+                       .SetTokenEndpointUris("/connect/token");
+                options.AllowAuthorizationCodeFlow()
+                       .RequireProofKeyForCodeExchange(); // PKCE wajib
+                options.AddDevelopmentEncryptionCertificate()
+                       .AddDevelopmentSigningCertificate();
+                options.UseAspNetCore()
+                       .EnableAuthorizationEndpointPassthrough()
+                       .EnableTokenEndpointPassthrough();
+            })
+            .AddValidation(options =>
+            {
+                options.UseLocalServer();
+                options.UseAspNetCore();
+            });
 
         builder.Services.AddCascadingAuthenticationState();
 

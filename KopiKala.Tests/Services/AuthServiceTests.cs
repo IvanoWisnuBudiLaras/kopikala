@@ -14,7 +14,7 @@ public class AuthServiceTests : IDisposable
 {
     private readonly AppDbContext _context;
     private readonly Mock<ILogger<AuthService>> _loggerMock;
-    private readonly AuthService _sut; // System Under Test
+    private readonly AuthService _sut;
 
     public AuthServiceTests()
     {
@@ -36,7 +36,6 @@ public class AuthServiceTests : IDisposable
     [Fact]
     public async Task LoginAsync_ValidCredentials_ReturnsSuccessWithPrincipal()
     {
-        // Arrange
         var role = new Role { Name = "SuperAdmin", Description = "Admin" };
         var permission = new Permission { Code = "Sistem.Kelola", GroupName = "Sistem" };
         role.Permissions.Add(permission);
@@ -61,19 +60,17 @@ public class AuthServiceTests : IDisposable
             RememberMe = true
         };
 
-        // Act
         var result = await _sut.LoginAsync(dto);
 
-        // Assert
         Assert.True(result.Success);
         Assert.NotNull(result.Principal);
         Assert.Null(result.ErrorMessage);
+        Assert.True(result.Principal.HasClaim("Permission", "Sistem.Kelola"));
     }
 
     [Fact]
     public async Task LoginAsync_InvalidPassword_ReturnsFailure()
     {
-        // Arrange
         var user = new User
         {
             FullName = "User Test",
@@ -91,10 +88,8 @@ public class AuthServiceTests : IDisposable
             Password = "WrongPassword!"
         };
 
-        // Act
         var result = await _sut.LoginAsync(dto);
 
-        // Assert
         Assert.False(result.Success);
         Assert.NotNull(result.ErrorMessage);
         Assert.Null(result.Principal);
@@ -103,17 +98,14 @@ public class AuthServiceTests : IDisposable
     [Fact]
     public async Task LoginAsync_NonExistentEmail_ReturnsFailure()
     {
-        // Arrange
         var dto = new LoginRequestDto
         {
             Email = "nonexistent@kopikala.com",
             Password = "AnyPassword!"
         };
 
-        // Act
         var result = await _sut.LoginAsync(dto);
 
-        // Assert
         Assert.False(result.Success);
         Assert.NotNull(result.ErrorMessage);
         Assert.Null(result.Principal);
@@ -122,7 +114,6 @@ public class AuthServiceTests : IDisposable
     [Fact]
     public async Task RegisterAndLoginAsync_NewEmail_ReturnsSuccessWithPrincipal()
     {
-        // Arrange
         var dto = new RegisterRequestDto
         {
             FullName = "Customer Baru",
@@ -132,10 +123,8 @@ public class AuthServiceTests : IDisposable
             ConfirmPassword = "Password123!"
         };
 
-        // Act
         var result = await _sut.RegisterAndLoginAsync(dto);
 
-        // Assert
         Assert.True(result.Success);
         Assert.NotNull(result.Principal);
         Assert.Null(result.ErrorMessage);
@@ -149,7 +138,6 @@ public class AuthServiceTests : IDisposable
     [Fact]
     public async Task RegisterAndLoginAsync_DuplicateEmail_ReturnsFailure()
     {
-        // Arrange
         var existingUser = new User
         {
             FullName = "Existing",
@@ -170,10 +158,8 @@ public class AuthServiceTests : IDisposable
             ConfirmPassword = "Password123!"
         };
 
-        // Act
         var result = await _sut.RegisterAndLoginAsync(dto);
 
-        // Assert
         Assert.False(result.Success);
         Assert.NotNull(result.ErrorMessage);
         Assert.Null(result.Principal);
@@ -182,10 +168,8 @@ public class AuthServiceTests : IDisposable
     [Fact]
     public async Task HandleGoogleCallbackAsync_NewUser_AutoOnboardsWithCustomerRole()
     {
-        // Act
         var result = await _sut.HandleGoogleCallbackAsync("googleuser@gmail.com", "Google User", "google-id-12345");
 
-        // Assert
         Assert.True(result.Success);
         Assert.NotNull(result.Principal);
         Assert.Null(result.ErrorMessage);
@@ -197,9 +181,36 @@ public class AuthServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task HandleGoogleCallbackAsync_ExistingUserWithoutGoogleId_UpdatesGoogleId()
+    {
+        var existingUser = new User
+        {
+            FullName = "Existing User",
+            Email = "existing@gmail.com",
+            PhoneNumber = "0812345",
+            CreatedAt = DateTime.UtcNow
+        };
+        _context.Users.Add(existingUser);
+        await _context.SaveChangesAsync();
+
+        var result = await _sut.HandleGoogleCallbackAsync("existing@gmail.com", "Existing User", "new-google-id");
+
+        Assert.True(result.Success);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == "existing@gmail.com");
+        Assert.NotNull(user);
+        Assert.Equal("new-google-id", user.GoogleId);
+    }
+
+    [Fact]
+    public async Task LogoutAsync_LogsInformationWithoutException()
+    {
+        var ex = await Record.ExceptionAsync(() => _sut.LogoutAsync());
+        Assert.Null(ex);
+    }
+
+    [Fact]
     public async Task GetUserPermissionsAsync_ReturnsDistinctPermissions()
     {
-        // Arrange
         var role1 = new Role { Name = "Kasir" };
         var perm1 = new Permission { Code = "Meja.Kelola", GroupName = "Meja" };
         var perm2 = new Permission { Code = "Pembayaran.Verifikasi", GroupName = "Kasir" };
@@ -208,7 +219,7 @@ public class AuthServiceTests : IDisposable
 
         var role2 = new Role { Name = "Barista" };
         var perm3 = new Permission { Code = "Dapur.Antrean", GroupName = "Dapur" };
-        role2.Permissions.Add(perm2); // Duplikat permission across roles
+        role2.Permissions.Add(perm2);
         role2.Permissions.Add(perm3);
 
         var user = new User
@@ -225,10 +236,8 @@ public class AuthServiceTests : IDisposable
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        // Act
         var permissions = await _sut.GetUserPermissionsAsync(user.Id);
 
-        // Assert
         Assert.Equal(3, permissions.Count);
         Assert.Contains("Meja.Kelola", permissions);
         Assert.Contains("Pembayaran.Verifikasi", permissions);
@@ -236,9 +245,15 @@ public class AuthServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task GetUserPermissionsAsync_NonExistentUser_ReturnsEmptyList()
+    {
+        var permissions = await _sut.GetUserPermissionsAsync(Guid.NewGuid());
+        Assert.Empty(permissions);
+    }
+
+    [Fact]
     public async Task GetUserSessionAsync_ValidUser_ReturnsSessionDto()
     {
-        // Arrange
         var role = new Role { Name = "Manager" };
         var perm = new Permission { Code = "Laporan.Lihat", GroupName = "Laporan" };
         role.Permissions.Add(perm);
@@ -255,14 +270,131 @@ public class AuthServiceTests : IDisposable
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        // Act
         var session = await _sut.GetUserSessionAsync(user.Id);
 
-        // Assert
         Assert.NotNull(session);
         Assert.Equal(user.Id, session.UserId);
         Assert.Equal("Manager Kafe", session.FullName);
         Assert.Contains("Manager", session.Roles);
         Assert.Contains("Laporan.Lihat", session.Permissions);
+    }
+
+    [Fact]
+    public async Task GetUserSessionAsync_NonExistentUser_ReturnsNull()
+    {
+        var session = await _sut.GetUserSessionAsync(Guid.NewGuid());
+        Assert.Null(session);
+    }
+
+    [Fact]
+    public async Task GeneratePasswordResetTokenAsync_ValidEmail_ReturnsValidBase64Token()
+    {
+        var user = new User
+        {
+            FullName = "Reset User",
+            Email = "reset@kopikala.com",
+            PhoneNumber = "08123456789",
+            PasswordHash = "oldhash",
+            CreatedAt = DateTime.UtcNow
+        };
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+
+        var token = await _sut.GeneratePasswordResetTokenAsync("reset@kopikala.com");
+
+        Assert.NotNull(token);
+        var decoded = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(token));
+        Assert.Contains(user.Id.ToString(), decoded);
+    }
+
+    [Fact]
+    public async Task GeneratePasswordResetTokenAsync_NonExistentEmail_ReturnsNull()
+    {
+        var token = await _sut.GeneratePasswordResetTokenAsync("unknown@kopikala.com");
+        Assert.Null(token);
+    }
+
+    [Fact]
+    public async Task ResetPasswordAsync_ValidToken_UpdatesPasswordHash()
+    {
+        var user = new User
+        {
+            FullName = "Reset User",
+            Email = "reset2@kopikala.com",
+            PhoneNumber = "08123456789",
+            PasswordHash = PasswordHelper.HashPassword("OldPass123!"),
+            CreatedAt = DateTime.UtcNow
+        };
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+
+        var token = await _sut.GeneratePasswordResetTokenAsync("reset2@kopikala.com");
+        Assert.NotNull(token);
+
+        var success = await _sut.ResetPasswordAsync("reset2@kopikala.com", token, "NewPass123!");
+
+        Assert.True(success);
+        var updatedUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == "reset2@kopikala.com");
+        Assert.NotNull(updatedUser);
+        Assert.True(PasswordHelper.VerifyPassword("NewPass123!", updatedUser.PasswordHash));
+    }
+
+    [Fact]
+    public async Task ResetPasswordAsync_ExpiredOrCorruptedToken_ReturnsFalse()
+    {
+        var user = new User
+        {
+            FullName = "Reset User",
+            Email = "reset3@kopikala.com",
+            PhoneNumber = "08123456789",
+            PasswordHash = PasswordHelper.HashPassword("OldPass123!"),
+            CreatedAt = DateTime.UtcNow
+        };
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+
+        // Expired token (in past)
+        var pastTicks = DateTime.UtcNow.AddMinutes(-20).Ticks;
+        var expiredPayload = $"{user.Id}:{pastTicks}";
+        var expiredToken = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(expiredPayload));
+
+        var resultExpired = await _sut.ResetPasswordAsync("reset3@kopikala.com", expiredToken, "NewPass123!");
+        Assert.False(resultExpired);
+
+        // Corrupted token
+        var resultCorrupt = await _sut.ResetPasswordAsync("reset3@kopikala.com", "not-a-valid-token", "NewPass123!");
+        Assert.False(resultCorrupt);
+
+        // Non-existent user
+        var resultNonExistent = await _sut.ResetPasswordAsync("ghost@kopikala.com", expiredToken, "NewPass123!");
+        Assert.False(resultNonExistent);
+
+        // Mismatched user id token
+        var mismatchPayload = $"{Guid.NewGuid()}:{DateTime.UtcNow.AddMinutes(15).Ticks}";
+        var mismatchToken = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(mismatchPayload));
+        var resultMismatch = await _sut.ResetPasswordAsync("reset3@kopikala.com", mismatchToken, "NewPass123!");
+        Assert.False(resultMismatch);
+    }
+
+    [Fact]
+    public async Task GetUserByEmailAsync_ExistingAndNonExisting_ReturnsExpected()
+    {
+        var user = new User
+        {
+            FullName = "Email User",
+            Email = "lookup@kopikala.com",
+            PhoneNumber = "08123456789",
+            PasswordHash = "hash",
+            CreatedAt = DateTime.UtcNow
+        };
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+
+        var found = await _sut.GetUserByEmailAsync("lookup@kopikala.com");
+        Assert.NotNull(found);
+        Assert.Equal("lookup@kopikala.com", found.Email);
+
+        var notFound = await _sut.GetUserByEmailAsync("notfound@kopikala.com");
+        Assert.Null(notFound);
     }
 }

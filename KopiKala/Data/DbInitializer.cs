@@ -11,97 +11,95 @@ public static class DbInitializer
         // 1. Pastikan 5 Controlled Core Permissions ada
         var corePermissions = new List<(string Code, string GroupName)>
         {
-            ("Meja.Kelola", "Meja"),
-            ("Pembayaran.Verifikasi", "Kasir"),
-            ("Dapur.Antrean", "Dapur"),
-            ("Laporan.Lihat", "Laporan"),
-            ("Sistem.Kelola", "Sistem")
+            ("Meja.Kelola",            "Meja"),
+            ("Pembayaran.Verifikasi",  "Kasir"),
+            ("Dapur.Antrean",          "Dapur"),
+            ("Laporan.Lihat",          "Laporan"),
+            ("Sistem.Kelola",          "Sistem")
         };
 
         foreach (var (code, group) in corePermissions)
         {
             if (!await context.Permissions.AnyAsync(p => p.Code == code))
-            {
                 context.Permissions.Add(new Permission { Code = code, GroupName = group });
-            }
         }
         await context.SaveChangesAsync();
 
-        // 2. Setup Role Template
         var allPerms = await context.Permissions.ToListAsync();
-        var permMap = allPerms.ToDictionary(p => p.Code, p => p);
+        var permMap  = allPerms.ToDictionary(p => p.Code, p => p);
 
-        var superAdminRole = await context.Roles.Include(r => r.Permissions).FirstOrDefaultAsync(r => r.Name == "SuperAdmin");
-        if (superAdminRole == null)
+        // 2. Helper untuk upsert role dengan izin
+        async Task<Role> UpsertRoleAsync(string name, string description, bool isTemplate, string[] permCodes)
         {
-            superAdminRole = new Role { Name = "SuperAdmin", Description = "Pemilik sistem dengan hak akses tak terbatas", IsTemplate = true };
-            context.Roles.Add(superAdminRole);
-            await context.SaveChangesAsync();
-        }
-
-        // Pastikan SuperAdmin memiliki semua izin
-        foreach (var p in allPerms)
-        {
-            if (!superAdminRole.Permissions.Any(rp => rp.Id == p.Id))
+            var role = await context.Roles.Include(r => r.Permissions)
+                                   .FirstOrDefaultAsync(r => r.Name == name);
+            if (role == null)
             {
-                superAdminRole.Permissions.Add(p);
+                role = new Role { Name = name, Description = description, IsTemplate = isTemplate };
+                context.Roles.Add(role);
+                await context.SaveChangesAsync();
             }
-        }
-        await context.SaveChangesAsync();
 
-        // Role Manager
-        var managerRole = await context.Roles.Include(r => r.Permissions).FirstOrDefaultAsync(r => r.Name == "Manager");
-        if (managerRole != null)
-        {
-            var managerCodes = new[] { "Meja.Kelola", "Pembayaran.Verifikasi", "Dapur.Antrean", "Laporan.Lihat" };
-            foreach (var code in managerCodes)
+            foreach (var code in permCodes)
             {
-                if (permMap.TryGetValue(code, out var p) && !managerRole.Permissions.Any(rp => rp.Id == p.Id))
+                if (permMap.TryGetValue(code, out var perm) &&
+                    !role.Permissions.Any(rp => rp.Id == perm.Id))
                 {
-                    managerRole.Permissions.Add(p);
+                    role.Permissions.Add(perm);
                 }
             }
+            return role;
         }
 
-        // Role Kasir
-        var kasirRole = await context.Roles.Include(r => r.Permissions).FirstOrDefaultAsync(r => r.Name == "Kasir");
-        if (kasirRole != null)
+        var superAdminRole = await UpsertRoleAsync("SuperAdmin", "Pemilik sistem dengan hak akses tak terbatas", true,
+            ["Meja.Kelola", "Pembayaran.Verifikasi", "Dapur.Antrean", "Laporan.Lihat", "Sistem.Kelola"]);
+
+        var managerRole = await UpsertRoleAsync("Manager", "Manajer / Admin kafe", true,
+            ["Meja.Kelola", "Pembayaran.Verifikasi", "Dapur.Antrean", "Laporan.Lihat"]);
+
+        var kasirRole = await UpsertRoleAsync("Kasir", "Kasir operasional kafe", true,
+            ["Meja.Kelola", "Pembayaran.Verifikasi"]);
+
+        var baristaRole = await UpsertRoleAsync("Barista", "Barista / dapur kafe", true,
+            ["Dapur.Antrean"]);
+
+        // Customer role – no permissions (public access)
+        var customerRole = await context.Roles.FirstOrDefaultAsync(r => r.Name == "Customer");
+        if (customerRole == null)
         {
-            var kasirCodes = new[] { "Meja.Kelola", "Pembayaran.Verifikasi" };
-            foreach (var code in kasirCodes)
-            {
-                if (permMap.TryGetValue(code, out var p) && !kasirRole.Permissions.Any(rp => rp.Id == p.Id))
-                {
-                    kasirRole.Permissions.Add(p);
-                }
-            }
+            customerRole = new Role { Name = "Customer", Description = "Pelanggan kafe", IsTemplate = true };
+            context.Roles.Add(customerRole);
         }
 
-        // Role Barista
-        var baristaRole = await context.Roles.Include(r => r.Permissions).FirstOrDefaultAsync(r => r.Name == "Barista");
-        if (baristaRole != null)
-        {
-            if (permMap.TryGetValue("Dapur.Antrean", out var p) && !baristaRole.Permissions.Any(rp => rp.Id == p.Id))
-            {
-                baristaRole.Permissions.Add(p);
-            }
-        }
         await context.SaveChangesAsync();
 
-        // 3. Akun Default SuperAdmin
-        var superAdminUser = await context.Users.Include(u => u.Roles).FirstOrDefaultAsync(u => u.Email == "superadmin@kopikala.com");
-        if (superAdminUser == null)
+        // 3. Seed akun demo
+        await UpsertUserAsync(context, superAdminRole,
+            "Super Administrator", "superadmin@kopikala.com", "081234567890", "AdminKopi123!");
+
+        await UpsertUserAsync(context, kasirRole,
+            "Kasir Demo", "kasir@kopikala.com", "081234567891", "KasirKopi123!");
+
+        await UpsertUserAsync(context, baristaRole,
+            "Barista Demo", "barista@kopikala.com", "081234567892", "BaristaKopi123!");
+    }
+
+    private static async Task UpsertUserAsync(
+        AppDbContext context, Role role,
+        string fullName, string email, string phone, string password)
+    {
+        if (!await context.Users.AnyAsync(u => u.Email == email))
         {
-            superAdminUser = new User
+            var user = new User
             {
-                FullName = "Super Administrator",
-                Email = "superadmin@kopikala.com",
-                PhoneNumber = "081234567890",
-                PasswordHash = PasswordHelper.HashPassword("AdminKopi123!"),
-                CreatedAt = DateTime.UtcNow
+                FullName     = fullName,
+                Email        = email,
+                PhoneNumber  = phone,
+                PasswordHash = PasswordHelper.HashPassword(password),
+                CreatedAt    = DateTime.UtcNow
             };
-            superAdminUser.Roles.Add(superAdminRole);
-            context.Users.Add(superAdminUser);
+            user.Roles.Add(role);
+            context.Users.Add(user);
             await context.SaveChangesAsync();
         }
     }
