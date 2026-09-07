@@ -177,35 +177,34 @@ public class CustomerBookingE2ETests
             await page.WaitForURLAsync(new Regex(".*/Booking.*"));
             _output.WriteLine("[MONKEY TEST] Memulai pengujian stres resiliensi antarmuka Booking Wizard...");
 
-            // Klik cepat antar step 1 dan 2
-            for (var i = 0; i < 5; i++)
-            {
-                var lanjutBtn = page.GetByRole(AriaRole.Button, new() { Name = "Lanjut: Pilih Meja" });
-                if (await lanjutBtn.IsVisibleAsync())
-                {
-                    await lanjutBtn.ClickAsync();
-                }
+            // Klik cepat antar tombol navigasi step di header
+            var step1Btn = page.GetByText("1. Jadwal & Durasi");
+            var step2Btn = page.GetByText("2. Denah Meja");
 
-                var kembaliBtn = page.GetByRole(AriaRole.Button, new() { Name = "Kembali" });
-                if (await kembaliBtn.IsVisibleAsync())
+            for (var i = 0; i < 4; i++)
+            {
+                if (await step2Btn.IsVisibleAsync())
                 {
-                    await kembaliBtn.ClickAsync();
+                    await step2Btn.ClickAsync(new() { Timeout = 1000 });
+                }
+                if (await step1Btn.IsVisibleAsync())
+                {
+                    await step1Btn.ClickAsync(new() { Timeout = 1000 });
                 }
             }
 
             // Pindah ke step 2 dan klik acak beberapa kartu meja
-            var step2Btn = page.GetByRole(AriaRole.Button, new() { Name = "Lanjut: Pilih Meja" });
             if (await step2Btn.IsVisibleAsync())
             {
                 await step2Btn.ClickAsync();
             }
 
             var tableCards = await page.Locator(".mud-card").AllAsync();
-            for (var i = 0; i < Math.Min(tableCards.Count, 4); i++)
+            for (var i = 0; i < Math.Min(tableCards.Count, 6); i++)
             {
                 try
                 {
-                    await tableCards[i].ClickAsync();
+                    await tableCards[i].ClickAsync(new() { Timeout = 1000 });
                 }
                 catch
                 {
