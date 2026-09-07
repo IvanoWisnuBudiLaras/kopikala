@@ -15,12 +15,10 @@ public class KopiKalaServerFixture : IAsyncLifetime
     public IBrowser? Browser { get; private set; }
     public StringBuilder ServerLogs { get; } = new();
 
-    // Mode Headless dapat diatur via environment variable (default: false / Headed live browser)
+    // Default: Headed (Headless = false) untuk melihat langsung browser di monitor
     public bool Headless { get; } =
-        !string.Equals(Environment.GetEnvironmentVariable("PLAYWRIGHT_HEADED"), "true", StringComparison.OrdinalIgnoreCase) &&
-        !string.Equals(Environment.GetEnvironmentVariable("CI"), "true", StringComparison.OrdinalIgnoreCase)
-        ? false
-        : true;
+        string.Equals(Environment.GetEnvironmentVariable("CI"), "true", StringComparison.OrdinalIgnoreCase) ||
+        string.Equals(Environment.GetEnvironmentVariable("PLAYWRIGHT_HEADLESS"), "true", StringComparison.OrdinalIgnoreCase);
 
     public async Task InitializeAsync()
     {
@@ -92,7 +90,7 @@ public class KopiKalaServerFixture : IAsyncLifetime
         Browser = await PlaywrightInstance.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
         {
             Headless = Headless,
-            SlowMo = Headless ? 0 : 75
+            SlowMo = Headless ? 0 : 300
         });
     }
 
