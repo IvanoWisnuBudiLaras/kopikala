@@ -157,6 +157,7 @@
                                              Outlined="@(!isSelected)"
                                              Class="@GetTableCardClass(table, isSelected)"
                                              Style="cursor: pointer; transition: all 0.2s ease-in-out;"
+                                             data-testid="@($"table-{table.TableNumber}")"
                                              @onclick="@(() => SelectTable(table))">
                                         <MudCardContent Class="text-center pa-4">
                                             <MudIcon Icon="@Icons.Material.Filled.TableRestaurant"
@@ -193,6 +194,7 @@
                                              Outlined="@(!isSelected)"
                                              Class="@GetTableCardClass(table, isSelected)"
                                              Style="cursor: pointer; transition: all 0.2s ease-in-out;"
+                                             data-testid="@($"table-{table.TableNumber}")"
                                              @onclick="@(() => SelectTable(table))">
                                         <MudCardContent Class="text-center pa-4">
                                             <MudIcon Icon="@Icons.Material.Filled.Deck"
@@ -604,6 +606,7 @@
         }
 
         _selectedTable = table;
+        StateHasChanged();
     }
 
     private void AddToCart(MenuItemDto item)
