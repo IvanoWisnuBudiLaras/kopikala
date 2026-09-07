@@ -4,6 +4,7 @@ using KopiKala.Models;
 using KopiKala.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Time.Testing;
 using Moq;
@@ -15,7 +16,8 @@ namespace KopiKala.Tests.Integration;
 public class TimeTravelerBookingTests : IDisposable
 {
     private readonly ITestOutputHelper _output;
-    private readonly AppDbContext _context;
+    private readonly ServiceProvider _serviceProvider;
+    private readonly IServiceScopeFactory _scopeFactory;
     private readonly Mock<IWebHostEnvironment> _envMock;
     private readonly FakeTimeProvider _fakeTime;
     private readonly Mock<ILogger<BookingService>> _loggerMock;
@@ -28,25 +30,31 @@ public class TimeTravelerBookingTests : IDisposable
     {
         _output = output;
 
-        var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-            .Options;
+        var dbName = Guid.NewGuid().ToString();
+        var services = new ServiceCollection();
+        services.AddDbContext<AppDbContext>(options =>
+            options.UseInMemoryDatabase(databaseName: dbName));
 
-        _context = new AppDbContext(options);
+        _serviceProvider = services.BuildServiceProvider();
+        _scopeFactory = _serviceProvider.GetRequiredService<IServiceScopeFactory>();
+
         _envMock = new Mock<IWebHostEnvironment>();
         _loggerMock = new Mock<ILogger<BookingService>>();
 
         _fakeTime = new FakeTimeProvider();
         _fakeTime.SetUtcNow(new DateTimeOffset(2026, 9, 7, 10, 0, 0, TimeSpan.Zero));
 
-        _bookingService = new BookingService(_context, _envMock.Object, _fakeTime, _loggerMock.Object);
+        _bookingService = new BookingService(_scopeFactory, _envMock.Object, _fakeTime, _loggerMock.Object);
 
         SeedData();
     }
 
+    private AppDbContext GetContext() => _serviceProvider.CreateScope().ServiceProvider.GetRequiredService<AppDbContext>();
+
     private void SeedData()
     {
-        _context.Users.Add(new User
+        using var context = GetContext();
+        context.Users.Add(new User
         {
             Id = _userId,
             FullName = "Time Traveler User",
@@ -56,7 +64,7 @@ public class TimeTravelerBookingTests : IDisposable
             CreatedAt = DateTime.UtcNow
         });
 
-        _context.DiningTables.Add(new DiningTable
+        context.DiningTables.Add(new DiningTable
         {
             Id = _tableId,
             TableNumber = "IN-01",
@@ -65,7 +73,7 @@ public class TimeTravelerBookingTests : IDisposable
             IsActive = true
         });
 
-        _context.Timeslots.Add(new Timeslot
+        context.Timeslots.Add(new Timeslot
         {
             Id = 1,
             SessionName = "Sesi Pagi (09:00 - 11:00)",
@@ -73,13 +81,16 @@ public class TimeTravelerBookingTests : IDisposable
             EndTime = new TimeOnly(11, 0)
         });
 
-        _context.SaveChanges();
+        context.SaveChanges();
     }
 
     public void Dispose()
     {
-        _context.Database.EnsureDeleted();
-        _context.Dispose();
+        using (var context = GetContext())
+        {
+            context.Database.EnsureDeleted();
+        }
+        _serviceProvider.Dispose();
     }
 
     [Fact]

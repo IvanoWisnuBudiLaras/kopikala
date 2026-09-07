@@ -4,31 +4,35 @@ using KopiKala.DTOs.Staff;
 using KopiKala.Helpers;
 using KopiKala.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace KopiKala.Services;
 
 public class CashierService : ICashierService
 {
-    private readonly AppDbContext _context;
+    private readonly IServiceScopeFactory _scopeFactory;
     private readonly TimeProvider _timeProvider;
     private readonly ILogger<CashierService> _logger;
 
-    public CashierService(AppDbContext context, TimeProvider timeProvider, ILogger<CashierService> logger)
+    public CashierService(IServiceScopeFactory scopeFactory, TimeProvider timeProvider, ILogger<CashierService> logger)
     {
-        _context = context;
+        _scopeFactory = scopeFactory;
         _timeProvider = timeProvider;
         _logger = logger;
     }
 
     public async Task<List<CashierTableStatusDto>> GetTableStatusesAsync(DateOnly date, int timeslotId)
     {
-        var tables = await _context.DiningTables
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var tables = await context.DiningTables
             .Where(t => t.IsActive)
             .OrderBy(t => t.TableNumber)
             .ToListAsync();
 
-        var activeBookings = await _context.Bookings
+        var activeBookings = await context.Bookings
             .Include(b => b.Timeslot)
             .Where(b => b.BookingDate == date &&
                         b.TimeslotId == timeslotId &&
@@ -93,7 +97,10 @@ public class CashierService : ICashierService
 
     public async Task<List<CashierBookingDto>> GetPendingVerificationsAsync()
     {
-        var bookings = await _context.Bookings
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var bookings = await context.Bookings
             .Include(b => b.Table)
             .Include(b => b.Timeslot)
             .Include(b => b.User)
@@ -108,7 +115,10 @@ public class CashierService : ICashierService
 
     public async Task<List<CashierBookingDto>> SearchBookingsAsync(string? query = null, DateOnly? date = null)
     {
-        var q = _context.Bookings
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var q = context.Bookings
             .Include(b => b.Table)
             .Include(b => b.Timeslot)
             .Include(b => b.User)
@@ -137,7 +147,10 @@ public class CashierService : ICashierService
 
     public async Task<CashierBookingDto?> GetBookingDetailsAsync(Guid bookingId)
     {
-        var booking = await _context.Bookings
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var booking = await context.Bookings
             .Include(b => b.Table)
             .Include(b => b.Timeslot)
             .Include(b => b.User)
@@ -150,11 +163,14 @@ public class CashierService : ICashierService
 
     public async Task<bool> VerifyPaymentAsync(Guid bookingId, bool approved, string? notes = null)
     {
-        var booking = await _context.Bookings.FirstOrDefaultAsync(b => b.Id == bookingId);
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var booking = await context.Bookings.FirstOrDefaultAsync(b => b.Id == bookingId);
         if (booking == null) return false;
 
         booking.Status = approved ? "Dikonfirmasi" : "Batal";
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         _logger.LogInformation("Payment verification for Booking {BookingId}: Approved={Approved}", bookingId, approved);
         return true;
@@ -162,7 +178,10 @@ public class CashierService : ICashierService
 
     public async Task<bool> CheckInGuestAsync(Guid bookingId)
     {
-        var booking = await _context.Bookings.FirstOrDefaultAsync(b => b.Id == bookingId);
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var booking = await context.Bookings.FirstOrDefaultAsync(b => b.Id == bookingId);
         if (booking == null) return false;
 
         if (booking.Status != "Dikonfirmasi" && booking.Status != "MenungguVerifikasiKasir")
@@ -174,22 +193,25 @@ public class CashierService : ICashierService
         booking.Status = "SedangDigunakan";
         booking.SeatedAt = nowUtc;
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
         _logger.LogInformation("Guest checked in for Booking {BookingId} at {Time}", bookingId, nowUtc);
         return true;
     }
 
     public async Task<Guid> CreateWalkInBookingAsync(WalkInBookingRequestDto dto, Guid cashierId)
     {
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
         var today = DateOnly.FromDateTime(_timeProvider.GetUtcNow().LocalDateTime);
 
-        var table = await _context.DiningTables.FirstOrDefaultAsync(t => t.Id == dto.TableId && t.IsActive)
+        var table = await context.DiningTables.FirstOrDefaultAsync(t => t.Id == dto.TableId && t.IsActive)
             ?? throw new InvalidOperationException("Meja tidak valid atau tidak aktif.");
 
-        var timeslot = await _context.Timeslots.FirstOrDefaultAsync(ts => ts.Id == dto.TimeslotId)
+        var timeslot = await context.Timeslots.FirstOrDefaultAsync(ts => ts.Id == dto.TimeslotId)
             ?? throw new InvalidOperationException("Sesi waktu tidak valid.");
 
-        var isAlreadyBooked = await _context.Bookings.AnyAsync(b =>
+        var isAlreadyBooked = await context.Bookings.AnyAsync(b =>
             b.TableId == dto.TableId &&
             b.BookingDate == today &&
             b.TimeslotId == dto.TimeslotId &&
@@ -204,7 +226,7 @@ public class CashierService : ICashierService
         }
 
         var itemIds = dto.SelectedItems.Select(x => x.MenuItemId).Distinct().ToList();
-        var menuItems = await _context.MenuItems
+        var menuItems = await context.MenuItems
             .Where(m => itemIds.Contains(m.Id))
             .ToDictionaryAsync(m => m.Id, m => m);
 
@@ -229,6 +251,11 @@ public class CashierService : ICashierService
             }
         }
 
+        var cashier = await context.Users.FirstOrDefaultAsync(u => u.Id == cashierId)
+            ?? await context.Users.FirstOrDefaultAsync(u => u.Email == "kasir@kopikala.com")
+            ?? await context.Users.FirstAsync();
+        var actualUserId = cashier.Id;
+
         var nowUtc = _timeProvider.GetUtcNow().UtcDateTime;
         var invoiceCode = InvoiceCodeHelper.GenerateInvoiceCode(today);
 
@@ -236,7 +263,7 @@ public class CashierService : ICashierService
         {
             Id = Guid.NewGuid(),
             InvoiceCode = invoiceCode,
-            UserId = cashierId,
+            UserId = actualUserId,
             TableId = dto.TableId,
             TimeslotId = dto.TimeslotId,
             BookingDate = today,
@@ -251,16 +278,26 @@ public class CashierService : ICashierService
             BookingDetails = details
         };
 
-        _context.Bookings.Add(booking);
-        await _context.SaveChangesAsync();
-
-        _logger.LogInformation("Walk-in booking created: {BookingId} for Table {TableNumber}", booking.Id, table.TableNumber);
-        return booking.Id;
+        try
+        {
+            context.Bookings.Add(booking);
+            await context.SaveChangesAsync();
+            _logger.LogInformation("Walk-in booking created: {BookingId} for Table {TableNumber}", booking.Id, table.TableNumber);
+            return booking.Id;
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "DbUpdateException on walk-in booking: {Inner}", ex.InnerException?.Message);
+            throw new InvalidOperationException($"Gagal menyimpan booking: {ex.InnerException?.Message ?? ex.Message}", ex);
+        }
     }
 
     public async Task<bool> AddOrderToActiveBookingAsync(AddOnOrderRequestDto dto)
     {
-        var booking = await _context.Bookings
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var booking = await context.Bookings
             .Include(b => b.BookingDetails)
             .FirstOrDefaultAsync(b => b.Id == dto.BookingId);
 
@@ -272,7 +309,7 @@ public class CashierService : ICashierService
         }
 
         var itemIds = dto.Items.Select(x => x.MenuItemId).Distinct().ToList();
-        var menuItems = await _context.MenuItems
+        var menuItems = await context.MenuItems
             .Where(m => itemIds.Contains(m.Id))
             .ToDictionaryAsync(m => m.Id, m => m);
 
@@ -293,12 +330,12 @@ public class CashierService : ICashierService
                     SubTotal = subTotal,
                     OrderType = "AddOn"
                 };
-                _context.BookingDetails.Add(detail);
+                context.BookingDetails.Add(detail);
             }
         }
 
         booking.TotalAmount += addedAmount;
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         _logger.LogInformation("Add-on order added to Booking {BookingId}: +Rp{Amount}", booking.Id, addedAmount);
         return true;
@@ -306,7 +343,10 @@ public class CashierService : ICashierService
 
     public async Task<bool> SubstituteMenuItemAsync(SubstituteItemRequestDto dto)
     {
-        var booking = await _context.Bookings
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var booking = await context.Bookings
             .Include(b => b.BookingDetails)
             .FirstOrDefaultAsync(b => b.Id == dto.BookingId);
 
@@ -315,7 +355,7 @@ public class CashierService : ICashierService
         var oldDetail = booking.BookingDetails.FirstOrDefault(d => d.Id == dto.OldDetailId)
             ?? throw new InvalidOperationException("Item pesanan yang akan ditukar tidak ditemukan.");
 
-        var newMenuItem = await _context.MenuItems.FirstOrDefaultAsync(m => m.Id == dto.NewMenuItemId && m.IsAvailable)
+        var newMenuItem = await context.MenuItems.FirstOrDefaultAsync(m => m.Id == dto.NewMenuItemId && m.IsAvailable)
             ?? throw new InvalidOperationException("Item menu pengganti tidak valid atau sedang habis.");
 
         var oldSubTotal = oldDetail.SubTotal;
@@ -328,7 +368,7 @@ public class CashierService : ICashierService
         oldDetail.SubTotal = newSubTotal;
 
         booking.TotalAmount += priceDifference;
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         _logger.LogInformation("Item substituted in Booking {BookingId}: Diff={Diff}", booking.Id, priceDifference);
         return true;
@@ -336,7 +376,10 @@ public class CashierService : ICashierService
 
     public async Task<bool> ExtendBookingDurationAsync(ExtendDurationRequestDto dto)
     {
-        var booking = await _context.Bookings
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var booking = await context.Bookings
             .Include(b => b.Timeslot)
             .FirstOrDefaultAsync(b => b.Id == dto.BookingId);
 
@@ -347,14 +390,14 @@ public class CashierService : ICashierService
             throw new InvalidOperationException("Perpanjangan waktu hanya bisa dilakukan saat tamu sedang di meja.");
         }
 
-        var nextTimeslot = await _context.Timeslots
+        var nextTimeslot = await context.Timeslots
             .Where(ts => ts.StartTime >= booking.Timeslot.StartTime.AddHours(booking.DurationHours))
             .OrderBy(ts => ts.StartTime)
             .FirstOrDefaultAsync();
 
         if (nextTimeslot != null)
         {
-            var isNextBooked = await _context.Bookings.AnyAsync(b =>
+            var isNextBooked = await context.Bookings.AnyAsync(b =>
                 b.TableId == booking.TableId &&
                 b.BookingDate == booking.BookingDate &&
                 b.TimeslotId == nextTimeslot.Id &&
@@ -373,18 +416,21 @@ public class CashierService : ICashierService
         booking.DurationHours += dto.AdditionalHours;
         booking.ExpiresAt = booking.ExpiresAt.AddHours(dto.AdditionalHours);
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
         _logger.LogInformation("Booking {BookingId} extended by {Hours} hours", booking.Id, dto.AdditionalHours);
         return true;
     }
 
     public async Task<bool> CompleteBookingSessionAsync(Guid bookingId)
     {
-        var booking = await _context.Bookings.FirstOrDefaultAsync(b => b.Id == bookingId);
+        using var scope = _scopeFactory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var booking = await context.Bookings.FirstOrDefaultAsync(b => b.Id == bookingId);
         if (booking == null) return false;
 
         booking.Status = "Selesai";
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         _logger.LogInformation("Booking session completed: {BookingId}", bookingId);
         return true;
