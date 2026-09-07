@@ -1,17 +1,36 @@
+version: '3.8'
+
 services:
-  postgres:
-    image: postgres:17-alpine
-    container_name: kopikala-db
+  kopikala-db:
+    image: postgres:16-alpine
+    container_name: kopikala-postgres
     restart: always
     environment:
-      POSTGRES_DB: kopikala
-      POSTGRES_USER: kopikala
-      POSTGRES_PASSWORD: kopikala
+      POSTGRES_USER: kopikala_user
+      POSTGRES_PASSWORD: kopikala_password123
+      POSTGRES_DB: kopikala_db
     ports:
       - "5432:5432"
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-      - pgdata:/var/lib/postgresql/data
+      - kopikala_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kopikala_user -d kopikala_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  kopikala-web:
+    build:
+      context: .
+      dockerfile: KopiKala/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=kopikala-db;Port=5432;Database=kopikala_db;Username=kopikala_user;Password=kopikala_password123
+    depends_on:
+      kopikala-db:
+        condition: service_healthy
 
 volumes:
-  pgdata:
+  kopikala_pgdata:
+    driver: local
