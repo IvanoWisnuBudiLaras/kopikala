@@ -67,3 +67,14 @@ dotnet test KopiKala.Tests/KopiKala.Tests.csproj -p:CollectCoverage=true -p:Incl
 | KopiKala | 100% | 50%    | 100%   |
 +----------+------+--------+--------+
 ```
+
+### B. End-to-End (E2E) Browser Tests via Microsoft Playwright (Headed Mode)
+
+```shell
+dotnet test KopiKala.Tests.E2E/KopiKala.Tests.E2E.csproj --filter "FullyQualifiedName~CashierOperationsE2ETests"
+```
+
+**Hasil E2E**:
+1. `Scenario1_CashierPortal_LoginAndVerifyTableFloorPlan` (Passed): Verifikasi login staf kasir, render denah meja 2D Indoor AC & Outdoor Smoking, serta tombol aksi cepat.
+2. `Scenario2_CashierWalkIn_SimplifiedFlow` (Passed): Pembukaan meja langsung untuk tamu fisik walk-in (offline) dengan input perwakilan tamu dan perubahan otomatis status meja ke `SedangDigunakan`.
+3. `Scenario3_CashierVerifyPayment_InspectionAndApprovalFlow` (Passed): Alur terpadu pelanggan upload bukti transfer bank, kasir memeriksa antrean verifikasi di `/Staff`, inspeksi modal foto bukti bayar, konfirmasi 'Lunas', dan pembaruan instan status reservasi ke `Dikonfirmasi`.
