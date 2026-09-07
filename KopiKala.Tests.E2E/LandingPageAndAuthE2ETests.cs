@@ -57,9 +57,21 @@ public class LandingPageAndAuthE2ETests
             foreach (var img in imageElements)
             {
                 var src = await img.GetAttributeAsync("src");
+                await img.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 5000 });
+                var isLoaded = await img.EvaluateAsync<bool>("""
+                    async (el) => {
+                        if (el.complete && el.naturalWidth > 0) return true;
+                        try {
+                            if (el.decode) await el.decode();
+                            return el.naturalWidth > 0;
+                        } catch {
+                            return el.naturalWidth > 0;
+                        }
+                    }
+                """);
                 var naturalWidth = await img.EvaluateAsync<int>("el => el.naturalWidth");
-                _output.WriteLine($"  → Gambar '{src}' - naturalWidth: {naturalWidth}px");
-                Assert.True(naturalWidth > 0, $"Gambar '{src}' tidak boleh rusak (naturalWidth > 0).");
+                _output.WriteLine($"  → Gambar '{src}' - loaded: {isLoaded}, naturalWidth: {naturalWidth}px");
+                Assert.True(naturalWidth > 0 || isLoaded, $"Gambar '{src}' tidak boleh rusak.");
             }
 
             _output.WriteLine("[SUCCESS] Skenario 1 (Tampilan Publik) berhasil diverifikasi!");
