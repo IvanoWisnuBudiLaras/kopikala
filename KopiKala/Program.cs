@@ -35,7 +35,9 @@ public class Program
         });
 
         // 4. Layanan Bisnis, Otentikasi & API Controllers
+        builder.Services.AddSingleton(TimeProvider.System);
         builder.Services.AddScoped<IAuthService, AuthService>();
+        builder.Services.AddScoped<IBookingService, BookingService>();
         builder.Services.AddHttpClient();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddControllers();

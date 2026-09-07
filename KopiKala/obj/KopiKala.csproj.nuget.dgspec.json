@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "I:\\dev\\web\\KopiKala\\KopiKala\\KopiKala.csproj": {}
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-4-booking-wizard\\KopiKala\\KopiKala.csproj": {}
   },
   "projects": {
-    "I:\\dev\\web\\KopiKala\\KopiKala\\KopiKala.csproj": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-4-booking-wizard\\KopiKala\\KopiKala.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "I:\\dev\\web\\KopiKala\\KopiKala\\KopiKala.csproj",
+        "projectUniqueName": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-4-booking-wizard\\KopiKala\\KopiKala.csproj",
         "projectName": "KopiKala",
-        "projectPath": "I:\\dev\\web\\KopiKala\\KopiKala\\KopiKala.csproj",
+        "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-4-booking-wizard\\KopiKala\\KopiKala.csproj",
         "packagesPath": "C:\\Users\\maste\\.nuget\\packages\\",
-        "outputPath": "I:\\dev\\web\\KopiKala\\KopiKala\\obj\\",
+        "outputPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-4-booking-wizard\\KopiKala\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -87,6 +87,14 @@
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[10.0.0, )"
+            },
+            "OpenIddict.AspNetCore": {
+              "target": "Package",
+              "version": "[6.1.1, )"
+            },
+            "OpenIddict.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.1.1, )"
             }
           },
           "imports": [

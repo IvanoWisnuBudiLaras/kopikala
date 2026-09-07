@@ -1,0 +1,151 @@
+@page "/Customer/Orders"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject IBookingService BookingService
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+@inject AuthenticationStateProvider AuthStateProvider
+
+<PageTitle>Riwayat Pesanan Saya - KopiKala</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="py-6">
+    <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-6 flex-wrap">
+        <div>
+            <MudText Typo="Typo.h4" Class="font-weight-bold" Color="Color.Primary">
+                <MudIcon Icon="@Icons.Material.Filled.ReceiptLong" Class="mr-2" Size="Size.Large" />
+                Riwayat Pesanan Saya
+            </MudText>
+            <MudText Typo="Typo.body1" Color="Color.Secondary">
+                Daftar seluruh reservasi meja dan pre-order menu kopi Anda di KopiKala.
+            </MudText>
+        </div>
+        <MudButton Href="/Booking" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add">
+            Reservasi Baru
+        </MudButton>
+    </MudStack>
+
+    @if (_isLoading)
+    {
+        <MudCard Class="pa-8 text-center" Elevation="2">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+            <MudText Typo="Typo.body1" Class="mt-4" Color="Color.Secondary">Memuat riwayat pesanan...</MudText>
+        </MudCard>
+    }
+    else if (!_bookings.Any())
+    {
+        <MudPaper Class="pa-12 text-center" Elevation="1">
+            <MudIcon Icon="@Icons.Material.Filled.EventBusy" Size="Size.Large" Color="Color.Secondary" Class="mb-4" />
+            <MudText Typo="Typo.h6" Class="font-weight-bold mb-2">Belum Ada Riwayat Pemesanan</MudText>
+            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-6">
+                Anda belum pernah melakukan reservasi meja di KopiKala.
+            </MudText>
+            <MudButton Href="/Booking" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large">
+                Pesan Meja Sekarang
+            </MudButton>
+        </MudPaper>
+    }
+    else
+    {
+        <MudGrid Spacing="4">
+            @foreach (var b in _bookings)
+            {
+                <MudItem xs="12" md="6">
+                    <MudCard Elevation="2" Class="h-100 d-flex flex-column">
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                                    <MudText Typo="Typo.h6" Class="font-weight-bold" Color="Color.Primary">
+                                        @b.InvoiceCode
+                                    </MudText>
+                                    <MudChip T="string" Color="@GetStatusChipColor(b.Status)" Size="Size.Small" Class="font-weight-bold">
+                                        @b.Status
+                                    </MudChip>
+                                </MudStack>
+                                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                                    Dibuat: @b.CreatedAt.ToLocalTime().ToString("dd MMM yyyy, HH:mm") WIB
+                                </MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+
+                        <MudCardContent Class="flex-grow-1 pt-0">
+                            <MudSimpleTable Dense="true" Class="mb-3">
+                                <tbody>
+                                    <tr>
+                                        <td><b>Meja</b></td>
+                                        <td>@b.TableNumber (@b.Area)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Tanggal &amp; Sesi</b></td>
+                                        <td>@b.BookingDate.ToString("dd MMM yyyy") (@b.StartTime.ToString(@"hh\:mm") - @b.EndTime.ToString(@"hh\:mm"))</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Perwakilan</b></td>
+                                        <td>@b.RepresentativeName</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Total Tagihan</b></td>
+                                        <td><b class="text-primary">@b.TotalAmount.ToRupiah()</b></td>
+                                    </tr>
+                                </tbody>
+                            </MudSimpleTable>
+
+                            @if (b.Items.Any())
+                            {
+                                <MudText Typo="Typo.caption" Color="Color.Secondary" Class="d-block">
+                                    <b>Pre-Order:</b> @string.Join(", ", b.Items.Select(i => $"{i.Quantity}x {i.Name}"))
+                                </MudText>
+                            }
+                        </MudCardContent>
+
+                        <MudCardActions Class="pa-4 pt-0 d-flex justify-end">
+                            <MudButton Href="@($"/Invoice/{b.BookingId}")"
+                                       Variant="Variant.Outlined"
+                                       Color="Color.Primary"
+                                       Size="Size.Small"
+                                       EndIcon="@Icons.Material.Filled.ArrowForward">
+                                Buka Detail Invoice
+                            </MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+    }
+</MudContainer>
+
+@code {
+    private bool _isLoading = true;
+    private List<InvoiceResponseDto> _bookings = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            var userIdClaim = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (Guid.TryParse(userIdClaim, out var userId))
+            {
+                _bookings = await BookingService.GetUserBookingsAsync(userId);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Gagal memuat pesanan: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private static Color GetStatusChipColor(string status) => status switch
+    {
+        "Lunas" or "Dikonfirmasi" => Color.Success,
+        "MenungguBayar" => Color.Warning,
+        "MenungguVerifikasiKasir" => Color.Info,
+        "SedangDigunakan" => Color.Primary,
+        "Selesai" => Color.Dark,
+        "Batal" or "Kedaluwarsa" or "NoShow" => Color.Error,
+        _ => Color.Default
+    };
+}

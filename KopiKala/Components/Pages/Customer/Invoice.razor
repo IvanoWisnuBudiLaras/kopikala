@@ -1,0 +1,384 @@
+@page "/Invoice/{BookingId:guid}"
+@page "/Customer/Invoice/{BookingId:guid}"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject IBookingService BookingService
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+@inject IJSRuntime JSRuntime
+@implements IDisposable
+
+<PageTitle>Detail Invoice - @(_invoice?.InvoiceCode ?? "KopiKala")</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="py-6">
+    @if (_isLoading)
+    {
+        <MudCard Class="pa-8 text-center" Elevation="2">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+            <MudText Typo="Typo.body1" Class="mt-4" Color="Color.Secondary">Memuat rincian invoice...</MudText>
+        </MudCard>
+    }
+    else if (_invoice == null)
+    {
+        <MudAlert Severity="Severity.Error" Class="my-4">
+            Invoice dengan ID tersebut tidak ditemukan atau Anda tidak memiliki akses ke invoice ini.
+        </MudAlert>
+        <MudButton Href="/Booking" Variant="Variant.Filled" Color="Color.Primary">
+            Kembali ke Pemesanan
+        </MudButton>
+    }
+    else
+    {
+        <MudPaper Elevation="3" Class="pa-6 rounded-lg">
+            @* ── HEADER INVOICE ── *@
+            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4 flex-wrap">
+                <div>
+                    <MudText Typo="Typo.h5" Class="font-weight-bold" Color="Color.Primary">
+                        <MudIcon Icon="@Icons.Material.Filled.Receipt" Class="mr-2" />
+                        Invoice @(_invoice.InvoiceCode)
+                    </MudText>
+                    <MudText Typo="Typo.caption" Color="Color.Secondary">
+                        Diterbitkan pada: @_invoice.CreatedAt.ToLocalTime().ToString("dd MMM yyyy, HH:mm") WIB
+                    </MudText>
+                </div>
+                <MudChip T="string" Color="@GetStatusChipColor(_invoice.Status)" Size="Size.Medium" Class="font-weight-bold">
+                    @_invoice.Status
+                </MudChip>
+            </MudStack>
+
+            <MudDivider Class="my-3" />
+
+            @* ── COUNTDOWN TIMER (If MenungguBayar) ── *@
+            @if (_invoice.Status == "MenungguBayar" && !_isExpired)
+            {
+                <MudAlert Severity="Severity.Warning" Icon="@Icons.Material.Filled.Timer" Class="mb-4">
+                    <div class="d-flex justify-space-between align-center flex-wrap">
+                        <span>Selesaikan pembayaran &amp; unggah bukti transfer dalam:</span>
+                        <b class="text-h6 font-weight-bold ml-2">@_countdownDisplay</b>
+                    </div>
+                </MudAlert>
+            }
+            else if (_invoice.Status == "Kedaluwarsa" || _isExpired)
+            {
+                <MudAlert Severity="Severity.Error" Icon="@Icons.Material.Filled.Cancel" Class="mb-4">
+                    Invoice ini telah kedaluwarsa karena batas waktu pembayaran 15 menit telah habis. Silakan lakukan reservasi baru.
+                </MudAlert>
+            }
+
+            @* ── DETAIL RESERVASI MEJA ── *@
+            <MudText Typo="Typo.h6" Class="font-weight-bold mb-2" Color="Color.Primary">
+                <MudIcon Icon="@Icons.Material.Filled.TableBar" Size="Size.Small" Class="mr-1" />
+                Informasi Reservasi &amp; Tamu
+            </MudText>
+            <MudGrid Spacing="2" Class="mb-4">
+                <MudItem xs="12" sm="6">
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">Nama Perwakilan</MudText>
+                    <MudText Typo="Typo.body1" Class="font-weight-bold">@_invoice.RepresentativeName</MudText>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">Nomor WhatsApp</MudText>
+                    <MudText Typo="Typo.body1" Class="font-weight-bold">@_invoice.CustomerPhone</MudText>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">Nomor Meja</MudText>
+                    <MudText Typo="Typo.body1" Class="font-weight-bold">
+                        @_invoice.TableNumber (@_invoice.Area) &mdash; @_invoice.Capacity Kursi
+                    </MudText>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">Waktu Kunjungan</MudText>
+                    <MudText Typo="Typo.body1" Class="font-weight-bold">
+                        @_invoice.BookingDate.ToString("dddd, dd MMMM yyyy") (@_invoice.StartTime.ToString(@"hh\:mm") - @_invoice.EndTime.ToString(@"hh\:mm"))
+                    </MudText>
+                </MudItem>
+            </MudGrid>
+
+            <MudDivider Class="my-3" />
+
+            @* ── RINCIAN F&B MENU ── *@
+            <MudText Typo="Typo.h6" Class="font-weight-bold mb-2" Color="Color.Primary">
+                <MudIcon Icon="@Icons.Material.Filled.Restaurant" Size="Size.Small" Class="mr-1" />
+                Rincian Pesanan Menu (@_invoice.Items.Sum(i => i.Quantity) Item)
+            </MudText>
+            @if (_invoice.Items.Any())
+            {
+                <MudSimpleTable Dense="true" Hover="true" Class="mb-4">
+                    <thead>
+                        <tr>
+                            <th>Menu</th>
+                            <th class="text-center">Jumlah</th>
+                            <th class="text-right">Harga Satuan</th>
+                            <th class="text-right">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in _invoice.Items)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td class="text-center">@item.Quantity</td>
+                                <td class="text-right">@item.UnitPrice.ToRupiah()</td>
+                                <td class="text-right">@item.SubTotal.ToRupiah()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </MudSimpleTable>
+            }
+            else
+            {
+                <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-4">
+                    (Tidak ada pre-order menu F&amp;B. Anda bisa memesan langsung di kasir).
+                </MudText>
+            }
+
+            @* Total Tagihan *@
+            <MudPaper Class="pa-4 mb-4" Outlined="true" Style="background-color: var(--mud-palette-background-gray);">
+                <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                    <div>
+                        <MudText Typo="Typo.subtitle1" Class="font-weight-bold">Total Tagihan Pembayaran</MudText>
+                        <MudText Typo="Typo.caption" Color="Color.Secondary">Metode: @_invoice.PaymentMethod</MudText>
+                    </div>
+                    <MudText Typo="Typo.h4" Class="font-weight-bold" Color="Color.Primary">
+                        @_invoice.TotalAmount.ToRupiah()
+                    </MudText>
+                </MudStack>
+            </MudPaper>
+
+            <MudDivider Class="my-3" />
+
+            @* ── INSTRUKSI PEMBAYARAN JALUR A (Transfer Bank) ── *@
+            @if (_invoice.PaymentMethod == "TransferBank")
+            {
+                <MudCard Elevation="1" Class="pa-4 mb-4" Outlined="true">
+                    <MudText Typo="Typo.subtitle1" Class="font-weight-bold mb-2" Color="Color.Primary">
+                        <MudIcon Icon="@Icons.Material.Filled.AccountBalance" Size="Size.Small" Class="mr-1" />
+                        Instruksi Transfer Bank
+                    </MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-3">
+                        Silakan transfer sesuai nominal total di atas ke nomor rekening resmi KopiKala berikut:
+                    </MudText>
+
+                    <MudPaper Class="pa-3 mb-3 d-flex justify-space-between align-center" Elevation="0" Outlined="true">
+                        <div>
+                            <MudText Typo="Typo.subtitle2" Class="font-weight-bold">Bank BCA</MudText>
+                            <MudText Typo="Typo.h6" Class="font-weight-bold" Color="Color.Primary">123-456-7890</MudText>
+                            <MudText Typo="Typo.caption" Color="Color.Secondary">a.n. PT KopiKala Nusantara</MudText>
+                        </div>
+                        <MudButton Variant="Variant.Outlined"
+                                   Color="Color.Primary"
+                                   Size="Size.Small"
+                                   StartIcon="@Icons.Material.Filled.ContentCopy"
+                                   OnClick="CopyBankNumberAsync">
+                            Salin Rekening
+                        </MudButton>
+                    </MudPaper>
+
+                    @* Upload Proof Form *@
+                    @if (_invoice.Status == "MenungguBayar" && !_isExpired)
+                    {
+                        <MudText Typo="Typo.subtitle2" Class="font-weight-bold mb-2">
+                            Unggah Foto Bukti Transfer (Maks. 2MB, JPG/PNG)
+                        </MudText>
+                        <MudFileUpload T="IBrowserFile" FilesChanged="UploadProofAsync" Accept=".jpg,.jpeg,.png">
+                            <ActivatorContent>
+                                <MudButton Variant="Variant.Filled"
+                                           Color="Color.Primary"
+                                           StartIcon="@Icons.Material.Filled.CloudUpload"
+                                           Disabled="@_isUploading">
+                                    @if (_isUploading)
+                                    {
+                                        <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                                        <span>Mengunggah...</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Pilih Foto Bukti Transfer</span>
+                                    }
+                                </MudButton>
+                            </ActivatorContent>
+                        </MudFileUpload>
+                    }
+                    else if (!string.IsNullOrEmpty(_invoice.PaymentProofUrl))
+                    {
+                        <MudAlert Severity="Severity.Success" Class="mt-2" Icon="@Icons.Material.Filled.CheckCircle">
+                            Bukti transfer telah diunggah dan sedang dalam verifikasi kasir.
+                        </MudAlert>
+                        <MudLink Href="@_invoice.PaymentProofUrl" Target="_blank" Typo="Typo.body2" Color="Color.Primary" Class="mt-1 d-block">
+                            Lihat Foto Bukti Transfer yang Diunggah
+                        </MudLink>
+                    }
+                </MudCard>
+            }
+            else
+            {
+                @* ── INSTRUKSI PEMBAYARAN JALUR B (Bayar di Tempat) ── *@
+                <MudCard Elevation="1" Class="pa-4 mb-4" Outlined="true">
+                    <MudText Typo="Typo.subtitle1" Class="font-weight-bold mb-2" Color="Color.Primary">
+                        <MudIcon Icon="@Icons.Material.Filled.Storefront" Size="Size.Small" Class="mr-1" />
+                        Bayar di Tempat (Kasir)
+                    </MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-2">
+                        Silakan langsung menuju kasir saat tiba di kafe dengan menyebutkan Nama Perwakilan <b>@_invoice.RepresentativeName</b> atau menunjukkan Kode Invoice <b>@_invoice.InvoiceCode</b>.
+                    </MudText>
+                    <MudAlert Severity="Severity.Info" Dense="true">
+                        Toleransi keterlambatan kedatangan adalah <b>20 menit</b> dari waktu sesi mulai.
+                    </MudAlert>
+                </MudCard>
+            }
+
+            @* ── ACTION BUTTONS ── *@
+            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mt-6 flex-wrap">
+                <MudButton Href="/Customer/Orders"
+                           Variant="Variant.Outlined"
+                           Color="Color.Secondary"
+                           StartIcon="@Icons.Material.Filled.ListAlt">
+                    Lihat Semua Pesanan Saya
+                </MudButton>
+
+                <MudButton Href="/"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.Home">
+                    Kembali ke Beranda
+                </MudButton>
+            </MudStack>
+        </MudPaper>
+    }
+</MudContainer>
+
+@code {
+    [Parameter]
+    public Guid BookingId { get; set; }
+
+    private bool _isLoading = true;
+    private bool _isUploading = false;
+    private bool _isExpired = false;
+    private InvoiceResponseDto? _invoice;
+
+    private System.Threading.Timer? _countdownTimer;
+    private string _countdownDisplay = "15:00";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadInvoiceAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadInvoiceAsync();
+    }
+
+    private async Task LoadInvoiceAsync()
+    {
+        try
+        {
+            _invoice = await BookingService.GetInvoiceAsync(BookingId);
+            if (_invoice != null)
+            {
+                StartCountdown();
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Gagal memuat invoice: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void StartCountdown()
+    {
+        _countdownTimer?.Dispose();
+        UpdateCountdown();
+
+        _countdownTimer = new System.Threading.Timer(_ =>
+        {
+            InvokeAsync(() =>
+            {
+                UpdateCountdown();
+                StateHasChanged();
+            });
+        }, null, 1000, 1000);
+    }
+
+    private void UpdateCountdown()
+    {
+        if (_invoice == null) return;
+
+        var remaining = _invoice.ExpiresAt - DateTime.UtcNow;
+        if (remaining <= TimeSpan.Zero)
+        {
+            _countdownDisplay = "00:00";
+            _isExpired = true;
+            _countdownTimer?.Dispose();
+        }
+        else
+        {
+            _countdownDisplay = $"{(int)remaining.TotalMinutes:D2}:{remaining.Seconds:D2}";
+        }
+    }
+
+    private async Task CopyBankNumberAsync()
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", "1234567890");
+            Snackbar.Add("Nomor rekening BCA (1234567890) berhasil disalin ke clipboard!", Severity.Success);
+        }
+        catch
+        {
+            Snackbar.Add("Salin manual nomor rekening: 1234567890", Severity.Info);
+        }
+    }
+
+    private async Task UploadProofAsync(IBrowserFile file)
+    {
+        if (file == null || _invoice == null) return;
+
+        _isUploading = true;
+        try
+        {
+            using var stream = file.OpenReadStream(FileSecurityHelper.MaxFileSizeBytes);
+            var success = await BookingService.UploadPaymentProofAsync(_invoice.BookingId, stream, file.Name);
+
+            if (success)
+            {
+                Snackbar.Add("Bukti transfer berhasil diunggah! Kasir akan segera memverifikasi.", Severity.Success);
+                await LoadInvoiceAsync();
+            }
+            else
+            {
+                Snackbar.Add("Gagal mengunggah bukti transfer.", Severity.Error);
+            }
+        }
+        catch (ArgumentException ex)
+        {
+            Snackbar.Add(ex.Message, Severity.Warning);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Kesalahan unggah: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isUploading = false;
+        }
+    }
+
+    private static Color GetStatusChipColor(string status) => status switch
+    {
+        "Lunas" or "Dikonfirmasi" => Color.Success,
+        "MenungguBayar" => Color.Warning,
+        "MenungguVerifikasiKasir" => Color.Info,
+        "SedangDigunakan" => Color.Primary,
+        "Selesai" => Color.Dark,
+        "Batal" or "Kedaluwarsa" or "NoShow" => Color.Error,
+        _ => Color.Default
+    };
+
+    public void Dispose()
+    {
+        _countdownTimer?.Dispose();
+    }
+}
