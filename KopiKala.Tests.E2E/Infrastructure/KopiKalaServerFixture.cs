@@ -31,7 +31,7 @@ public class KopiKalaServerFixture : IAsyncLifetime
         var startInfo = new ProcessStartInfo
         {
             FileName = "dotnet",
-            Arguments = $"run --urls \"{BaseUrl}\"",
+            Arguments = $"run --no-build --urls \"{BaseUrl}\"",
             WorkingDirectory = projectPath,
             UseShellExecute = false,
             CreateNoWindow = true

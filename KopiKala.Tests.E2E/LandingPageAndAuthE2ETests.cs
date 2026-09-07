@@ -6,7 +6,8 @@ using Xunit.Abstractions;
 
 namespace KopiKala.Tests.E2E;
 
-public class LandingPageAndAuthE2ETests : IClassFixture<KopiKalaServerFixture>
+[Collection("E2E Test Collection")]
+public class LandingPageAndAuthE2ETests
 {
     private readonly KopiKalaServerFixture _fixture;
     private readonly ITestOutputHelper _output;

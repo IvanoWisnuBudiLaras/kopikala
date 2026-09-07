@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8KRcBI8x3Ig=",
+  "dgSpecHash": "73cPMMKHwp8=",
   "success": true,
-  "projectFilePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-4-e2e-playwright\\KopiKala.Tests.E2E\\KopiKala.Tests.E2E.csproj",
+  "projectFilePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-e2e-collection-fixture\\KopiKala.Tests.E2E\\KopiKala.Tests.E2E.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\maste\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "C:\\Users\\maste\\.nuget\\packages\\microsoft.codecoverage\\17.14.0\\microsoft.codecoverage.17.14.0.nupkg.sha512",
