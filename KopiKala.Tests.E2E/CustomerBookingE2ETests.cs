@@ -131,7 +131,7 @@ public class CustomerBookingE2ETests
             _output.WriteLine("[E2E] Mengirim form reservasi & invoice...");
 
             // 6. Verifikasi Pengalihan ke Halaman Invoice
-            await page.WaitForURLAsync(new Regex(".*/Invoice/.*"), new() { Timeout = 15000 });
+            await page.WaitForURLAsync(new Regex(".*/Invoice/.*"), new() { WaitUntil = WaitUntilState.Commit, Timeout = 15000 });
             _output.WriteLine($"[E2E] Berhasil dialihkan ke halaman invoice: {page.Url}");
 
             var invoiceHeading = page.Locator("h5:has-text('Invoice')");

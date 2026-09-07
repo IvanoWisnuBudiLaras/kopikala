@@ -336,6 +336,7 @@ public class AuthServiceTests : IDisposable
         Assert.True(success);
         var updatedUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == "reset2@kopikala.com");
         Assert.NotNull(updatedUser);
+        Assert.NotNull(updatedUser.PasswordHash);
         Assert.True(PasswordHelper.VerifyPassword("NewPass123!", updatedUser.PasswordHash));
     }
 
