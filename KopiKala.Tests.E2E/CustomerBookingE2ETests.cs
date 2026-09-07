@@ -62,11 +62,11 @@ public class CustomerBookingE2ETests
             var step2Title = page.GetByText("Langkah 2: Pilih Denah Meja Interaktif");
             await step2Title.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 10000 });
 
-            // Klik meja IN-01 via data-testid
-            var tableCard = page.Locator("[data-testid='table-IN-01']");
-            await tableCard.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible });
-            await tableCard.ClickAsync();
-            _output.WriteLine("[E2E] Meja IN-01 diklik.");
+            // Klik tombol pilih meja IN-01 via data-testid
+            var selectTableBtn = page.Locator("[data-testid='btn-select-IN-01']");
+            await selectTableBtn.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible });
+            await selectTableBtn.ClickAsync();
+            _output.WriteLine("[E2E] Tombol 'Pilih Meja' pada IN-01 diklik.");
 
             // Tunggu tombol 'Lanjut: Pre-Order F&B' aktif (tidak disabled)
             var lanjutFnbBtn = page.GetByRole(AriaRole.Button, new() { Name = "Lanjut: Pre-Order F&B" });

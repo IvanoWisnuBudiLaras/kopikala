@@ -174,6 +174,17 @@
                                                 Kapasitas: @table.Capacity Orang
                                             </MudText>
                                         </MudCardContent>
+                                        <MudCardActions Class="pa-3 pt-0 d-flex justify-center">
+                                            <MudButton Variant="@(isSelected ? Variant.Filled : Variant.Outlined)"
+                                                       Color="@(isSelected ? Color.Warning : (table.IsAvailable ? Color.Primary : Color.Default))"
+                                                       Size="Size.Small"
+                                                       FullWidth="true"
+                                                       Disabled="@(!table.IsAvailable)"
+                                                       data-testid="@($"btn-select-{table.TableNumber}")"
+                                                       OnClick="@(() => SelectTable(table))">
+                                                @(isSelected ? "Meja Terpilih" : (table.IsAvailable ? "Pilih Meja Ini" : "Penuh"))
+                                            </MudButton>
+                                        </MudCardActions>
                                     </MudCard>
                                 </MudItem>
                             }
@@ -211,6 +222,17 @@
                                                 Kapasitas: @table.Capacity Orang
                                             </MudText>
                                         </MudCardContent>
+                                        <MudCardActions Class="pa-3 pt-0 d-flex justify-center">
+                                            <MudButton Variant="@(isSelected ? Variant.Filled : Variant.Outlined)"
+                                                       Color="@(isSelected ? Color.Warning : (table.IsAvailable ? Color.Primary : Color.Default))"
+                                                       Size="Size.Small"
+                                                       FullWidth="true"
+                                                       Disabled="@(!table.IsAvailable)"
+                                                       data-testid="@($"btn-select-{table.TableNumber}")"
+                                                       OnClick="@(() => SelectTable(table))">
+                                                @(isSelected ? "Meja Terpilih" : (table.IsAvailable ? "Pilih Meja Ini" : "Penuh"))
+                                            </MudButton>
+                                        </MudCardActions>
                                     </MudCard>
                                 </MudItem>
                             }
