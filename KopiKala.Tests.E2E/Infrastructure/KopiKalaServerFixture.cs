@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using Microsoft.Playwright;
 using Xunit;
 
@@ -12,6 +13,7 @@ public class KopiKalaServerFixture : IAsyncLifetime
     public string BaseUrl { get; private set; } = "";
     public IPlaywright? PlaywrightInstance { get; private set; }
     public IBrowser? Browser { get; private set; }
+    public StringBuilder ServerLogs { get; } = new();
 
     // Mode Headless dapat diatur via environment variable (default: false / Headed live browser)
     public bool Headless { get; } =
@@ -33,18 +35,37 @@ public class KopiKalaServerFixture : IAsyncLifetime
             Arguments = $"run --no-build --urls \"{BaseUrl}\"",
             WorkingDirectory = projectPath,
             UseShellExecute = false,
-            CreateNoWindow = true
+            CreateNoWindow = true,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true
         };
         startInfo.EnvironmentVariables["ASPNETCORE_ENVIRONMENT"] = "Development";
         startInfo.EnvironmentVariables["DOTNET_ENVIRONMENT"] = "Development";
 
-        _serverProcess = Process.Start(startInfo);
+        _serverProcess = new Process { StartInfo = startInfo, EnableRaisingEvents = true };
+        _serverProcess.OutputDataReceived += (_, e) =>
+        {
+            if (e.Data != null) ServerLogs.AppendLine(e.Data);
+        };
+        _serverProcess.ErrorDataReceived += (_, e) =>
+        {
+            if (e.Data != null) ServerLogs.AppendLine($"[ERROR] {e.Data}");
+        };
+
+        _serverProcess.Start();
+        _serverProcess.BeginOutputReadLine();
+        _serverProcess.BeginErrorReadLine();
 
         // 2. Tunggu server siap merespons HTTP (maks 30 detik)
         using var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(2) };
         var isReady = false;
         for (var i = 0; i < 30; i++)
         {
+            if (_serverProcess.HasExited)
+            {
+                throw new InvalidOperationException($"Server KopiKala terminated with exit code {_serverProcess.ExitCode}.\nLOGS:\n{ServerLogs}");
+            }
+
             try
             {
                 var response = await httpClient.GetAsync(BaseUrl);
@@ -63,7 +84,7 @@ public class KopiKalaServerFixture : IAsyncLifetime
 
         if (!isReady)
         {
-            throw new InvalidOperationException($"Server KopiKala gagal siap di {BaseUrl} dalam 30 detik.");
+            throw new InvalidOperationException($"Server KopiKala gagal siap di {BaseUrl} dalam 30 detik.\nLOGS:\n{ServerLogs}");
         }
 
         // 3. Inisialisasi Microsoft Playwright & Chromium

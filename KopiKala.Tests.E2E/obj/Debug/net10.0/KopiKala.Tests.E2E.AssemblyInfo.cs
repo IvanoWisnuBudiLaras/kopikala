@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KopiKala.Tests.E2E")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1adbeab4997af93c36420939bb5e49484c6addff")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+75cb55404a56b01a88c0516c42220ced5623ce21")]
 [assembly: System.Reflection.AssemblyProductAttribute("KopiKala.Tests.E2E")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KopiKala.Tests.E2E")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
