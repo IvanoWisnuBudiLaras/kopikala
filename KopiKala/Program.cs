@@ -136,10 +136,11 @@ public class Program
 
         var app = builder.Build();
 
-        // Jalankan Database Seeder otomatis saat startup
+        // Jalankan Database Migration & Seeder otomatis saat startup
         using (var scope = app.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            await db.Database.MigrateAsync();
             await DbInitializer.SeedAsync(db, scope.ServiceProvider);
         }
 
