@@ -8,7 +8,7 @@ var postgres = builder.AddPostgres("kopikala-postgres", port: 5432)
 var db = postgres.AddDatabase("DefaultConnection", "kopikala_db");
 
 // Blazor Web App referencing the PostgreSQL database
-builder.AddProject<Projects.KopiKala>("kopikala-web")
+builder.AddProject("kopikala-web", "../KopiKala/KopiKala.csproj")
     .WithReference(db)
     .WaitFor(db);
 

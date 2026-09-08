@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KopiKala")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e0b36135a2207609716d9ac0cacc03c3b82887fb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aab4501cac1c0fa68599b8a8ab5353623ce01404")]
 [assembly: System.Reflection.AssemblyProductAttribute("KopiKala")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KopiKala")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Zg03gzb0GZE=",
+  "dgSpecHash": "KPvutnXcDiQ=",
   "success": true,
-  "projectFilePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\KopiKala.csproj",
+  "projectFilePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala\\KopiKala.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\maste\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\maste\\.nuget\\packages\\microsoft.aspnetcore.app.internal.assets\\10.0.11\\microsoft.aspnetcore.app.internal.assets.10.0.11.nupkg.sha512",
@@ -92,9 +92,9 @@
       "code": "NU1902",
       "level": "Warning",
       "message": "Package 'OpenTelemetry.Api' 1.11.2 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j",
-      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\KopiKala.csproj",
+      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala\\KopiKala.csproj",
       "warningLevel": 1,
-      "filePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\KopiKala.csproj",
+      "filePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala\\KopiKala.csproj",
       "libraryId": "OpenTelemetry.Api",
       "targetGraphs": [
         "net10.0"
@@ -104,9 +104,9 @@
       "code": "NU1902",
       "level": "Warning",
       "message": "Package 'OpenTelemetry.Exporter.OpenTelemetryProtocol' 1.11.2 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-4625-4j76-fww9",
-      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\KopiKala.csproj",
+      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala\\KopiKala.csproj",
       "warningLevel": 1,
-      "filePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\KopiKala.csproj",
+      "filePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala\\KopiKala.csproj",
       "libraryId": "OpenTelemetry.Exporter.OpenTelemetryProtocol",
       "targetGraphs": [
         "net10.0"

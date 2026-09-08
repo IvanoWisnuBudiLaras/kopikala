@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ykIPPJVITpo=",
+  "dgSpecHash": "LFYp2geH6DA=",
   "success": true,
-  "projectFilePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
+  "projectFilePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.ambientmetadata.application\\10.0.0\\microsoft.extensions.ambientmetadata.application.10.0.0.nupkg.sha512",
     "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.compliance.abstractions\\10.0.0\\microsoft.extensions.compliance.abstractions.10.0.0.nupkg.sha512",
@@ -32,9 +32,9 @@
       "code": "NU1902",
       "level": "Warning",
       "message": "Package 'OpenTelemetry.Api' 1.11.2 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j",
-      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
+      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
       "warningLevel": 1,
-      "filePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
+      "filePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
       "libraryId": "OpenTelemetry.Api",
       "targetGraphs": [
         "net10.0"
@@ -44,9 +44,9 @@
       "code": "NU1902",
       "level": "Warning",
       "message": "Package 'OpenTelemetry.Exporter.OpenTelemetryProtocol' 1.11.2 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-4625-4j76-fww9",
-      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
+      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
       "warningLevel": 1,
-      "filePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
+      "filePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
       "libraryId": "OpenTelemetry.Exporter.OpenTelemetryProtocol",
       "targetGraphs": [
         "net10.0"

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Qx4wLteRB90=",
+  "dgSpecHash": "ISTpR+Ocinc=",
   "success": true,
-  "projectFilePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.Tests\\KopiKala.Tests.csproj",
+  "projectFilePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.Tests\\KopiKala.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\maste\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\maste\\.nuget\\packages\\coverlet.collector\\6.0.4\\coverlet.collector.6.0.4.nupkg.sha512",
@@ -141,9 +141,9 @@
       "code": "NU1902",
       "level": "Warning",
       "message": "Package 'OpenTelemetry.Api' 1.11.2 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j",
-      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.Tests\\KopiKala.Tests.csproj",
+      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.Tests\\KopiKala.Tests.csproj",
       "warningLevel": 1,
-      "filePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.Tests\\KopiKala.Tests.csproj",
+      "filePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.Tests\\KopiKala.Tests.csproj",
       "libraryId": "OpenTelemetry.Api",
       "targetGraphs": [
         "net10.0"
@@ -153,9 +153,9 @@
       "code": "NU1902",
       "level": "Warning",
       "message": "Package 'OpenTelemetry.Exporter.OpenTelemetryProtocol' 1.11.2 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-4625-4j76-fww9",
-      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.Tests\\KopiKala.Tests.csproj",
+      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.Tests\\KopiKala.Tests.csproj",
       "warningLevel": 1,
-      "filePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.Tests\\KopiKala.Tests.csproj",
+      "filePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.Tests\\KopiKala.Tests.csproj",
       "libraryId": "OpenTelemetry.Exporter.OpenTelemetryProtocol",
       "targetGraphs": [
         "net10.0"

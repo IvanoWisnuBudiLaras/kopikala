@@ -964,11 +964,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
+      "projectUniqueName": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
       "projectName": "KopiKala.ServiceDefaults",
-      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
+      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
       "packagesPath": "C:\\Users\\maste\\.nuget\\packages\\",
-      "outputPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.ServiceDefaults\\obj\\",
+      "outputPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.ServiceDefaults\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
