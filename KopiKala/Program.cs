@@ -40,6 +40,7 @@ public class Program
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<IBookingService, BookingService>();
         builder.Services.AddScoped<ICashierService, CashierService>();
+        builder.Services.AddScoped<ISuperAdminService, SuperAdminService>();
         builder.Services.AddHttpClient();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddControllers();

@@ -1,12 +1,849 @@
 @page "/SuperAdmin"
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using KopiKala.DTOs.Admin
+@using KopiKala.Helpers
+@using KopiKala.Services
 @attribute [Authorize(Policy = "SuperAdminOnly")]
+@inject ISuperAdminService SuperAdminService
+@inject ISnackbar Snackbar
+@inject ILogger<Dashboard> Logger
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
-    <MudText Typo="Typo.h4" Class="mb-4">Area SuperAdmin</MudText>
-    <MudAlert Severity="Severity.Success" Variant="Variant.Filled">
-        <MudText Typo="Typo.body1">
-            Ruang kendali pemilik sistem. Kelola akun staf, peran kustom, dan template izin akses PBAC.
-        </MudText>
-    </MudAlert>
+<PageTitle>Panel SuperAdmin — KopiKala</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="my-4">
+    <!-- Header Area -->
+    <MudPaper Elevation="0" Class="pa-4 mb-4 rounded-lg d-flex justify-space-between align-center flex-wrap gap-4" Style="background: linear-gradient(135deg, #1A1A1A, #2D2420); color: #FFF;">
+        <div>
+            <MudText Typo="Typo.h5" Class="font-weight-bold d-flex align-center gap-2">
+                <MudIcon Icon="@Icons.Material.Filled.AdminPanelSettings" Size="Size.Large" Color="Color.Error" />
+                Ruang Kendali SuperAdmin
+            </MudText>
+            <MudText Typo="Typo.body2" Style="opacity: 0.85;">
+                Tata kelola hak akses Dynamic PBAC, manajemen akun staf, master data kafe, dan analitik bisnis terpadu.
+            </MudText>
+        </div>
+        <div class="d-flex align-center gap-2">
+            <MudChip T="string" Color="Color.Error" Variant="Variant.Filled" Icon="@Icons.Material.Filled.Security">
+                Dynamic PBAC Active
+            </MudChip>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Refresh" OnClick="LoadAllDataAsync">
+                Perbarui Data
+            </MudButton>
+        </div>
+    </MudPaper>
+
+    <!-- Main Navigation Tabs -->
+    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-4" Color="Color.Surface">
+        <!-- TAB 1: ANALYTICS DASHBOARD -->
+        <MudTabPanel Text="Analitik & KPI Bisnis" Icon="@Icons.Material.Filled.Insights">
+            @if (IsLoadingAnalytics)
+            {
+                <div class="d-flex justify-center my-8">
+                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+                </div>
+            }
+            else
+            {
+                <!-- 4 KPI Cards -->
+                <MudGrid Class="mb-6">
+                    <MudItem xs="12" sm="6" md="3">
+                        <MudCard Elevation="2" Class="rounded-lg pa-3" Style="border-left: 5px solid #2E7D32;">
+                            <div class="d-flex justify-space-between align-center">
+                                <div>
+                                    <MudText Typo="Typo.caption" Color="Color.Secondary">TOTAL OMZET HARI INI</MudText>
+                                    <MudText Typo="Typo.h5" Class="font-weight-bold text-success">@AnalyticsData.TodayRevenue.ToRupiah()</MudText>
+                                    <MudText Typo="Typo.caption" Color="Color.Default">Dari transaksi selesai</MudText>
+                                </div>
+                                <MudIcon Icon="@Icons.Material.Filled.AttachMoney" Size="Size.Large" Color="Color.Success" />
+                            </div>
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="3">
+                        <MudCard Elevation="2" Class="rounded-lg pa-3" Style="border-left: 5px solid #1976D2;">
+                            <div class="d-flex justify-space-between align-center">
+                                <div>
+                                    <MudText Typo="Typo.caption" Color="Color.Secondary">OKUPANSI MEJA REAL-TIME</MudText>
+                                    <MudText Typo="Typo.h5" Class="font-weight-bold text-primary">@AnalyticsData.ActiveOccupancyRate</MudText>
+                                    <MudText Typo="Typo.caption" Color="Color.Default">@AnalyticsData.OccupiedTablesNow / @AnalyticsData.TotalTables Meja Terisi</MudText>
+                                </div>
+                                <MudIcon Icon="@Icons.Material.Filled.TableBar" Size="Size.Large" Color="Color.Primary" />
+                            </div>
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="3">
+                        <MudCard Elevation="2" Class="rounded-lg pa-3" Style="border-left: 5px solid #ED6C02;">
+                            <div class="d-flex justify-space-between align-center">
+                                <div>
+                                    <MudText Typo="Typo.caption" Color="Color.Secondary">TOTAL RESERVASI HARI INI</MudText>
+                                    <MudText Typo="Typo.h5" Class="font-weight-bold text-warning">@AnalyticsData.TotalBookingsToday</MudText>
+                                    <MudText Typo="Typo.caption" Color="Color.Default">@AnalyticsData.TotalCompletedToday Selesai / Terisi</MudText>
+                                </div>
+                                <MudIcon Icon="@Icons.Material.Filled.EventAvailable" Size="Size.Large" Color="Color.Warning" />
+                            </div>
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="3">
+                        <MudCard Elevation="2" Class="rounded-lg pa-3" Style="border-left: 5px solid #D32F2F;">
+                            <div class="d-flex justify-space-between align-center">
+                                <div>
+                                    <MudText Typo="Typo.caption" Color="Color.Secondary">NO-SHOW & PEMBATALAN</MudText>
+                                    <MudText Typo="Typo.h5" Class="font-weight-bold text-error">@AnalyticsData.TotalNoShowsToday / @AnalyticsData.TotalCancelledToday</MudText>
+                                    <MudText Typo="Typo.caption" Color="Color.Default">No-Show / Batal</MudText>
+                                </div>
+                                <MudIcon Icon="@Icons.Material.Filled.EventBusy" Size="Size.Large" Color="Color.Error" />
+                            </div>
+                        </MudCard>
+                    </MudItem>
+                </MudGrid>
+
+                <!-- Charts Section -->
+                <MudGrid Class="mb-4">
+                    <MudItem xs="12" md="5">
+                        <MudCard Elevation="2" Class="pa-4 rounded-lg h-100">
+                            <MudText Typo="Typo.h6" Class="font-weight-bold mb-4 d-flex align-center gap-2">
+                                <MudIcon Icon="@Icons.Material.Filled.PieChart" Color="Color.Primary" />
+                                Rasio Okupansi Meja
+                            </MudText>
+                            @if (AnalyticsData.TotalTables > 0)
+                            {
+                                <MudChart ChartType="ChartType.Donut" InputData="@AnalyticsData.OccupancyDonutData" InputLabels="@AnalyticsData.OccupancyDonutLabels" Width="100%" Height="260px" />
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.body2" Color="Color.Secondary" Class="text-center my-8">Belum ada data meja.</MudText>
+                            }
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" md="7">
+                        <MudCard Elevation="2" Class="pa-4 rounded-lg h-100">
+                            <MudText Typo="Typo.h6" Class="font-weight-bold mb-4 d-flex align-center gap-2">
+                                <MudIcon Icon="@Icons.Material.Filled.BarChart" Color="Color.Warning" />
+                                5 Menu Terlaris (Kuantitas Terjual)
+                            </MudText>
+                            @if (AnalyticsData.TopSellingItems.Any())
+                            {
+                                <MudSimpleTable Dense="true" Hover="true" Striped="true" Class="mt-2">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama Menu</th>
+                                            <th class="text-right">Porsi Terjual</th>
+                                            <th class="text-right">Total Akumulasi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in AnalyticsData.TopSellingItems)
+                                        {
+                                            <tr>
+                                                <td class="font-weight-bold">@item.Name</td>
+                                                <td class="text-right"><MudChip T="string" Size="Size.Small" Color="Color.Primary">@item.TotalQuantity Porsi</MudChip></td>
+                                                <td class="text-right font-weight-bold text-success">@item.TotalRevenue.ToRupiah()</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </MudSimpleTable>
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.body2" Color="Color.Secondary" Class="text-center my-8">Belum ada data transaksi menu.</MudText>
+                            }
+                        </MudCard>
+                    </MudItem>
+                </MudGrid>
+            }
+        </MudTabPanel>
+
+        <!-- TAB 2: STAFF & DYNAMIC PBAC -->
+        <MudTabPanel Text="Akun Staf & Dynamic PBAC" Icon="@Icons.Material.Filled.PeopleAlt">
+            <MudGrid>
+                <!-- Left: Staff Account List -->
+                <MudItem xs="12" lg="7">
+                    <MudCard Elevation="2" Class="pa-4 rounded-lg mb-4">
+                        <div class="d-flex justify-space-between align-center mb-4">
+                            <MudText Typo="Typo.h6" Class="font-weight-bold d-flex align-center gap-2">
+                                <MudIcon Icon="@Icons.Material.Filled.Badge" Color="Color.Primary" />
+                                Daftar Akun Staf Kafe
+                            </MudText>
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.PersonAdd" OnClick="OpenCreateStaffDialog">
+                                Tambah Staf
+                            </MudButton>
+                        </div>
+
+                        <MudTable Items="@StaffList" Hover="true" Striped="true" Elevation="0" Dense="true">
+                            <HeaderContent>
+                                <MudTh>Nama Lengkap</MudTh>
+                                <MudTh>Email & WhatsApp</MudTh>
+                                <MudTh>Peran</MudTh>
+                                <MudTh>Hak Akses Izin</MudTh>
+                                <MudTh Class="text-center">Aksi</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd DataLabel="Nama">
+                                    <MudText Typo="Typo.body2" Class="font-weight-bold">@context.FullName</MudText>
+                                    <MudText Typo="Typo.caption" Color="Color.Secondary">Dibuat: @context.CreatedAt.ToString("dd MMM yyyy")</MudText>
+                                </MudTd>
+                                <MudTd DataLabel="Kontak">
+                                    <MudText Typo="Typo.body2">@context.Email</MudText>
+                                    <MudText Typo="Typo.caption">@context.PhoneNumber</MudText>
+                                </MudTd>
+                                <MudTd DataLabel="Peran">
+                                    <MudChip T="string" Color="@GetRoleColor(context.RoleName)" Size="Size.Small" Variant="Variant.Filled">
+                                        @context.RoleName
+                                    </MudChip>
+                                </MudTd>
+                                <MudTd DataLabel="Izin">
+                                    <div class="d-flex flex-wrap gap-1" style="max-width: 200px;">
+                                        @foreach (var perm in context.Permissions)
+                                        {
+                                            <MudChip T="string" Size="Size.Small" Variant="Variant.Text" Color="Color.Info" Class="ma-0 pa-1" Style="font-size: 10px;">
+                                                @perm
+                                            </MudChip>
+                                        }
+                                    </div>
+                                </MudTd>
+                                <MudTd Class="text-center">
+                                    <MudButton Variant="Variant.Outlined" Color="Color.Warning" Size="Size.Small" StartIcon="@Icons.Material.Filled.LockReset" OnClick="@(() => OpenResetPasswordDialog(context))">
+                                        Reset
+                                    </MudButton>
+                                </MudTd>
+                            </RowTemplate>
+                        </MudTable>
+                    </MudCard>
+                </MudItem>
+
+                <!-- Right: Dynamic PBAC Role Management -->
+                <MudItem xs="12" lg="5">
+                    <MudCard Elevation="2" Class="pa-4 rounded-lg mb-4">
+                        <div class="d-flex justify-space-between align-center mb-3">
+                            <MudText Typo="Typo.h6" Class="font-weight-bold d-flex align-center gap-2">
+                                <MudIcon Icon="@Icons.Material.Filled.Security" Color="Color.Error" />
+                                Tata Kelola Dynamic PBAC
+                            </MudText>
+                            <MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small" StartIcon="@Icons.Material.Filled.Add" OnClick="PrepareNewRole">
+                                Buat Peran Baru
+                            </MudButton>
+                        </div>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-4">
+                            Pilih peran untuk mengubah izin operasional atau buat peran kustom baru:
+                        </MudText>
+
+                        <!-- Role Selector -->
+                        <MudSelect T="int" Label="Pilih Peran" Value="SelectedRoleId" ValueChanged="OnRoleSelected" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mb-3">
+                            @foreach (var role in RolesList)
+                            {
+                                <MudSelectItem Value="@role.Id">@role.Name @(role.IsTemplate ? "(Template)" : "(Kustom)")</MudSelectItem>
+                            }
+                        </MudSelect>
+
+                        <MudTextField @bind-Value="ActiveRoleDto.RoleName" Label="Nama Peran" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mb-3" />
+                        <MudTextField @bind-Value="ActiveRoleDto.Description" Label="Deskripsi Peran" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mb-4" />
+
+                        <!-- 1-Click Role Template Buttons -->
+                        <MudText Typo="Typo.caption" Class="font-weight-bold d-block mb-1">TERAPKAN TEMPLATE 1-KLIK:</MudText>
+                        <div class="d-flex flex-wrap gap-2 mb-4">
+                            <MudButton Size="Size.Small" Variant="Variant.Outlined" Color="Color.Warning" OnClick="@(() => ApplyTemplate("Kasir"))">
+                                Template Kasir
+                            </MudButton>
+                            <MudButton Size="Size.Small" Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@(() => ApplyTemplate("Barista"))">
+                                Template Barista
+                            </MudButton>
+                            <MudButton Size="Size.Small" Variant="Variant.Outlined" Color="Color.Info" OnClick="@(() => ApplyTemplate("Manager"))">
+                                Template Manager
+                            </MudButton>
+                            <MudButton Size="Size.Small" Variant="Variant.Outlined" Color="Color.Error" OnClick="@(() => ApplyTemplate("SuperAdmin"))">
+                                SuperAdmin
+                            </MudButton>
+                        </div>
+
+                        <!-- 5 Controlled Core Permissions Checklist -->
+                        <MudText Typo="Typo.subtitle2" Class="font-weight-bold mb-2">5 Core Permissions (Centang Izin):</MudText>
+                        <MudPaper Elevation="0" Class="pa-3 mb-4 rounded" Style="background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.08);">
+                            @foreach (var perm in AllPermissions)
+                            {
+                                <MudCheckBox T="bool" Value="@IsPermissionSelected(perm.Id)" ValueChanged="@((val) => TogglePermission(perm.Id, val))" Color="Color.Primary" Dense="true" Class="my-1">
+                                    <span class="font-weight-bold">@perm.Code</span>
+                                    <span class="mud-text-secondary text-caption ml-2">(@perm.GroupName)</span>
+                                </MudCheckBox>
+                            }
+                        </MudPaper>
+
+                        <div class="d-flex justify-end gap-2">
+                            @if (ActiveRoleDto.RoleId.HasValue && !ActiveRoleDto.IsTemplate)
+                            {
+                                <MudButton Variant="Variant.Outlined" Color="Color.Error" OnClick="DeleteActiveRoleAsync">
+                                    Hapus Peran
+                                </MudButton>
+                            }
+                            <MudButton Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.Save" OnClick="SaveRolePermissionsAsync">
+                                Simpan Perubahan Peran
+                            </MudButton>
+                        </div>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+        </MudTabPanel>
+
+        <!-- TAB 3: MASTER DATA MEJA & MENU -->
+        <MudTabPanel Text="Master Data Kafe" Icon="@Icons.Material.Filled.Storage">
+            <MudGrid>
+                <!-- Master Tables -->
+                <MudItem xs="12" lg="5">
+                    <MudCard Elevation="2" Class="pa-4 rounded-lg mb-4">
+                        <div class="d-flex justify-space-between align-center mb-4">
+                            <MudText Typo="Typo.h6" Class="font-weight-bold d-flex align-center gap-2">
+                                <MudIcon Icon="@Icons.Material.Filled.TableRestaurant" Color="Color.Primary" />
+                                Master Meja Fisik (@TablesList.Count Meja)
+                            </MudText>
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" StartIcon="@Icons.Material.Filled.Add" OnClick="OpenAddTableDialog">
+                                Tambah Meja
+                            </MudButton>
+                        </div>
+
+                        <MudTable Items="@TablesList" Hover="true" Striped="true" Elevation="0" Dense="true">
+                            <HeaderContent>
+                                <MudTh>No Meja</MudTh>
+                                <MudTh>Kapasitas</MudTh>
+                                <MudTh>Area</MudTh>
+                                <MudTh Class="text-center">Status</MudTh>
+                                <MudTh Class="text-center">Aksi</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd Class="font-weight-bold">@context.TableNumber</MudTd>
+                                <MudTd>@context.Capacity Orang</MudTd>
+                                <MudTd>
+                                    <MudChip T="string" Size="Size.Small" Color="@(context.Area.Contains("Indoor") ? Color.Info : Color.Secondary)">
+                                        @context.Area
+                                    </MudChip>
+                                </MudTd>
+                                <MudTd Class="text-center">
+                                    <MudSwitch T="bool" Value="@context.IsActive" ValueChanged="@((val) => ToggleTableActiveAsync(context, val))" Color="Color.Success" Size="Size.Small" />
+                                </MudTd>
+                                <MudTd Class="text-center">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Primary" OnClick="@(() => OpenEditTableDialog(context))" />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Color="Color.Error" OnClick="@(() => DeleteTableAsync(context.TableId ?? Guid.Empty))" />
+                                </MudTd>
+                            </RowTemplate>
+                        </MudTable>
+                    </MudCard>
+                </MudItem>
+
+                <!-- Master Menu Items -->
+                <MudItem xs="12" lg="7">
+                    <MudCard Elevation="2" Class="pa-4 rounded-lg mb-4">
+                        <div class="d-flex justify-space-between align-center mb-4">
+                            <MudText Typo="Typo.h6" Class="font-weight-bold d-flex align-center gap-2">
+                                <MudIcon Icon="@Icons.Material.Filled.RestaurantMenu" Color="Color.Warning" />
+                                Master Menu F&B (@MenuItemsList.Count Menu)
+                            </MudText>
+                            <MudButton Variant="Variant.Filled" Color="Color.Warning" Size="Size.Small" StartIcon="@Icons.Material.Filled.Add" OnClick="OpenAddMenuItemDialog">
+                                Tambah Menu
+                            </MudButton>
+                        </div>
+
+                        <MudTable Items="@MenuItemsList" Hover="true" Striped="true" Elevation="0" Dense="true">
+                            <HeaderContent>
+                                <MudTh>Foto</MudTh>
+                                <MudTh>Nama Menu</MudTh>
+                                <MudTh>Kategori</MudTh>
+                                <MudTh Class="text-right">Harga</MudTh>
+                                <MudTh Class="text-right">Stok</MudTh>
+                                <MudTh Class="text-center">Tersedia</MudTh>
+                                <MudTh Class="text-center">Aksi</MudTh>
+                            </HeaderContent>
+                            <RowTemplate>
+                                <MudTd>
+                                    <MudAvatar Rounded="true" Size="Size.Medium">
+                                        <MudImage Src="@(string.IsNullOrEmpty(context.ImageUrl) ? "/images/menu/menu-kopi-susu.jpg" : context.ImageUrl)" Alt="@context.Name" />
+                                    </MudAvatar>
+                                </MudTd>
+                                <MudTd Class="font-weight-bold">@context.Name</MudTd>
+                                <MudTd><MudChip T="string" Size="Size.Small" Color="Color.Default">@context.Category</MudChip></MudTd>
+                                <MudTd Class="text-right font-weight-bold text-success">@context.Price.ToRupiah()</MudTd>
+                                <MudTd Class="text-right">@context.Stock</MudTd>
+                                <MudTd Class="text-center">
+                                    <MudSwitch T="bool" Value="@context.IsAvailable" ValueChanged="@((val) => ToggleMenuItemAvailableAsync(context, val))" Color="Color.Success" Size="Size.Small" />
+                                </MudTd>
+                                <MudTd Class="text-center">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Primary" OnClick="@(() => OpenEditMenuItemDialog(context))" />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Color="Color.Error" OnClick="@(() => DeleteMenuItemAsync(context.MenuItemId ?? Guid.Empty))" />
+                                </MudTd>
+                            </RowTemplate>
+                        </MudTable>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+        </MudTabPanel>
+    </MudTabs>
 </MudContainer>
+
+<!-- MODAL 1: TAMBAH STAF BARU -->
+@if (ShowCreateStaffModal)
+{
+    <div class="mud-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 1300; display: flex; align-items: center; justify-content: center;">
+        <MudCard Elevation="6" Class="rounded-lg pa-4" Style="width: 90%; max-width: 500px; background: var(--mud-palette-surface);">
+            <MudText Typo="Typo.h6" Class="font-weight-bold mb-3 d-flex align-center gap-2">
+                <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Color="Color.Primary" />
+                Tambah Akun Staf Baru
+            </MudText>
+
+            <MudTextField @bind-Value="NewStaffDto.FullName" Label="Nama Lengkap" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mb-3" />
+            <MudTextField @bind-Value="NewStaffDto.Email" Label="Alamat Email" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mb-3" />
+            <MudTextField @bind-Value="NewStaffDto.PhoneNumber" Label="Nomor WhatsApp" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mb-3" />
+            <MudTextField @bind-Value="NewStaffDto.Password" Label="Password Awal" InputType="InputType.Password" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mb-3" />
+
+            <MudSelect T="int" Label="Penugasan Peran" @bind-Value="NewStaffDto.RoleId" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mb-4">
+                @foreach (var role in RolesList.Where(r => r.Name != "Customer"))
+                {
+                    <MudSelectItem Value="@role.Id">@role.Name</MudSelectItem>
+                }
+            </MudSelect>
+
+            <div class="d-flex justify-end gap-2">
+                <MudButton Variant="Variant.Text" OnClick="@(() => ShowCreateStaffModal = false)">Batal</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitCreateStaffAsync">Simpan Staf</MudButton>
+            </div>
+        </MudCard>
+    </div>
+}
+
+<!-- MODAL 2: RESET PASSWORD STAF -->
+@if (ShowResetPasswordModal && SelectedStaffForReset != null)
+{
+    <div class="mud-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 1300; display: flex; align-items: center; justify-content: center;">
+        <MudCard Elevation="6" Class="rounded-lg pa-4" Style="width: 90%; max-width: 450px; background: var(--mud-palette-surface);">
+            <MudText Typo="Typo.h6" Class="font-weight-bold mb-2 d-flex align-center gap-2">
+                <MudIcon Icon="@Icons.Material.Filled.LockReset" Color="Color.Warning" />
+                Reset Password Staf
+            </MudText>
+            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-3">
+                Reset kata sandi untuk akun <strong>@SelectedStaffForReset.FullName</strong> (@SelectedStaffForReset.Email):
+            </MudText>
+
+            <MudTextField @bind-Value="NewPasswordForReset" Label="Password Baru Sementara" InputType="InputType.Password" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mb-4" />
+
+            <div class="d-flex justify-end gap-2">
+                <MudButton Variant="Variant.Text" OnClick="@(() => ShowResetPasswordModal = false)">Batal</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Warning" OnClick="SubmitResetPasswordAsync">Simpan Password Baru</MudButton>
+            </div>
+        </MudCard>
+    </div>
+}
+
+<!-- MODAL 3: TAMBAH / EDIT MEJA -->
+@if (ShowTableModal)
+{
+    <div class="mud-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 1300; display: flex; align-items: center; justify-content: center;">
+        <MudCard Elevation="6" Class="rounded-lg pa-4" Style="width: 90%; max-width: 450px; background: var(--mud-palette-surface);">
+            <MudText Typo="Typo.h6" Class="font-weight-bold mb-3 d-flex align-center gap-2">
+                <MudIcon Icon="@Icons.Material.Filled.TableRestaurant" Color="Color.Primary" />
+                @(ActiveTableDto.TableId.HasValue ? "Edit Meja Fisik" : "Tambah Meja Baru")
+            </MudText>
+
+            <MudTextField @bind-Value="ActiveTableDto.TableNumber" Label="Nomor Meja (misal: IN-07 / OUT-05)" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mb-3" />
+            <MudNumericField @bind-Value="ActiveTableDto.Capacity" Label="Kapasitas Kursi (Orang)" Min="1" Max="20" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mb-3" />
+
+            <MudSelect T="string" Label="Area Meja" @bind-Value="ActiveTableDto.Area" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mb-3">
+                <MudSelectItem Value="@("Indoor AC")">Indoor AC</MudSelectItem>
+                <MudSelectItem Value="@("Outdoor Smoking")">Outdoor Smoking</MudSelectItem>
+            </MudSelect>
+
+            <MudSwitch T="bool" @bind-Value="ActiveTableDto.IsActive" Label="Status Meja Aktif" Color="Color.Success" Class="mb-4" />
+
+            <div class="d-flex justify-end gap-2">
+                <MudButton Variant="Variant.Text" OnClick="@(() => ShowTableModal = false)">Batal</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitSaveTableAsync">Simpan Meja</MudButton>
+            </div>
+        </MudCard>
+    </div>
+}
+
+<!-- MODAL 4: TAMBAH / EDIT MENU F&B -->
+@if (ShowMenuItemModal)
+{
+    <div class="mud-overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 1300; display: flex; align-items: center; justify-content: center;">
+        <MudCard Elevation="6" Class="rounded-lg pa-4" Style="width: 90%; max-width: 500px; background: var(--mud-palette-surface);">
+            <MudText Typo="Typo.h6" Class="font-weight-bold mb-3 d-flex align-center gap-2">
+                <MudIcon Icon="@Icons.Material.Filled.RestaurantMenu" Color="Color.Warning" />
+                @(ActiveMenuItemDto.MenuItemId.HasValue ? "Edit Menu F&B" : "Tambah Menu Baru")
+            </MudText>
+
+            <MudTextField @bind-Value="ActiveMenuItemDto.Name" Label="Nama Menu" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mb-3" />
+
+            <MudSelect T="string" Label="Kategori Menu" @bind-Value="ActiveMenuItemDto.Category" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mb-3">
+                <MudSelectItem Value="@("Coffee")">Coffee</MudSelectItem>
+                <MudSelectItem Value="@("Non-Coffee")">Non-Coffee</MudSelectItem>
+                <MudSelectItem Value="@("Pastry & Bakery")">Pastry & Bakery</MudSelectItem>
+                <MudSelectItem Value="@("Snacks")">Snacks</MudSelectItem>
+            </MudSelect>
+
+            <MudNumericField @bind-Value="ActiveMenuItemDto.Price" Label="Harga (Rp)" Min="0m" Format="N0" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mb-3" />
+            <MudNumericField @bind-Value="ActiveMenuItemDto.Stock" Label="Stok Porsi" Min="0" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mb-3" />
+
+            <MudTextField @bind-Value="ActiveMenuItemDto.ImageUrl" Label="URL Foto Menu" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mb-3" />
+
+            <MudSwitch T="bool" @bind-Value="ActiveMenuItemDto.IsAvailable" Label="Status Tersedia" Color="Color.Success" Class="mb-4" />
+
+            <div class="d-flex justify-end gap-2">
+                <MudButton Variant="Variant.Text" OnClick="@(() => ShowMenuItemModal = false)">Batal</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Warning" OnClick="SubmitSaveMenuItemAsync">Simpan Menu</MudButton>
+            </div>
+        </MudCard>
+    </div>
+}
+
+@code {
+    private bool IsLoadingAnalytics = true;
+    private AnalyticsDashboardDto AnalyticsData = new();
+    private List<StaffOverviewDto> StaffList = new();
+    private List<RoleDto> RolesList = new();
+    private List<PermissionDto> AllPermissions = new();
+    private List<ManageTableDto> TablesList = new();
+    private List<ManageMenuItemDto> MenuItemsList = new();
+
+    // Active Role in PBAC Editor
+    private int SelectedRoleId;
+    private ManageRoleDto ActiveRoleDto = new();
+
+    // Modals
+    private bool ShowCreateStaffModal;
+    private CreateStaffRequestDto NewStaffDto = new();
+
+    private bool ShowResetPasswordModal;
+    private StaffOverviewDto? SelectedStaffForReset;
+    private string NewPasswordForReset = "StafKopi123!";
+
+    private bool ShowTableModal;
+    private ManageTableDto ActiveTableDto = new();
+
+    private bool ShowMenuItemModal;
+    private ManageMenuItemDto ActiveMenuItemDto = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAllDataAsync();
+    }
+
+    private async Task LoadAllDataAsync()
+    {
+        IsLoadingAnalytics = true;
+        try
+        {
+            AnalyticsData = await SuperAdminService.GetAnalyticsDashboardDataAsync();
+            StaffList = await SuperAdminService.GetStaffListAsync();
+            RolesList = await SuperAdminService.GetRolesWithPermissionsAsync();
+            AllPermissions = await SuperAdminService.GetAllPermissionsAsync();
+            TablesList = await SuperAdminService.GetTablesAsync();
+            MenuItemsList = await SuperAdminService.GetMenuItemsAsync();
+
+            if (RolesList.Any() && SelectedRoleId == 0)
+            {
+                OnRoleSelected(RolesList.First().Id);
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error loading SuperAdmin data");
+            Snackbar.Add("Gagal memuat data SuperAdmin: " + ex.Message, Severity.Error);
+        }
+        finally
+        {
+            IsLoadingAnalytics = false;
+        }
+    }
+
+    private void OnRoleSelected(int roleId)
+    {
+        SelectedRoleId = roleId;
+        var role = RolesList.FirstOrDefault(r => r.Id == roleId);
+        if (role != null)
+        {
+            ActiveRoleDto = new ManageRoleDto
+            {
+                RoleId = role.Id,
+                RoleName = role.Name,
+                Description = role.Description,
+                IsTemplate = role.IsTemplate,
+                SelectedPermissionIds = role.Permissions.Select(p => p.Id).ToList()
+            };
+        }
+    }
+
+    private void PrepareNewRole()
+    {
+        SelectedRoleId = 0;
+        ActiveRoleDto = new ManageRoleDto
+        {
+            RoleId = null,
+            RoleName = "Peran Baru",
+            Description = "Deskripsi peran kustom",
+            IsTemplate = false,
+            SelectedPermissionIds = new()
+        };
+    }
+
+    private bool IsPermissionSelected(int permId) => ActiveRoleDto.SelectedPermissionIds.Contains(permId);
+
+    private void TogglePermission(int permId, bool selected)
+    {
+        if (selected && !ActiveRoleDto.SelectedPermissionIds.Contains(permId))
+        {
+            ActiveRoleDto.SelectedPermissionIds.Add(permId);
+        }
+        else if (!selected)
+        {
+            ActiveRoleDto.SelectedPermissionIds.Remove(permId);
+        }
+    }
+
+    private void ApplyTemplate(string templateName)
+    {
+        var targetCodes = templateName switch
+        {
+            "Kasir" => new[] { "Meja.Kelola", "Pembayaran.Verifikasi" },
+            "Barista" => new[] { "Dapur.Antrean" },
+            "Manager" => new[] { "Meja.Kelola", "Pembayaran.Verifikasi", "Dapur.Antrean", "Laporan.Lihat" },
+            "SuperAdmin" => new[] { "Meja.Kelola", "Pembayaran.Verifikasi", "Dapur.Antrean", "Laporan.Lihat", "Sistem.Kelola" },
+            _ => Array.Empty<string>()
+        };
+
+        var matchingIds = AllPermissions
+            .Where(p => targetCodes.Contains(p.Code))
+            .Select(p => p.Id)
+            .ToList();
+
+        ActiveRoleDto.SelectedPermissionIds = matchingIds;
+        Snackbar.Add($"Template {templateName} berhasil diterapkan ({matchingIds.Count} izin terpilih).", Severity.Info);
+    }
+
+    private async Task SaveRolePermissionsAsync()
+    {
+        if (string.IsNullOrWhiteSpace(ActiveRoleDto.RoleName))
+        {
+            Snackbar.Add("Nama peran wajib diisi.", Severity.Warning);
+            return;
+        }
+
+        try
+        {
+            await SuperAdminService.SaveRolePermissionsAsync(ActiveRoleDto);
+            Snackbar.Add($"Peran '{ActiveRoleDto.RoleName}' berhasil disimpan.", Severity.Success);
+            RolesList = await SuperAdminService.GetRolesWithPermissionsAsync();
+            StaffList = await SuperAdminService.GetStaffListAsync();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add("Gagal menyimpan peran: " + ex.Message, Severity.Error);
+        }
+    }
+
+    private async Task DeleteActiveRoleAsync()
+    {
+        if (!ActiveRoleDto.RoleId.HasValue) return;
+
+        try
+        {
+            var success = await SuperAdminService.DeleteRoleAsync(ActiveRoleDto.RoleId.Value);
+            if (success)
+            {
+                Snackbar.Add("Peran berhasil dihapus.", Severity.Success);
+                RolesList = await SuperAdminService.GetRolesWithPermissionsAsync();
+                if (RolesList.Any()) OnRoleSelected(RolesList.First().Id);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add("Gagal menghapus peran: " + ex.Message, Severity.Error);
+        }
+    }
+
+    // Staff Dialogs
+    private void OpenCreateStaffDialog()
+    {
+        NewStaffDto = new CreateStaffRequestDto
+        {
+            RoleId = RolesList.FirstOrDefault(r => r.Name == "Kasir")?.Id ?? (RolesList.FirstOrDefault()?.Id ?? 1)
+        };
+        ShowCreateStaffModal = true;
+    }
+
+    private async Task SubmitCreateStaffAsync()
+    {
+        if (string.IsNullOrWhiteSpace(NewStaffDto.FullName) || string.IsNullOrWhiteSpace(NewStaffDto.Email) || string.IsNullOrWhiteSpace(NewStaffDto.Password))
+        {
+            Snackbar.Add("Mohon lengkapi seluruh field akun staf.", Severity.Warning);
+            return;
+        }
+
+        try
+        {
+            await SuperAdminService.CreateStaffAsync(NewStaffDto);
+            Snackbar.Add($"Akun staf '{NewStaffDto.FullName}' berhasil dibuat.", Severity.Success);
+            ShowCreateStaffModal = false;
+            StaffList = await SuperAdminService.GetStaffListAsync();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add("Gagal membuat staf: " + ex.Message, Severity.Error);
+        }
+    }
+
+    private void OpenResetPasswordDialog(StaffOverviewDto staff)
+    {
+        SelectedStaffForReset = staff;
+        NewPasswordForReset = "StafKopi123!";
+        ShowResetPasswordModal = true;
+    }
+
+    private async Task SubmitResetPasswordAsync()
+    {
+        if (SelectedStaffForReset == null || string.IsNullOrWhiteSpace(NewPasswordForReset)) return;
+
+        try
+        {
+            await SuperAdminService.ResetStaffPasswordAsync(SelectedStaffForReset.UserId, NewPasswordForReset);
+            Snackbar.Add($"Password untuk {SelectedStaffForReset.FullName} berhasil direset.", Severity.Success);
+            ShowResetPasswordModal = false;
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add("Gagal mereset password: " + ex.Message, Severity.Error);
+        }
+    }
+
+    // Table Dialogs
+    private void OpenAddTableDialog()
+    {
+        ActiveTableDto = new ManageTableDto
+        {
+            TableNumber = $"IN-{TablesList.Count + 1:D2}",
+            Capacity = 4,
+            Area = "Indoor AC",
+            IsActive = true
+        };
+        ShowTableModal = true;
+    }
+
+    private void OpenEditTableDialog(ManageTableDto table)
+    {
+        ActiveTableDto = new ManageTableDto
+        {
+            TableId = table.TableId,
+            TableNumber = table.TableNumber,
+            Capacity = table.Capacity,
+            Area = table.Area,
+            IsActive = table.IsActive
+        };
+        ShowTableModal = true;
+    }
+
+    private async Task SubmitSaveTableAsync()
+    {
+        try
+        {
+            await SuperAdminService.SaveTableAsync(ActiveTableDto);
+            Snackbar.Add($"Meja {ActiveTableDto.TableNumber} berhasil disimpan.", Severity.Success);
+            ShowTableModal = false;
+            TablesList = await SuperAdminService.GetTablesAsync();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add("Gagal menyimpan meja: " + ex.Message, Severity.Error);
+        }
+    }
+
+    private async Task ToggleTableActiveAsync(ManageTableDto table, bool isActive)
+    {
+        table.IsActive = isActive;
+        await SuperAdminService.SaveTableAsync(table);
+        Snackbar.Add($"Status Meja {table.TableNumber} diperbarui.", Severity.Info);
+    }
+
+    private async Task DeleteTableAsync(Guid tableId)
+    {
+        try
+        {
+            await SuperAdminService.DeleteTableAsync(tableId);
+            Snackbar.Add("Meja berhasil dihapus / dinonaktifkan.", Severity.Success);
+            TablesList = await SuperAdminService.GetTablesAsync();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add("Gagal menghapus meja: " + ex.Message, Severity.Error);
+        }
+    }
+
+    // MenuItem Dialogs
+    private void OpenAddMenuItemDialog()
+    {
+        ActiveMenuItemDto = new ManageMenuItemDto
+        {
+            Name = "",
+            Category = "Coffee",
+            Price = 20000,
+            Stock = 50,
+            IsAvailable = true,
+            ImageUrl = "/images/menu/menu-kopi-susu.jpg"
+        };
+        ShowMenuItemModal = true;
+    }
+
+    private void OpenEditMenuItemDialog(ManageMenuItemDto item)
+    {
+        ActiveMenuItemDto = new ManageMenuItemDto
+        {
+            MenuItemId = item.MenuItemId,
+            Name = item.Name,
+            Category = item.Category,
+            Price = item.Price,
+            Stock = item.Stock,
+            IsAvailable = item.IsAvailable,
+            ImageUrl = item.ImageUrl
+        };
+        ShowMenuItemModal = true;
+    }
+
+    private async Task SubmitSaveMenuItemAsync()
+    {
+        try
+        {
+            await SuperAdminService.SaveMenuItemAsync(ActiveMenuItemDto);
+            Snackbar.Add($"Menu '{ActiveMenuItemDto.Name}' berhasil disimpan.", Severity.Success);
+            ShowMenuItemModal = false;
+            MenuItemsList = await SuperAdminService.GetMenuItemsAsync();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add("Gagal menyimpan menu: " + ex.Message, Severity.Error);
+        }
+    }
+
+    private async Task ToggleMenuItemAvailableAsync(ManageMenuItemDto item, bool isAvailable)
+    {
+        item.IsAvailable = isAvailable;
+        await SuperAdminService.SaveMenuItemAsync(item);
+        Snackbar.Add($"Status ketersediaan {item.Name} diperbarui.", Severity.Info);
+    }
+
+    private async Task DeleteMenuItemAsync(Guid menuItemId)
+    {
+        try
+        {
+            await SuperAdminService.DeleteMenuItemAsync(menuItemId);
+            Snackbar.Add("Menu berhasil dihapus / dinonaktifkan.", Severity.Success);
+            MenuItemsList = await SuperAdminService.GetMenuItemsAsync();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add("Gagal menghapus menu: " + ex.Message, Severity.Error);
+        }
+    }
+
+    private Color GetRoleColor(string roleName) => roleName switch
+    {
+        "SuperAdmin" => Color.Error,
+        "Manager" => Color.Info,
+        "Kasir" => Color.Warning,
+        "Barista" => Color.Secondary,
+        _ => Color.Default
+    };
+}
