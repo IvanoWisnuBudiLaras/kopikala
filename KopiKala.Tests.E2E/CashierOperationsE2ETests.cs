@@ -84,11 +84,11 @@ public class CashierOperationsE2ETests
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
             _output.WriteLine("[E2E] Login Kasir berhasil.");
 
-            // 1. Klik tombol "Buka Meja" pada meja kosong
-            var bukaMejaBtn = page.Locator(".mud-card button:has-text('Buka Meja')").First;
-            await bukaMejaBtn.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 15000 });
-            await bukaMejaBtn.ClickAsync();
-            _output.WriteLine("[E2E] Tombol 'Buka Meja' pada meja diklik.");
+            // 1. Klik tombol "Tamu Walk-In" pada header Portal Staf
+            var walkInBtn = page.GetByRole(AriaRole.Button, new() { Name = "Tamu Walk-In" });
+            await walkInBtn.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 15000 });
+            await walkInBtn.ClickAsync();
+            _output.WriteLine("[E2E] Tombol 'Tamu Walk-In' diklik.");
 
             // 2. Tunggu Blazor SignalR merender MudDialog
             await page.WaitForTimeoutAsync(2000);
