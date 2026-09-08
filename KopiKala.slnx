@@ -7,11 +7,12 @@
     <Project Path="KopiKala.Tests.E2E/KopiKala.Tests.E2E.csproj" />
   </Folder>
   <Folder Name="/docker/">
+    <File Path="Dockerfile" />
     <File Path="docker-compose.yml" />
     <File Path="docker-compose.override.yml" />
-    <File Path="init.sql" />
   </Folder>
   <Folder Name="/docs/">
+    <File Path="README.md" />
     <File Path="docs/PRD.md" />
     <File Path="docs/DISCUSSION.md" />
     <File Path="AGENT.md" />
@@ -21,10 +22,19 @@
     <File Path="docs/tickets/TICKET-2.md" />
     <File Path="docs/tickets/TICKET-3.md" />
     <File Path="docs/tickets/TICKET-4.md" />
+    <File Path="docs/tickets/TICKET-5.md" />
+    <File Path="docs/tickets/TICKET-6.md" />
+    <File Path="docs/tickets/TICKET-7.md" />
+    <File Path="docs/tickets/TICKET-8.md" />
   </Folder>
   <Folder Name="/docs/walkthrough/">
     <File Path="docs/walkthrough/TICKET-1-WALKTHROUGH.md" />
     <File Path="docs/walkthrough/TICKET-2-WALKTHROUGH.md" />
     <File Path="docs/walkthrough/TICKET-3-WALKTHROUGH.md" />
+    <File Path="docs/walkthrough/TICKET-4-WALKTHROUGH.md" />
+    <File Path="docs/walkthrough/TICKET-5-WALKTHROUGH.md" />
+    <File Path="docs/walkthrough/TICKET-6-WALKTHROUGH.md" />
+    <File Path="docs/walkthrough/TICKET-7-WALKTHROUGH.md" />
+    <File Path="docs/walkthrough/TICKET-8-WALKTHROUGH.md" />
   </Folder>
 </Solution>
