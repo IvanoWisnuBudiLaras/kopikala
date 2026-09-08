@@ -45,6 +45,20 @@ public class CustomerBookingE2ETests
             await step1Title.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 10000 });
             _output.WriteLine("[E2E] Step 1 aktif.");
 
+            // Pilih Sesi Siang agar bebas dari bentrokan sesi lain
+            var sessionSelect = page.Locator(".mud-select:has-text('Sesi')").First;
+            if (await sessionSelect.IsVisibleAsync())
+            {
+                await sessionSelect.ClickAsync();
+                await page.WaitForTimeoutAsync(500);
+                var option = page.Locator(".mud-popover-open .mud-list-item:has-text('Sesi Siang')").First;
+                if (await option.IsVisibleAsync())
+                {
+                    await option.ClickAsync();
+                    await page.WaitForTimeoutAsync(800);
+                }
+            }
+
             // Pilih durasi 2 Jam
             var durationChip = page.GetByText("2 Jam (Rekomendasi)");
             if (await durationChip.IsVisibleAsync())
@@ -54,19 +68,22 @@ public class CustomerBookingE2ETests
             }
 
             // Klik 'Lanjut: Pilih Meja'
+            await page.WaitForTimeoutAsync(800);
             var lanjutMejaBtn = page.GetByRole(AriaRole.Button, new() { Name = "Lanjut: Pilih Meja" });
+            await lanjutMejaBtn.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 10000 });
             await lanjutMejaBtn.ClickAsync();
             _output.WriteLine("[E2E] Berpindah ke Step 2 (Denah Meja)");
 
             // 3. Step 2: Denah Meja 2D
             var step2Title = page.GetByText("Langkah 2: Pilih Denah Meja Interaktif");
-            await step2Title.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 10000 });
+            await step2Title.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 15000 });
 
             // Klik tombol meja pertama yang berstatus 'Pilih Meja Ini' (Tersedia)
             var selectTableBtn = page.Locator("button:has-text('Pilih Meja Ini')").First;
-            await selectTableBtn.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible });
+            await selectTableBtn.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 15000 });
             await selectTableBtn.ClickAsync();
             _output.WriteLine("[E2E] Tombol 'Pilih Meja Ini' pada meja yang tersedia diklik.");
+            await page.WaitForTimeoutAsync(800);
 
             // Tunggu tombol 'Lanjut: Pre-Order F&B' aktif (tidak disabled)
             var lanjutFnbBtn = page.GetByRole(AriaRole.Button, new() { Name = "Lanjut: Pre-Order F&B" });

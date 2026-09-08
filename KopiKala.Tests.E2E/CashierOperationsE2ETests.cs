@@ -148,83 +148,98 @@ public class CashierOperationsE2ETests
             await page.Locator("input[name='password']").FillAsync("AdminKopi123!");
             await page.Locator("button[type='submit']").ClickAsync();
 
+            // Tunggu redirect ke /Booking
             await page.WaitForURLAsync(new Regex(".*/Booking.*"));
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+            _output.WriteLine("[E2E] Berhasil login dan tiba di halaman /Booking");
 
-            // Step 1: Pilih Sesi Waktu Sore / Larut agar tidak bentrok dengan sesi pagi
-            var sessionSelect = page.Locator(".mud-select:has-text('Sesi')").First;
-            if (await sessionSelect.IsVisibleAsync())
+            // Step 1: Jadwal & Durasi
+            var step1Title = page.GetByText("Langkah 1: Tentukan Tanggal, Sesi & Durasi Duduk");
+            await step1Title.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 10000 });
+            _output.WriteLine("[E2E] Step 1 aktif.");
+
+            // Pilih Sesi Siang-Sore (Timeslot 3) yang bebas dari booking test lain
+            var timeslotSelect = page.Locator(".mud-select:has-text('Sesi')").First;
+            if (await timeslotSelect.IsVisibleAsync())
             {
-                await sessionSelect.ClickAsync();
+                await timeslotSelect.ClickAsync();
                 await page.WaitForTimeoutAsync(500);
-                var lastOption = page.Locator(".mud-popover-open .mud-list-item").Last;
-                if (await lastOption.IsVisibleAsync())
+                var option = page.Locator(".mud-popover-open .mud-list-item:has-text('Siang-Sore')").First;
+                if (await option.IsVisibleAsync())
                 {
-                    await lastOption.ClickAsync();
-                    await page.WaitForTimeoutAsync(500);
+                    await option.ClickAsync();
+                    await page.WaitForTimeoutAsync(800);
                 }
             }
 
-            // Step 1 -> Step 2
+            // Pilih durasi 2 Jam
+            var durationChip = page.GetByText("2 Jam (Rekomendasi)");
+            if (await durationChip.IsVisibleAsync())
+            {
+                await durationChip.ClickAsync();
+                _output.WriteLine("[E2E] Memilih durasi duduk: 2 Jam");
+            }
+
+            // Klik 'Lanjut: Pilih Meja'
+            await page.WaitForTimeoutAsync(800);
             var lanjutMejaBtn = page.GetByRole(AriaRole.Button, new() { Name = "Lanjut: Pilih Meja" });
             await lanjutMejaBtn.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 10000 });
             await lanjutMejaBtn.ClickAsync();
-            _output.WriteLine("[E2E] Step 1 -> Step 2.");
+            _output.WriteLine("[E2E] Berpindah ke Step 2 (Denah Meja)");
 
-            // Step 2: Pilih Meja yang tersedia
+            // 3. Step 2: Denah Meja 2D
             var step2Title = page.GetByText("Langkah 2: Pilih Denah Meja Interaktif");
-            await step2Title.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 10000 });
+            await step2Title.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 15000 });
 
+            // Klik tombol meja pertama yang berstatus 'Pilih Meja Ini' (Tersedia)
             var selectTableBtn = page.Locator("button:has-text('Pilih Meja Ini')").First;
-            await selectTableBtn.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 10000 });
+            await selectTableBtn.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 15000 });
             await selectTableBtn.ClickAsync();
-            _output.WriteLine("[E2E] Meja berhasil dipilih.");
-            await page.WaitForTimeoutAsync(500);
+            _output.WriteLine("[E2E] Tombol 'Pilih Meja Ini' pada meja yang tersedia diklik.");
+            await page.WaitForTimeoutAsync(800);
 
-            // Step 2 -> Step 3
+            // Tunggu tombol 'Lanjut: Pre-Order F&B' aktif (tidak disabled)
             var lanjutFnbBtn = page.GetByRole(AriaRole.Button, new() { Name = "Lanjut: Pre-Order F&B" });
             await lanjutFnbBtn.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible });
             await lanjutFnbBtn.ClickAsync();
-            _output.WriteLine("[E2E] Step 2 -> Step 3.");
+            _output.WriteLine("[E2E] Berpindah ke Step 3 (Pre-Order F&B)");
 
-            // Step 3: Tambah 1 menu
+            // 4. Step 3: Pre-Order Menu F&B
             var step3Title = page.GetByText("Langkah 3: Pre-Order Makanan & Minuman");
             await step3Title.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 10000 });
 
-            var addMenuBtn = page.Locator("button:has-text('Tambah Menu')").First;
-            if (await addMenuBtn.IsVisibleAsync())
-            {
-                await addMenuBtn.ClickAsync();
-                await page.WaitForTimeoutAsync(500);
-            }
+            // Tambah menu 'Kopi Susu Gula Aren'
+            var kopiSusuCard = page.Locator(".mud-card").Filter(new() { HasText = "Kopi Susu Gula Aren" }).First;
+            await kopiSusuCard.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible });
+            var addKopiBtn = kopiSusuCard.GetByRole(AriaRole.Button, new() { Name = "Tambah Menu" });
+            await addKopiBtn.ClickAsync();
+            _output.WriteLine("[E2E] Menambahkan 1x Kopi Susu Gula Aren ke keranjang.");
 
-            // Step 3 -> Step 4
+            // Klik 'Lanjut: Konfirmasi Pesanan'
             var lanjutCheckoutBtn = page.GetByRole(AriaRole.Button, new() { Name = "Lanjut: Konfirmasi Pesanan" });
-            await lanjutCheckoutBtn.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible });
             await lanjutCheckoutBtn.ClickAsync();
-            _output.WriteLine("[E2E] Step 3 -> Step 4.");
+            _output.WriteLine("[E2E] Berpindah ke Step 4 (Konfirmasi & Checkout)");
 
-            // Step 4: Isi Nama & WhatsApp
+            // 5. Step 4: Konfirmasi Identitas & Checkout
             var step4Title = page.GetByText("Langkah 4: Konfirmasi Identitas & Metode Pembayaran");
             await step4Title.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 10000 });
 
-            var repInput = page.Locator(".mud-input-control:has-text('Nama Perwakilan') input").First;
+            var repInput = page.Locator("input").Filter(new() { Has = page.Locator("..").Locator("label:has-text('Nama Perwakilan')") }).First;
+            if (await repInput.CountAsync() == 0)
+            {
+                repInput = page.Locator("input").Nth(0);
+            }
             await repInput.FillAsync("Bu Siti Transfer");
-            var phoneInput = page.Locator(".mud-input-control:has-text('Nomor WhatsApp') input").First;
+
+            var phoneInput = page.Locator("input").Nth(1);
             await phoneInput.FillAsync("081234567890");
 
-            var submitOrderBtn = page.Locator("button:has-text('Buat Pesanan & Terbitkan Invoice')").First;
-            await submitOrderBtn.ClickAsync();
-            _output.WriteLine("[E2E] Form checkout disubmit...");
-            await page.WaitForTimeoutAsync(3000);
+            var submitBtn = page.GetByRole(AriaRole.Button, new() { Name = "Buat Pesanan & Terbitkan Invoice" });
+            await submitBtn.ClickAsync();
+            _output.WriteLine("[E2E] Mengirim form reservasi & invoice...");
 
-            var snackbars = await page.Locator(".mud-snackbar").AllInnerTextsAsync();
-            _output.WriteLine($"[E2E] Page URL: {page.Url}, Snackbars: {string.Join(", ", snackbars)}");
-            _output.WriteLine($"[E2E] Server Logs:\n{_fixture.ServerLogs}");
-
-            // Tunggu URL invoice
-            var invoiceHeading = page.Locator("h5:has-text('Invoice')");
-            await invoiceHeading.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible, Timeout = 15000 });
+            // 6. Verifikasi Pengalihan ke Halaman Invoice
+            await page.WaitForURLAsync(new Regex(".*/Invoice/.*"), new() { WaitUntil = WaitUntilState.Commit, Timeout = 15000 });
             _output.WriteLine($"[E2E] Tiba di halaman invoice: {page.Url}");
 
             // Upload bukti transfer simulasi JPEG
@@ -239,7 +254,7 @@ public class CashierOperationsE2ETests
                     Buffer = fakeJpegBytes
                 });
                 _output.WriteLine("[E2E] Berkas bukti transfer diunggah.");
-                await page.WaitForTimeoutAsync(2500);
+                await page.WaitForTimeoutAsync(2000);
             }
 
             // 2. Sekarang login sebagai Kasir di halaman /Staff

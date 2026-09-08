@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "S+9m+l+NYCk=",
+  "dgSpecHash": "FoYfH/CHifw=",
   "success": true,
-  "projectFilePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-e2e-walkin\\KopiKala.Tests\\KopiKala.Tests.csproj",
+  "projectFilePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-e2e-scenario3\\KopiKala.Tests\\KopiKala.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\maste\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\maste\\.nuget\\packages\\coverlet.collector\\6.0.4\\coverlet.collector.6.0.4.nupkg.sha512",
