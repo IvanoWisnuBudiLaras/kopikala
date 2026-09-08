@@ -34,6 +34,8 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<BookingDetail> BookingDetails { get; set; }
 
+    public virtual DbSet<DailyReport> DailyReports { get; set; }
+
     public virtual DbSet<DiningTable> DiningTables { get; set; }
 
     public virtual DbSet<MenuItem> MenuItems { get; set; }
@@ -147,6 +149,32 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.MenuItemId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("booking_details_menu_item_id_fkey");
+        });
+
+        modelBuilder.Entity<DailyReport>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("daily_reports_pkey");
+
+            entity.ToTable("daily_reports");
+
+            entity.HasIndex(e => e.ReportDate, "daily_reports_report_date_key").IsUnique();
+
+            entity.Property(e => e.Id)
+                .HasDefaultValueSql("gen_random_uuid()")
+                .HasColumnName("id");
+            entity.Property(e => e.ReportDate).HasColumnName("report_date");
+            entity.Property(e => e.TotalRevenue)
+                .HasPrecision(12, 2)
+                .HasColumnName("total_revenue");
+            entity.Property(e => e.TotalBookings).HasColumnName("total_bookings");
+            entity.Property(e => e.TotalNoShows).HasColumnName("total_no_shows");
+            entity.Property(e => e.TotalCancelled).HasColumnName("total_cancelled");
+            entity.Property(e => e.TopSellingItem)
+                .HasMaxLength(100)
+                .HasColumnName("top_selling_item");
+            entity.Property(e => e.GeneratedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnName("generated_at");
         });
 
         modelBuilder.Entity<DiningTable>(entity =>

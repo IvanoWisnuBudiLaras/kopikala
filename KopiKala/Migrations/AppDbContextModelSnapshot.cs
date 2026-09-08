@@ -168,6 +168,56 @@ namespace KopiKala.Migrations
                     b.ToTable("booking_details", (string)null);
                 });
 
+            modelBuilder.Entity("KopiKala.Models.DailyReport", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<DateTime>("GeneratedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("generated_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateOnly>("ReportDate")
+                        .HasColumnType("date")
+                        .HasColumnName("report_date");
+
+                    b.Property<string>("TopSellingItem")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("top_selling_item");
+
+                    b.Property<int>("TotalBookings")
+                        .HasColumnType("integer")
+                        .HasColumnName("total_bookings");
+
+                    b.Property<int>("TotalCancelled")
+                        .HasColumnType("integer")
+                        .HasColumnName("total_cancelled");
+
+                    b.Property<int>("TotalNoShows")
+                        .HasColumnType("integer")
+                        .HasColumnName("total_no_shows");
+
+                    b.Property<decimal>("TotalRevenue")
+                        .HasPrecision(12, 2)
+                        .HasColumnType("numeric(12,2)")
+                        .HasColumnName("total_revenue");
+
+                    b.HasKey("Id")
+                        .HasName("daily_reports_pkey");
+
+                    b.HasIndex(new[] { "ReportDate" }, "daily_reports_report_date_key")
+                        .IsUnique();
+
+                    b.ToTable("daily_reports", (string)null);
+                });
+
             modelBuilder.Entity("KopiKala.Models.DiningTable", b =>
                 {
                     b.Property<Guid>("Id")

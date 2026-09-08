@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CLrydO844vg=",
+  "dgSpecHash": "2yNaDKSokBE=",
   "success": true,
-  "projectFilePath": "I:\\dev\\web\\KopiKala\\KopiKala\\KopiKala.csproj",
+  "projectFilePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\KopiKala.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\maste\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\maste\\.nuget\\packages\\microsoft.aspnetcore.app.internal.assets\\10.0.11\\microsoft.aspnetcore.app.internal.assets.10.0.11.nupkg.sha512",

@@ -2,6 +2,7 @@ using KopiKala.Components;
 using KopiKala.Data;
 using KopiKala.Helpers;
 using KopiKala.Services;
+using KopiKala.Workers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -42,6 +43,12 @@ public class Program
         builder.Services.AddHttpClient();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddControllers();
+
+        // 4.1 Tri-Tier Background Workers & In-Memory Task Queue
+        builder.Services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+        builder.Services.AddHostedService<QueuedHostedService>();
+        builder.Services.AddHostedService<BookingMaintenanceWorker>();
+        builder.Services.AddHostedService<MidnightReconciliationWorker>();
 
         // 5. Konfigurasi Otentikasi Berbasis Cookie & Google OAuth
         builder.Services.AddAuthentication(options =>

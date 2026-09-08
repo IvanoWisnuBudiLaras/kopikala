@@ -5582,11 +5582,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "I:\\dev\\web\\KopiKala\\KopiKala.Tests\\KopiKala.Tests.csproj",
+      "projectUniqueName": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala.Tests\\KopiKala.Tests.csproj",
       "projectName": "KopiKala.Tests",
-      "projectPath": "I:\\dev\\web\\KopiKala\\KopiKala.Tests\\KopiKala.Tests.csproj",
+      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala.Tests\\KopiKala.Tests.csproj",
       "packagesPath": "C:\\Users\\maste\\.nuget\\packages\\",
-      "outputPath": "I:\\dev\\web\\KopiKala\\KopiKala.Tests\\obj\\",
+      "outputPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -5609,8 +5609,8 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {
-            "I:\\dev\\web\\KopiKala\\KopiKala\\KopiKala.csproj": {
-              "projectPath": "I:\\dev\\web\\KopiKala\\KopiKala\\KopiKala.csproj"
+            "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\KopiKala.csproj": {
+              "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\KopiKala.csproj"
             }
           }
         }

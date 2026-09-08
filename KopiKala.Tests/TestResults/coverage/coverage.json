@@ -1,6 +1,6 @@
 {
   "KopiKala.dll": {
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Components\\App.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Components\\App.razor": {
       "KopiKala.Components.App": {
         "Microsoft.AspNetCore.Components.IComponentRenderMode KopiKala.Components.App::get_PageRenderMode()": {
           "Lines": {
@@ -27,7 +27,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Components\\Pages\\Counter.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Components\\Pages\\Counter.razor": {
       "KopiKala.Components.Pages.Counter": {
         "System.Void KopiKala.Components.Pages.Counter::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)": {
           "Lines": {
@@ -51,7 +51,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Components\\Pages\\Error.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Components\\Pages\\Error.razor": {
       "KopiKala.Components.Pages.Error": {
         "System.Void KopiKala.Components.Pages.Error::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)": {
           "Lines": {
@@ -142,7 +142,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Components\\Pages\\Weather.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Components\\Pages\\Weather.razor": {
       "KopiKala.Components.Pages.Weather": {
         "System.Void KopiKala.Components.Pages.Weather::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)": {
           "Lines": {
@@ -204,7 +204,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Components\\Pages\\Staff\\Dashboard.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Components\\Pages\\Staff\\Dashboard.razor": {
       "KopiKala.Components.Pages.Staff.Dashboard": {
         "System.DateOnly KopiKala.Components.Pages.Staff.Dashboard::get_SelectedDate()": {
           "Lines": {
@@ -716,7 +716,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Components\\Pages\\Customer\\Booking.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Components\\Pages\\Customer\\Booking.razor": {
       "KopiKala.Components.Pages.Customer.Booking": {
         "KopiKala.DTOs.Booking.TimeslotDto KopiKala.Components.Pages.Customer.Booking::get__selectedTimeslot()": {
           "Lines": {
@@ -1024,7 +1024,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Components\\Pages\\Customer\\Invoice.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Components\\Pages\\Customer\\Invoice.razor": {
       "KopiKala.Components.Pages.Customer.Invoice": {
         "System.Void KopiKala.Components.Pages.Customer.Invoice::StartCountdown()": {
           "Lines": {
@@ -1515,7 +1515,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Components\\Pages\\Customer\\Orders.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Components\\Pages\\Customer\\Orders.razor": {
       "KopiKala.Components.Pages.Customer.Orders": {
         "MudBlazor.Color KopiKala.Components.Pages.Customer.Orders::GetStatusChipColor(System.String)": {
           "Lines": {
@@ -1878,7 +1878,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Components\\Pages\\Account\\ForgotPassword.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Components\\Pages\\Account\\ForgotPassword.razor": {
       "KopiKala.Components.Pages.Account.ForgotPassword": {
         "System.Void KopiKala.Components.Pages.Account.ForgotPassword::.ctor()": {
           "Lines": {
@@ -1888,7 +1888,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Components\\Pages\\Account\\Login.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Components\\Pages\\Account\\Login.razor": {
       "KopiKala.Components.Pages.Account.Login": {
         "System.Void KopiKala.Components.Pages.Account.Login::OnInitialized()": {
           "Lines": {
@@ -1903,7 +1903,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Components\\Pages\\Account\\Register.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Components\\Pages\\Account\\Register.razor": {
       "KopiKala.Components.Pages.Account.Register": {
         "System.Void KopiKala.Components.Pages.Account.Register::OnInitialized()": {
           "Lines": {
@@ -1917,7 +1917,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Components\\Pages\\Account\\ResetPassword.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Components\\Pages\\Account\\ResetPassword.razor": {
       "KopiKala.Components.Pages.Account.ResetPassword": {
         "System.Void KopiKala.Components.Pages.Account.ResetPassword::OnInitialized()": {
           "Lines": {
@@ -1975,7 +1975,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Components\\Layout\\RedirectToLogin.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Components\\Layout\\RedirectToLogin.razor": {
       "KopiKala.Components.Layout.RedirectToLogin": {
         "System.Void KopiKala.Components.Layout.RedirectToLogin::OnInitialized()": {
           "Lines": {
@@ -1988,7 +1988,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Components\\Layout\\MainLayout.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Components\\Layout\\MainLayout.razor": {
       "KopiKala.Components.Layout.MainLayout": {
         "System.Void KopiKala.Components.Layout.MainLayout::OnInitialized()": {
           "Lines": {
@@ -2034,7 +2034,218 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Theme\\KopiKalaTheme.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Workers\\BackgroundTaskQueue.cs": {
+      "KopiKala.Workers.BackgroundTaskQueue": {
+        "System.Void KopiKala.Workers.BackgroundTaskQueue::.ctor(System.Int32)": {
+          "Lines": {
+            "9": 5,
+            "10": 5,
+            "11": 5,
+            "12": 5,
+            "13": 5,
+            "14": 5,
+            "15": 5,
+            "16": 5
+          },
+          "Branches": []
+        }
+      }
+    },
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Workers\\BookingMaintenanceWorker.cs": {
+      "KopiKala.Workers.BookingMaintenanceWorker": {
+        "System.Void KopiKala.Workers.BookingMaintenanceWorker::.ctor(Microsoft.Extensions.DependencyInjection.IServiceScopeFactory,System.TimeProvider,Microsoft.Extensions.Logging.ILogger`1<KopiKala.Workers.BookingMaintenanceWorker>,System.Nullable`1<System.TimeSpan>)": {
+          "Lines": {
+            "16": 6,
+            "17": 6,
+            "18": 6,
+            "19": 6,
+            "20": 6,
+            "21": 6,
+            "22": 6,
+            "23": 6,
+            "24": 6,
+            "25": 6,
+            "26": 6
+          },
+          "Branches": [
+            {
+              "Line": 25,
+              "Offset": 40,
+              "EndOffset": 42,
+              "Path": 0,
+              "Ordinal": 0,
+              "Hits": 1
+            },
+            {
+              "Line": 25,
+              "Offset": 40,
+              "EndOffset": 52,
+              "Path": 1,
+              "Ordinal": 1,
+              "Hits": 5
+            }
+          ]
+        }
+      }
+    },
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Workers\\MidnightReconciliationWorker.cs": {
+      "KopiKala.Workers.MidnightReconciliationWorker": {
+        "System.Int32 KopiKala.Workers.MidnightReconciliationWorker::PerformFileCleanup(System.Int32)": {
+          "Lines": {
+            "137": 1,
+            "139": 1,
+            "140": 1,
+            "141": 1,
+            "142": 0,
+            "143": 0,
+            "146": 1,
+            "147": 1,
+            "148": 1,
+            "150": 7,
+            "151": 2,
+            "152": 2,
+            "153": 2,
+            "154": 1,
+            "156": 1,
+            "157": 1,
+            "158": 1,
+            "159": 1,
+            "160": 1,
+            "161": 0,
+            "162": 0,
+            "163": 0,
+            "164": 0,
+            "165": 1,
+            "166": 2,
+            "168": 1,
+            "169": 1,
+            "171": 0,
+            "172": 0,
+            "173": 0,
+            "174": 0,
+            "176": 1
+          },
+          "Branches": [
+            {
+              "Line": 140,
+              "Offset": 14,
+              "EndOffset": 16,
+              "Path": 0,
+              "Ordinal": 0,
+              "Hits": 0
+            },
+            {
+              "Line": 140,
+              "Offset": 14,
+              "EndOffset": 32,
+              "Path": 1,
+              "Ordinal": 1,
+              "Hits": 1
+            },
+            {
+              "Line": 141,
+              "Offset": 61,
+              "EndOffset": 63,
+              "Path": 0,
+              "Ordinal": 2,
+              "Hits": 0
+            },
+            {
+              "Line": 141,
+              "Offset": 61,
+              "EndOffset": 72,
+              "Path": 1,
+              "Ordinal": 3,
+              "Hits": 1
+            },
+            {
+              "Line": 150,
+              "Offset": 267,
+              "EndOffset": 126,
+              "Path": 1,
+              "Ordinal": 7,
+              "Hits": 2
+            },
+            {
+              "Line": 153,
+              "Offset": 160,
+              "EndOffset": 162,
+              "Path": 0,
+              "Ordinal": 4,
+              "Hits": 1
+            },
+            {
+              "Line": 153,
+              "Offset": 160,
+              "EndOffset": 254,
+              "Path": 1,
+              "Ordinal": 5,
+              "Hits": 2
+            },
+            {
+              "Line": 150,
+              "Offset": 267,
+              "EndOffset": 272,
+              "Path": 0,
+              "Ordinal": 6,
+              "Hits": 1
+            }
+          ]
+        },
+        "System.Void KopiKala.Workers.MidnightReconciliationWorker::.ctor(Microsoft.Extensions.DependencyInjection.IServiceScopeFactory,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,System.TimeProvider,Microsoft.Extensions.Logging.ILogger`1<KopiKala.Workers.MidnightReconciliationWorker>,System.Nullable`1<System.TimeSpan>)": {
+          "Lines": {
+            "20": 6,
+            "21": 6,
+            "22": 6,
+            "23": 6,
+            "24": 6,
+            "25": 6,
+            "26": 6,
+            "27": 6,
+            "28": 6,
+            "29": 6,
+            "30": 6,
+            "31": 6,
+            "32": 6
+          },
+          "Branches": [
+            {
+              "Line": 31,
+              "Offset": 48,
+              "EndOffset": 50,
+              "Path": 0,
+              "Ordinal": 0,
+              "Hits": 1
+            },
+            {
+              "Line": 31,
+              "Offset": 48,
+              "EndOffset": 59,
+              "Path": 1,
+              "Ordinal": 1,
+              "Hits": 5
+            }
+          ]
+        }
+      }
+    },
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Workers\\QueuedHostedService.cs": {
+      "KopiKala.Workers.QueuedHostedService": {
+        "System.Void KopiKala.Workers.QueuedHostedService::.ctor(KopiKala.Workers.IBackgroundTaskQueue,Microsoft.Extensions.Logging.ILogger`1<KopiKala.Workers.QueuedHostedService>)": {
+          "Lines": {
+            "11": 3,
+            "12": 3,
+            "13": 3,
+            "14": 3,
+            "15": 3,
+            "16": 3,
+            "17": 3
+          },
+          "Branches": []
+        }
+      }
+    },
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Theme\\KopiKalaTheme.cs": {
       "KopiKala.Theme.KopiKalaTheme": {
         "MudBlazor.MudTheme KopiKala.Theme.KopiKalaTheme::CreateTheme()": {
           "Lines": {
@@ -2174,7 +2385,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Services\\AuthService.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Services\\AuthService.cs": {
       "KopiKala.Services.AuthService": {
         "System.Security.Claims.ClaimsPrincipal KopiKala.Services.AuthService::CreateClaimsPrincipal(KopiKala.Models.User)": {
           "Lines": {
@@ -2248,7 +2459,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Services\\BookingService.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Services\\BookingService.cs": {
       "KopiKala.Services.BookingService": {
         "KopiKala.DTOs.Booking.InvoiceResponseDto KopiKala.Services.BookingService::MapToInvoiceDto(KopiKala.Models.Booking)": {
           "Lines": {
@@ -2434,7 +2645,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Services\\CashierService.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Services\\CashierService.cs": {
       "KopiKala.Services.CashierService": {
         "KopiKala.DTOs.Staff.CashierBookingDto KopiKala.Services.CashierService::MapToDto(KopiKala.Models.Booking)": {
           "Lines": {
@@ -2703,7 +2914,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Migrations\\20260906194059_InitialDatabaseSetup.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Migrations\\20260906194059_InitialDatabaseSetup.cs": {
       "KopiKala.Migrations.InitialDatabaseSetup": {
         "System.Void KopiKala.Migrations.InitialDatabaseSetup::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)": {
           "Lines": {
@@ -3001,7 +3212,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Migrations\\20260906194059_InitialDatabaseSetup.Designer.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Migrations\\20260906194059_InitialDatabaseSetup.Designer.cs": {
       "KopiKala.Migrations.InitialDatabaseSetup": {
         "System.Void KopiKala.Migrations.InitialDatabaseSetup::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)": {
           "Lines": {
@@ -3517,7 +3728,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Migrations\\20260907085410_AddOpenIddictTables.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Migrations\\20260907085410_AddOpenIddictTables.cs": {
       "KopiKala.Migrations.AddOpenIddictTables": {
         "System.Void KopiKala.Migrations.AddOpenIddictTables::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)": {
           "Lines": {
@@ -3668,7 +3879,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Migrations\\20260907085410_AddOpenIddictTables.Designer.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Migrations\\20260907085410_AddOpenIddictTables.Designer.cs": {
       "KopiKala.Migrations.AddOpenIddictTables": {
         "System.Void KopiKala.Migrations.AddOpenIddictTables::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)": {
           "Lines": {
@@ -4420,7 +4631,850 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Migrations\\AppDbContextModelSnapshot.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Migrations\\20260908014349_AddDailyReportTable.cs": {
+      "KopiKala.Migrations.AddDailyReportTable": {
+        "System.Void KopiKala.Migrations.AddDailyReportTable::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)": {
+          "Lines": {
+            "13": 0,
+            "14": 0,
+            "15": 0,
+            "16": 0,
+            "17": 0,
+            "18": 0,
+            "19": 0,
+            "20": 0,
+            "21": 0,
+            "22": 0,
+            "23": 0,
+            "24": 0,
+            "25": 0,
+            "26": 0,
+            "27": 0,
+            "28": 0,
+            "29": 0,
+            "30": 0,
+            "32": 0,
+            "33": 0,
+            "34": 0,
+            "35": 0,
+            "36": 0,
+            "37": 0
+          },
+          "Branches": []
+        },
+        "System.Void KopiKala.Migrations.AddDailyReportTable::Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)": {
+          "Lines": {
+            "41": 0,
+            "42": 0,
+            "43": 0,
+            "44": 0
+          },
+          "Branches": []
+        }
+      }
+    },
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Migrations\\20260908014349_AddDailyReportTable.Designer.cs": {
+      "KopiKala.Migrations.AddDailyReportTable": {
+        "System.Void KopiKala.Migrations.AddDailyReportTable::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)": {
+          "Lines": {
+            "20": 0,
+            "22": 0,
+            "23": 0,
+            "24": 0,
+            "26": 0,
+            "27": 0,
+            "29": 0,
+            "30": 0,
+            "31": 0,
+            "32": 0,
+            "33": 0,
+            "34": 0,
+            "35": 0,
+            "36": 0,
+            "37": 0,
+            "38": 0,
+            "39": 0,
+            "40": 0,
+            "41": 0,
+            "42": 0,
+            "43": 0,
+            "44": 0,
+            "45": 0,
+            "46": 0,
+            "47": 0,
+            "48": 0,
+            "49": 0,
+            "50": 0,
+            "51": 0,
+            "52": 0,
+            "53": 0,
+            "54": 0,
+            "55": 0,
+            "56": 0,
+            "57": 0,
+            "58": 0,
+            "59": 0,
+            "60": 0,
+            "61": 0,
+            "62": 0,
+            "63": 0,
+            "64": 0,
+            "65": 0,
+            "66": 0,
+            "67": 0,
+            "68": 0,
+            "69": 0,
+            "70": 0,
+            "71": 0,
+            "72": 0,
+            "73": 0,
+            "74": 0,
+            "75": 0,
+            "76": 0,
+            "77": 0,
+            "78": 0,
+            "79": 0,
+            "80": 0,
+            "81": 0,
+            "82": 0,
+            "83": 0,
+            "84": 0,
+            "85": 0,
+            "86": 0,
+            "87": 0,
+            "88": 0,
+            "89": 0,
+            "90": 0,
+            "91": 0,
+            "92": 0,
+            "93": 0,
+            "94": 0,
+            "95": 0,
+            "96": 0,
+            "97": 0,
+            "98": 0,
+            "99": 0,
+            "100": 0,
+            "101": 0,
+            "102": 0,
+            "103": 0,
+            "104": 0,
+            "105": 0,
+            "106": 0,
+            "107": 0,
+            "108": 0,
+            "109": 0,
+            "110": 0,
+            "111": 0,
+            "112": 0,
+            "113": 0,
+            "114": 0,
+            "115": 0,
+            "116": 0,
+            "117": 0,
+            "118": 0,
+            "119": 0,
+            "120": 0,
+            "121": 0,
+            "122": 0,
+            "123": 0,
+            "124": 0,
+            "126": 0,
+            "127": 0,
+            "128": 0,
+            "129": 0,
+            "130": 0,
+            "131": 0,
+            "132": 0,
+            "133": 0,
+            "134": 0,
+            "135": 0,
+            "136": 0,
+            "137": 0,
+            "138": 0,
+            "139": 0,
+            "140": 0,
+            "141": 0,
+            "142": 0,
+            "143": 0,
+            "144": 0,
+            "145": 0,
+            "146": 0,
+            "147": 0,
+            "148": 0,
+            "149": 0,
+            "150": 0,
+            "151": 0,
+            "152": 0,
+            "153": 0,
+            "154": 0,
+            "155": 0,
+            "156": 0,
+            "157": 0,
+            "158": 0,
+            "159": 0,
+            "160": 0,
+            "161": 0,
+            "162": 0,
+            "163": 0,
+            "164": 0,
+            "165": 0,
+            "166": 0,
+            "167": 0,
+            "168": 0,
+            "169": 0,
+            "170": 0,
+            "171": 0,
+            "172": 0,
+            "174": 0,
+            "175": 0,
+            "176": 0,
+            "177": 0,
+            "178": 0,
+            "179": 0,
+            "180": 0,
+            "181": 0,
+            "182": 0,
+            "183": 0,
+            "184": 0,
+            "185": 0,
+            "186": 0,
+            "187": 0,
+            "188": 0,
+            "189": 0,
+            "190": 0,
+            "191": 0,
+            "192": 0,
+            "193": 0,
+            "194": 0,
+            "195": 0,
+            "196": 0,
+            "197": 0,
+            "198": 0,
+            "199": 0,
+            "200": 0,
+            "201": 0,
+            "202": 0,
+            "203": 0,
+            "204": 0,
+            "205": 0,
+            "206": 0,
+            "207": 0,
+            "208": 0,
+            "209": 0,
+            "210": 0,
+            "211": 0,
+            "212": 0,
+            "213": 0,
+            "214": 0,
+            "215": 0,
+            "216": 0,
+            "217": 0,
+            "218": 0,
+            "219": 0,
+            "220": 0,
+            "221": 0,
+            "222": 0,
+            "224": 0,
+            "225": 0,
+            "226": 0,
+            "227": 0,
+            "228": 0,
+            "229": 0,
+            "230": 0,
+            "231": 0,
+            "232": 0,
+            "233": 0,
+            "234": 0,
+            "235": 0,
+            "236": 0,
+            "237": 0,
+            "238": 0,
+            "239": 0,
+            "240": 0,
+            "241": 0,
+            "242": 0,
+            "243": 0,
+            "244": 0,
+            "245": 0,
+            "246": 0,
+            "247": 0,
+            "248": 0,
+            "249": 0,
+            "250": 0,
+            "251": 0,
+            "252": 0,
+            "253": 0,
+            "254": 0,
+            "255": 0,
+            "256": 0,
+            "257": 0,
+            "258": 0,
+            "259": 0,
+            "260": 0,
+            "261": 0,
+            "263": 0,
+            "264": 0,
+            "265": 0,
+            "266": 0,
+            "267": 0,
+            "268": 0,
+            "269": 0,
+            "270": 0,
+            "271": 0,
+            "272": 0,
+            "273": 0,
+            "274": 0,
+            "275": 0,
+            "276": 0,
+            "277": 0,
+            "278": 0,
+            "279": 0,
+            "280": 0,
+            "281": 0,
+            "282": 0,
+            "283": 0,
+            "284": 0,
+            "285": 0,
+            "286": 0,
+            "287": 0,
+            "288": 0,
+            "289": 0,
+            "290": 0,
+            "291": 0,
+            "292": 0,
+            "293": 0,
+            "294": 0,
+            "295": 0,
+            "296": 0,
+            "297": 0,
+            "298": 0,
+            "299": 0,
+            "300": 0,
+            "301": 0,
+            "302": 0,
+            "303": 0,
+            "304": 0,
+            "305": 0,
+            "306": 0,
+            "307": 0,
+            "309": 0,
+            "310": 0,
+            "311": 0,
+            "312": 0,
+            "313": 0,
+            "314": 0,
+            "315": 0,
+            "316": 0,
+            "317": 0,
+            "318": 0,
+            "319": 0,
+            "320": 0,
+            "321": 0,
+            "322": 0,
+            "323": 0,
+            "324": 0,
+            "325": 0,
+            "326": 0,
+            "327": 0,
+            "328": 0,
+            "329": 0,
+            "330": 0,
+            "331": 0,
+            "332": 0,
+            "333": 0,
+            "334": 0,
+            "335": 0,
+            "336": 0,
+            "337": 0,
+            "339": 0,
+            "340": 0,
+            "341": 0,
+            "342": 0,
+            "343": 0,
+            "344": 0,
+            "345": 0,
+            "346": 0,
+            "347": 0,
+            "348": 0,
+            "349": 0,
+            "350": 0,
+            "351": 0,
+            "352": 0,
+            "353": 0,
+            "354": 0,
+            "355": 0,
+            "356": 0,
+            "357": 0,
+            "358": 0,
+            "359": 0,
+            "360": 0,
+            "361": 0,
+            "362": 0,
+            "363": 0,
+            "364": 0,
+            "365": 0,
+            "366": 0,
+            "367": 0,
+            "368": 0,
+            "369": 0,
+            "370": 0,
+            "372": 0,
+            "373": 0,
+            "374": 0,
+            "375": 0,
+            "376": 0,
+            "377": 0,
+            "378": 0,
+            "379": 0,
+            "380": 0,
+            "381": 0,
+            "382": 0,
+            "383": 0,
+            "384": 0,
+            "385": 0,
+            "386": 0,
+            "387": 0,
+            "388": 0,
+            "389": 0,
+            "390": 0,
+            "391": 0,
+            "392": 0,
+            "393": 0,
+            "394": 0,
+            "395": 0,
+            "396": 0,
+            "397": 0,
+            "398": 0,
+            "399": 0,
+            "401": 0,
+            "402": 0,
+            "403": 0,
+            "404": 0,
+            "405": 0,
+            "406": 0,
+            "407": 0,
+            "408": 0,
+            "409": 0,
+            "410": 0,
+            "411": 0,
+            "412": 0,
+            "413": 0,
+            "414": 0,
+            "415": 0,
+            "416": 0,
+            "417": 0,
+            "418": 0,
+            "419": 0,
+            "420": 0,
+            "421": 0,
+            "422": 0,
+            "423": 0,
+            "424": 0,
+            "425": 0,
+            "426": 0,
+            "427": 0,
+            "428": 0,
+            "429": 0,
+            "430": 0,
+            "431": 0,
+            "432": 0,
+            "433": 0,
+            "434": 0,
+            "435": 0,
+            "436": 0,
+            "437": 0,
+            "438": 0,
+            "439": 0,
+            "440": 0,
+            "441": 0,
+            "442": 0,
+            "443": 0,
+            "444": 0,
+            "445": 0,
+            "446": 0,
+            "447": 0,
+            "448": 0,
+            "449": 0,
+            "450": 0,
+            "452": 0,
+            "453": 0,
+            "454": 0,
+            "455": 0,
+            "456": 0,
+            "457": 0,
+            "458": 0,
+            "459": 0,
+            "460": 0,
+            "461": 0,
+            "462": 0,
+            "463": 0,
+            "464": 0,
+            "465": 0,
+            "466": 0,
+            "467": 0,
+            "468": 0,
+            "469": 0,
+            "470": 0,
+            "471": 0,
+            "472": 0,
+            "473": 0,
+            "474": 0,
+            "475": 0,
+            "476": 0,
+            "477": 0,
+            "478": 0,
+            "479": 0,
+            "480": 0,
+            "481": 0,
+            "482": 0,
+            "483": 0,
+            "484": 0,
+            "485": 0,
+            "486": 0,
+            "487": 0,
+            "488": 0,
+            "489": 0,
+            "490": 0,
+            "491": 0,
+            "492": 0,
+            "493": 0,
+            "494": 0,
+            "495": 0,
+            "496": 0,
+            "497": 0,
+            "498": 0,
+            "499": 0,
+            "500": 0,
+            "501": 0,
+            "502": 0,
+            "503": 0,
+            "504": 0,
+            "505": 0,
+            "506": 0,
+            "507": 0,
+            "508": 0,
+            "509": 0,
+            "510": 0,
+            "511": 0,
+            "512": 0,
+            "513": 0,
+            "514": 0,
+            "515": 0,
+            "517": 0,
+            "518": 0,
+            "519": 0,
+            "520": 0,
+            "521": 0,
+            "522": 0,
+            "523": 0,
+            "524": 0,
+            "525": 0,
+            "526": 0,
+            "527": 0,
+            "528": 0,
+            "529": 0,
+            "530": 0,
+            "531": 0,
+            "532": 0,
+            "533": 0,
+            "534": 0,
+            "535": 0,
+            "536": 0,
+            "537": 0,
+            "538": 0,
+            "539": 0,
+            "540": 0,
+            "541": 0,
+            "542": 0,
+            "543": 0,
+            "544": 0,
+            "545": 0,
+            "546": 0,
+            "547": 0,
+            "548": 0,
+            "549": 0,
+            "550": 0,
+            "551": 0,
+            "552": 0,
+            "553": 0,
+            "554": 0,
+            "555": 0,
+            "556": 0,
+            "557": 0,
+            "559": 0,
+            "560": 0,
+            "561": 0,
+            "562": 0,
+            "563": 0,
+            "564": 0,
+            "565": 0,
+            "566": 0,
+            "567": 0,
+            "568": 0,
+            "569": 0,
+            "570": 0,
+            "571": 0,
+            "572": 0,
+            "573": 0,
+            "574": 0,
+            "575": 0,
+            "576": 0,
+            "577": 0,
+            "578": 0,
+            "579": 0,
+            "580": 0,
+            "581": 0,
+            "582": 0,
+            "583": 0,
+            "584": 0,
+            "585": 0,
+            "586": 0,
+            "587": 0,
+            "588": 0,
+            "589": 0,
+            "590": 0,
+            "591": 0,
+            "592": 0,
+            "593": 0,
+            "594": 0,
+            "595": 0,
+            "596": 0,
+            "597": 0,
+            "598": 0,
+            "600": 0,
+            "601": 0,
+            "602": 0,
+            "603": 0,
+            "604": 0,
+            "605": 0,
+            "606": 0,
+            "607": 0,
+            "608": 0,
+            "609": 0,
+            "610": 0,
+            "611": 0,
+            "612": 0,
+            "613": 0,
+            "614": 0,
+            "615": 0,
+            "616": 0,
+            "617": 0,
+            "618": 0,
+            "619": 0,
+            "620": 0,
+            "621": 0,
+            "622": 0,
+            "623": 0,
+            "624": 0,
+            "625": 0,
+            "626": 0,
+            "627": 0,
+            "628": 0,
+            "629": 0,
+            "630": 0,
+            "631": 0,
+            "632": 0,
+            "633": 0,
+            "634": 0,
+            "635": 0,
+            "636": 0,
+            "637": 0,
+            "638": 0,
+            "639": 0,
+            "640": 0,
+            "641": 0,
+            "642": 0,
+            "643": 0,
+            "644": 0,
+            "645": 0,
+            "646": 0,
+            "647": 0,
+            "648": 0,
+            "649": 0,
+            "650": 0,
+            "651": 0,
+            "652": 0,
+            "653": 0,
+            "654": 0,
+            "655": 0,
+            "656": 0,
+            "657": 0,
+            "658": 0,
+            "660": 0,
+            "661": 0,
+            "662": 0,
+            "663": 0,
+            "664": 0,
+            "665": 0,
+            "666": 0,
+            "667": 0,
+            "668": 0,
+            "669": 0,
+            "670": 0,
+            "671": 0,
+            "672": 0,
+            "673": 0,
+            "674": 0,
+            "675": 0,
+            "676": 0,
+            "678": 0,
+            "679": 0,
+            "680": 0,
+            "681": 0,
+            "682": 0,
+            "683": 0,
+            "684": 0,
+            "685": 0,
+            "686": 0,
+            "687": 0,
+            "688": 0,
+            "689": 0,
+            "690": 0,
+            "691": 0,
+            "692": 0,
+            "693": 0,
+            "694": 0,
+            "696": 0,
+            "697": 0,
+            "698": 0,
+            "699": 0,
+            "700": 0,
+            "701": 0,
+            "702": 0,
+            "703": 0,
+            "704": 0,
+            "705": 0,
+            "706": 0,
+            "707": 0,
+            "708": 0,
+            "709": 0,
+            "710": 0,
+            "711": 0,
+            "712": 0,
+            "713": 0,
+            "714": 0,
+            "715": 0,
+            "716": 0,
+            "717": 0,
+            "718": 0,
+            "719": 0,
+            "720": 0,
+            "721": 0,
+            "722": 0,
+            "723": 0,
+            "724": 0,
+            "726": 0,
+            "727": 0,
+            "728": 0,
+            "729": 0,
+            "730": 0,
+            "731": 0,
+            "732": 0,
+            "733": 0,
+            "734": 0,
+            "735": 0,
+            "736": 0,
+            "737": 0,
+            "738": 0,
+            "739": 0,
+            "740": 0,
+            "741": 0,
+            "742": 0,
+            "743": 0,
+            "744": 0,
+            "745": 0,
+            "747": 0,
+            "748": 0,
+            "749": 0,
+            "750": 0,
+            "751": 0,
+            "752": 0,
+            "753": 0,
+            "754": 0,
+            "756": 0,
+            "757": 0,
+            "758": 0,
+            "759": 0,
+            "760": 0,
+            "761": 0,
+            "762": 0,
+            "763": 0,
+            "764": 0,
+            "765": 0,
+            "766": 0,
+            "767": 0,
+            "768": 0,
+            "769": 0,
+            "771": 0,
+            "772": 0,
+            "773": 0,
+            "774": 0,
+            "775": 0,
+            "776": 0,
+            "777": 0,
+            "778": 0,
+            "779": 0,
+            "780": 0,
+            "781": 0,
+            "782": 0,
+            "783": 0,
+            "784": 0,
+            "785": 0,
+            "786": 0,
+            "788": 0,
+            "789": 0,
+            "790": 0,
+            "791": 0,
+            "792": 0,
+            "793": 0,
+            "794": 0,
+            "795": 0,
+            "796": 0,
+            "797": 0,
+            "798": 0,
+            "799": 0,
+            "800": 0,
+            "801": 0,
+            "802": 0,
+            "803": 0,
+            "805": 0,
+            "806": 0,
+            "807": 0,
+            "808": 0,
+            "810": 0,
+            "811": 0,
+            "812": 0,
+            "813": 0,
+            "815": 0,
+            "816": 0,
+            "817": 0,
+            "818": 0,
+            "820": 0,
+            "821": 0,
+            "822": 0,
+            "823": 0,
+            "825": 0,
+            "826": 0,
+            "827": 0,
+            "828": 0,
+            "830": 0,
+            "831": 0,
+            "832": 0,
+            "833": 0,
+            "834": 0,
+            "835": 0,
+            "837": 0,
+            "838": 0,
+            "839": 0,
+            "840": 0,
+            "842": 0
+          },
+          "Branches": []
+        }
+      }
+    },
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Migrations\\AppDbContextModelSnapshot.cs": {
       "KopiKala.Migrations.AppDbContextModelSnapshot": {
         "System.Void KopiKala.Migrations.AppDbContextModelSnapshot::BuildModel(Microsoft.EntityFrameworkCore.ModelBuilder)": {
           "Lines": {
@@ -4611,6 +5665,7 @@
             "206": 0,
             "207": 0,
             "208": 0,
+            "209": 0,
             "210": 0,
             "211": 0,
             "212": 0,
@@ -4621,7 +5676,6 @@
             "217": 0,
             "218": 0,
             "219": 0,
-            "220": 0,
             "221": 0,
             "222": 0,
             "223": 0,
@@ -4656,10 +5710,10 @@
             "252": 0,
             "253": 0,
             "254": 0,
+            "255": 0,
             "256": 0,
             "257": 0,
             "258": 0,
-            "259": 0,
             "260": 0,
             "261": 0,
             "262": 0,
@@ -4685,6 +5739,7 @@
             "282": 0,
             "283": 0,
             "284": 0,
+            "285": 0,
             "286": 0,
             "287": 0,
             "288": 0,
@@ -4704,7 +5759,6 @@
             "302": 0,
             "303": 0,
             "304": 0,
-            "305": 0,
             "306": 0,
             "307": 0,
             "308": 0,
@@ -4717,6 +5771,7 @@
             "315": 0,
             "316": 0,
             "317": 0,
+            "318": 0,
             "319": 0,
             "320": 0,
             "321": 0,
@@ -4733,7 +5788,6 @@
             "332": 0,
             "333": 0,
             "334": 0,
-            "335": 0,
             "336": 0,
             "337": 0,
             "338": 0,
@@ -4745,6 +5799,7 @@
             "344": 0,
             "345": 0,
             "346": 0,
+            "347": 0,
             "348": 0,
             "349": 0,
             "350": 0,
@@ -4765,7 +5820,6 @@
             "365": 0,
             "366": 0,
             "367": 0,
-            "368": 0,
             "369": 0,
             "370": 0,
             "371": 0,
@@ -4794,7 +5848,7 @@
             "394": 0,
             "395": 0,
             "396": 0,
-            "397": 0,
+            "398": 0,
             "399": 0,
             "400": 0,
             "401": 0,
@@ -4844,7 +5898,6 @@
             "445": 0,
             "446": 0,
             "447": 0,
-            "448": 0,
             "449": 0,
             "450": 0,
             "451": 0,
@@ -4859,6 +5912,7 @@
             "460": 0,
             "461": 0,
             "462": 0,
+            "463": 0,
             "464": 0,
             "465": 0,
             "466": 0,
@@ -4900,6 +5954,7 @@
             "502": 0,
             "503": 0,
             "504": 0,
+            "505": 0,
             "506": 0,
             "507": 0,
             "508": 0,
@@ -4907,7 +5962,6 @@
             "510": 0,
             "511": 0,
             "512": 0,
-            "513": 0,
             "514": 0,
             "515": 0,
             "516": 0,
@@ -4940,6 +5994,7 @@
             "543": 0,
             "544": 0,
             "545": 0,
+            "546": 0,
             "547": 0,
             "548": 0,
             "549": 0,
@@ -4948,7 +6003,6 @@
             "552": 0,
             "553": 0,
             "554": 0,
-            "555": 0,
             "556": 0,
             "557": 0,
             "558": 0,
@@ -4989,7 +6043,6 @@
             "593": 0,
             "594": 0,
             "595": 0,
-            "596": 0,
             "597": 0,
             "598": 0,
             "599": 0,
@@ -4999,6 +6052,7 @@
             "603": 0,
             "604": 0,
             "605": 0,
+            "606": 0,
             "607": 0,
             "608": 0,
             "609": 0,
@@ -5016,6 +6070,7 @@
             "621": 0,
             "622": 0,
             "623": 0,
+            "624": 0,
             "625": 0,
             "626": 0,
             "627": 0,
@@ -5033,6 +6088,7 @@
             "639": 0,
             "640": 0,
             "641": 0,
+            "642": 0,
             "643": 0,
             "644": 0,
             "645": 0,
@@ -5046,7 +6102,6 @@
             "653": 0,
             "654": 0,
             "655": 0,
-            "656": 0,
             "657": 0,
             "658": 0,
             "659": 0,
@@ -5062,8 +6117,8 @@
             "669": 0,
             "670": 0,
             "671": 0,
+            "672": 0,
             "673": 0,
-            "674": 0,
             "675": 0,
             "676": 0,
             "677": 0,
@@ -5081,7 +6136,7 @@
             "689": 0,
             "690": 0,
             "691": 0,
-            "692": 0,
+            "693": 0,
             "694": 0,
             "695": 0,
             "696": 0,
@@ -5090,6 +6145,7 @@
             "699": 0,
             "700": 0,
             "701": 0,
+            "702": 0,
             "703": 0,
             "704": 0,
             "705": 0,
@@ -5104,11 +6160,11 @@
             "714": 0,
             "715": 0,
             "716": 0,
+            "717": 0,
             "718": 0,
             "719": 0,
             "720": 0,
             "721": 0,
-            "722": 0,
             "723": 0,
             "724": 0,
             "725": 0,
@@ -5120,6 +6176,7 @@
             "731": 0,
             "732": 0,
             "733": 0,
+            "734": 0,
             "735": 0,
             "736": 0,
             "737": 0,
@@ -5128,7 +6185,6 @@
             "740": 0,
             "741": 0,
             "742": 0,
-            "743": 0,
             "744": 0,
             "745": 0,
             "746": 0,
@@ -5136,43 +6192,90 @@
             "748": 0,
             "749": 0,
             "750": 0,
-            "752": 0,
+            "751": 0,
             "753": 0,
             "754": 0,
             "755": 0,
+            "756": 0,
             "757": 0,
             "758": 0,
             "759": 0,
             "760": 0,
+            "761": 0,
             "762": 0,
             "763": 0,
             "764": 0,
             "765": 0,
-            "767": 0,
+            "766": 0,
             "768": 0,
             "769": 0,
             "770": 0,
+            "771": 0,
             "772": 0,
             "773": 0,
             "774": 0,
             "775": 0,
+            "776": 0,
             "777": 0,
             "778": 0,
             "779": 0,
             "780": 0,
             "781": 0,
             "782": 0,
-            "784": 0,
+            "783": 0,
             "785": 0,
             "786": 0,
             "787": 0,
-            "789": 0
+            "788": 0,
+            "789": 0,
+            "790": 0,
+            "791": 0,
+            "792": 0,
+            "793": 0,
+            "794": 0,
+            "795": 0,
+            "796": 0,
+            "797": 0,
+            "798": 0,
+            "799": 0,
+            "800": 0,
+            "802": 0,
+            "803": 0,
+            "804": 0,
+            "805": 0,
+            "807": 0,
+            "808": 0,
+            "809": 0,
+            "810": 0,
+            "812": 0,
+            "813": 0,
+            "814": 0,
+            "815": 0,
+            "817": 0,
+            "818": 0,
+            "819": 0,
+            "820": 0,
+            "822": 0,
+            "823": 0,
+            "824": 0,
+            "825": 0,
+            "827": 0,
+            "828": 0,
+            "829": 0,
+            "830": 0,
+            "831": 0,
+            "832": 0,
+            "834": 0,
+            "835": 0,
+            "836": 0,
+            "837": 0,
+            "839": 0
           },
           "Branches": []
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Helpers\\CurrencyHelper.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Helpers\\CurrencyHelper.cs": {
       "KopiKala.Helpers.CurrencyHelper": {
         "System.String KopiKala.Helpers.CurrencyHelper::ToRupiah(System.Decimal)": {
           "Lines": {
@@ -5190,7 +6293,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Helpers\\FileSecurityHelper.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Helpers\\FileSecurityHelper.cs": {
       "KopiKala.Helpers.FileSecurityHelper": {
         "System.Boolean KopiKala.Helpers.FileSecurityHelper::IsValidImageExtension(System.String)": {
           "Lines": {
@@ -5543,7 +6646,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Helpers\\InvoiceCodeHelper.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Helpers\\InvoiceCodeHelper.cs": {
       "KopiKala.Helpers.InvoiceCodeHelper": {
         "System.String KopiKala.Helpers.InvoiceCodeHelper::GenerateInvoiceCode(System.DateOnly)": {
           "Lines": {
@@ -5557,7 +6660,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Helpers\\PasswordHelper.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Helpers\\PasswordHelper.cs": {
       "KopiKala.Helpers.PasswordHelper": {
         "System.String KopiKala.Helpers.PasswordHelper::HashPassword(System.String)": {
           "Lines": {
@@ -5613,7 +6716,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Helpers\\PermissionAuthorizationHandler.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Helpers\\PermissionAuthorizationHandler.cs": {
       "KopiKala.Helpers.PermissionAuthorizationHandler": {
         "System.Threading.Tasks.Task KopiKala.Helpers.PermissionAuthorizationHandler::HandleRequirementAsync(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,KopiKala.Helpers.PermissionRequirement)": {
           "Lines": {
@@ -5666,7 +6769,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Helpers\\PermissionPolicyProvider.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Helpers\\PermissionPolicyProvider.cs": {
       "KopiKala.Helpers.PermissionPolicyProvider": {
         "System.Threading.Tasks.Task`1<Microsoft.AspNetCore.Authorization.AuthorizationPolicy> KopiKala.Helpers.PermissionPolicyProvider::GetDefaultPolicyAsync()": {
           "Lines": {
@@ -5691,7 +6794,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Helpers\\PermissionRequirement.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Helpers\\PermissionRequirement.cs": {
       "KopiKala.Helpers.PermissionRequirement": {
         "System.Void KopiKala.Helpers.PermissionRequirement::.ctor(System.String)": {
           "Lines": {
@@ -5704,7 +6807,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\DTOs\\Booking\\OrderItemDto.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\DTOs\\Booking\\OrderItemDto.cs": {
       "KopiKala.DTOs.Booking.OrderItemDto": {
         "System.Decimal KopiKala.DTOs.Booking.OrderItemDto::get_SubTotal()": {
           "Lines": {
@@ -5714,12 +6817,12 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Data\\AppDbContext.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Data\\AppDbContext.cs": {
       "KopiKala.Data.AppDbContext": {
         "System.Void KopiKala.Data.AppDbContext::OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)": {
           "Lines": {
-            "18": 127,
-            "19": 127,
+            "18": 168,
+            "19": 168,
             "20": 0,
             "21": 0,
             "22": 0,
@@ -5730,7 +6833,7 @@
             "28": 0,
             "29": 0,
             "30": 0,
-            "31": 127
+            "31": 168
           },
           "Branches": [
             {
@@ -5747,17 +6850,15 @@
               "EndOffset": 85,
               "Path": 1,
               "Ordinal": 1,
-              "Hits": 127
+              "Hits": 168
             }
           ]
         },
         "System.Void KopiKala.Data.AppDbContext::OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)": {
           "Lines": {
-            "50": 2,
-            "51": 2,
-            "54": 2,
+            "52": 2,
+            "53": 2,
             "56": 2,
-            "57": 2,
             "58": 2,
             "59": 2,
             "60": 2,
@@ -5818,8 +6919,8 @@
             "115": 2,
             "116": 2,
             "117": 2,
+            "118": 2,
             "119": 2,
-            "120": 2,
             "121": 2,
             "122": 2,
             "123": 2,
@@ -5850,8 +6951,8 @@
             "148": 2,
             "149": 2,
             "150": 2,
+            "151": 2,
             "152": 2,
-            "153": 2,
             "154": 2,
             "155": 2,
             "156": 2,
@@ -5872,11 +6973,11 @@
             "171": 2,
             "172": 2,
             "173": 2,
+            "174": 2,
             "175": 2,
             "176": 2,
             "177": 2,
             "178": 2,
-            "179": 2,
             "180": 2,
             "181": 2,
             "182": 2,
@@ -5898,7 +6999,7 @@
             "198": 2,
             "199": 2,
             "200": 2,
-            "202": 2,
+            "201": 2,
             "203": 2,
             "204": 2,
             "205": 2,
@@ -5914,6 +7015,7 @@
             "215": 2,
             "216": 2,
             "217": 2,
+            "218": 2,
             "219": 2,
             "220": 2,
             "221": 2,
@@ -5924,7 +7026,6 @@
             "226": 2,
             "227": 2,
             "228": 2,
-            "229": 2,
             "230": 2,
             "231": 2,
             "232": 2,
@@ -5941,13 +7042,13 @@
             "243": 2,
             "244": 2,
             "245": 2,
-            "246": 2,
             "247": 2,
             "248": 2,
             "249": 2,
             "250": 2,
             "251": 2,
             "252": 2,
+            "253": 2,
             "254": 2,
             "255": 2,
             "256": 2,
@@ -5961,6 +7062,7 @@
             "264": 2,
             "265": 2,
             "266": 2,
+            "267": 2,
             "268": 2,
             "269": 2,
             "270": 2,
@@ -5974,7 +7076,6 @@
             "278": 2,
             "279": 2,
             "280": 2,
-            "281": 2,
             "282": 2,
             "283": 2,
             "284": 2,
@@ -5988,7 +7089,6 @@
             "292": 2,
             "293": 2,
             "294": 2,
-            "295": 2,
             "296": 2,
             "297": 2,
             "298": 2,
@@ -6009,7 +7109,35 @@
             "313": 2,
             "314": 2,
             "315": 2,
-            "318": 2
+            "316": 2,
+            "317": 2,
+            "318": 2,
+            "319": 2,
+            "320": 2,
+            "321": 2,
+            "322": 2,
+            "323": 2,
+            "324": 2,
+            "325": 2,
+            "326": 2,
+            "327": 2,
+            "328": 2,
+            "329": 2,
+            "330": 2,
+            "331": 2,
+            "332": 2,
+            "333": 2,
+            "334": 2,
+            "335": 2,
+            "336": 2,
+            "337": 2,
+            "338": 2,
+            "339": 2,
+            "340": 2,
+            "341": 2,
+            "342": 2,
+            "343": 2,
+            "346": 2
           },
           "Branches": []
         },
@@ -6023,15 +7151,15 @@
         },
         "System.Void KopiKala.Data.AppDbContext::.ctor(Microsoft.EntityFrameworkCore.DbContextOptions`1<KopiKala.Data.AppDbContext>)": {
           "Lines": {
-            "13": 128,
-            "14": 128,
-            "15": 128
+            "13": 169,
+            "14": 169,
+            "15": 169
           },
           "Branches": []
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Data\\ApplicationDbContext.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Data\\ApplicationDbContext.cs": {
       "KopiKala.Data.ApplicationDbContext": {
         "System.Void KopiKala.Data.ApplicationDbContext::.ctor(Microsoft.EntityFrameworkCore.DbContextOptions`1<KopiKala.Data.ApplicationDbContext>)": {
           "Lines": {
@@ -6041,7 +7169,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\KopiKala\\Controllers\\AuthorizationController.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\ticket-6-workers\\KopiKala\\Controllers\\AuthorizationController.cs": {
       "KopiKala.Controllers.AuthorizationController": {
         "System.Void KopiKala.Controllers.AuthorizationController::.ctor(OpenIddict.Abstractions.IOpenIddictApplicationManager,OpenIddict.Abstractions.IOpenIddictAuthorizationManager,OpenIddict.Abstractions.IOpenIddictScopeManager,KopiKala.Data.AppDbContext)": {
           "Lines": {
