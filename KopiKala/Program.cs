@@ -44,6 +44,7 @@ public class Program
         builder.Services.AddHttpClient();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddControllers();
+        builder.Services.AddHealthChecks();
 
         // 4.1 Tri-Tier Background Workers & In-Memory Task Queue
         builder.Services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
@@ -266,6 +267,7 @@ public class Program
         app.UseAntiforgery();
 
         app.MapControllers();
+        app.MapHealthChecks("/healthz");
         app.MapStaticAssets();
         app.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode();
