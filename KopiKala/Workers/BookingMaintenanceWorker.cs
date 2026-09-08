@@ -31,20 +31,23 @@ public class BookingMaintenanceWorker : BackgroundService
 
         using var timer = new PeriodicTimer(_checkInterval, _timeProvider);
 
-        while (!stoppingToken.IsCancellationRequested && await timer.WaitForNextTickAsync(stoppingToken))
+        try
         {
-            try
+            while (await timer.WaitForNextTickAsync(stoppingToken))
             {
-                await PerformMaintenanceCycleAsync(stoppingToken);
+                try
+                {
+                    await PerformMaintenanceCycleAsync(stoppingToken);
+                }
+                catch (Exception ex) when (ex is not OperationCanceledException)
+                {
+                    _logger.LogError(ex, "Error occurred in BookingMaintenanceWorker execution cycle.");
+                }
             }
-            catch (OperationCanceledException)
-            {
-                break;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error occurred in BookingMaintenanceWorker execution cycle.");
-            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Expected during graceful shutdown
         }
 
         _logger.LogInformation("Booking Maintenance Worker stopped.");

@@ -37,35 +37,38 @@ public class MidnightReconciliationWorker : BackgroundService
 
         using var timer = new PeriodicTimer(_checkInterval, _timeProvider);
 
-        while (!stoppingToken.IsCancellationRequested && await timer.WaitForNextTickAsync(stoppingToken))
+        try
         {
-            try
+            while (await timer.WaitForNextTickAsync(stoppingToken))
             {
-                var now = _timeProvider.GetUtcNow().UtcDateTime;
-                var today = DateOnly.FromDateTime(now);
-                var yesterday = today.AddDays(-1);
-
-                // Run reconciliation once per day when date changes
-                if (_lastReconciledDate < yesterday)
+                try
                 {
-                    await PerformReconciliationAsync(yesterday, stoppingToken);
-                    _lastReconciledDate = yesterday;
+                    var now = _timeProvider.GetUtcNow().UtcDateTime;
+                    var today = DateOnly.FromDateTime(now);
+                    var yesterday = today.AddDays(-1);
 
-                    // Weekly cleanup on Sunday nights
-                    if (now.DayOfWeek == DayOfWeek.Sunday)
+                    // Run reconciliation once per day when date changes
+                    if (_lastReconciledDate < yesterday)
                     {
-                        PerformFileCleanup();
+                        await PerformReconciliationAsync(yesterday, stoppingToken);
+                        _lastReconciledDate = yesterday;
+
+                        // Weekly cleanup on Sunday nights
+                        if (now.DayOfWeek == DayOfWeek.Sunday)
+                        {
+                            PerformFileCleanup();
+                        }
                     }
                 }
+                catch (Exception ex) when (ex is not OperationCanceledException)
+                {
+                    _logger.LogError(ex, "Error occurred in MidnightReconciliationWorker execution cycle.");
+                }
             }
-            catch (OperationCanceledException)
-            {
-                break;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error occurred in MidnightReconciliationWorker execution cycle.");
-            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Expected during graceful shutdown
         }
 
         _logger.LogInformation("Midnight Reconciliation Worker stopped.");
