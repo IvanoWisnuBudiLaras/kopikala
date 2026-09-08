@@ -18,6 +18,9 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        // 0. Daftarkan Service Defaults .NET Aspire (OpenTelemetry, HealthChecks, Service Discovery, Resilience)
+        builder.AddServiceDefaults();
+
         // 1. Daftarkan UI MudBlazor
         builder.Services.AddMudServices();
 
@@ -268,7 +271,7 @@ public class Program
         app.UseAntiforgery();
 
         app.MapControllers();
-        app.MapHealthChecks("/healthz");
+        app.MapDefaultEndpoints();
         app.MapStaticAssets();
         app.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode();

@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v10.0": {
       "KopiKala/1.0.0": {
         "dependencies": {
+          "KopiKala.ServiceDefaults": "1.0.0",
           "Microsoft.AspNetCore.Authentication.Google": "10.0.11",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "10.0.11",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "10.0.11",
@@ -388,27 +389,27 @@
           }
         }
       },
-      "Microsoft.Extensions.AmbientMetadata.Application/9.2.0": {
+      "Microsoft.Extensions.AmbientMetadata.Application/10.0.0": {
         "runtime": {
-          "lib/net9.0/Microsoft.Extensions.AmbientMetadata.Application.dll": {
-            "assemblyVersion": "9.2.0.0",
-            "fileVersion": "9.200.25.10506"
+          "lib/net10.0/Microsoft.Extensions.AmbientMetadata.Application.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.55903"
           }
         }
       },
-      "Microsoft.Extensions.Compliance.Abstractions/9.2.0": {
+      "Microsoft.Extensions.Compliance.Abstractions/10.0.0": {
         "runtime": {
-          "lib/net9.0/Microsoft.Extensions.Compliance.Abstractions.dll": {
-            "assemblyVersion": "9.2.0.0",
-            "fileVersion": "9.200.25.10506"
+          "lib/net10.0/Microsoft.Extensions.Compliance.Abstractions.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.55903"
           }
         }
       },
-      "Microsoft.Extensions.DependencyInjection.AutoActivation/9.2.0": {
+      "Microsoft.Extensions.DependencyInjection.AutoActivation/10.0.0": {
         "runtime": {
-          "lib/net9.0/Microsoft.Extensions.DependencyInjection.AutoActivation.dll": {
-            "assemblyVersion": "9.2.0.0",
-            "fileVersion": "9.200.25.10506"
+          "lib/net10.0/Microsoft.Extensions.DependencyInjection.AutoActivation.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.55903"
           }
         }
       },
@@ -420,23 +421,22 @@
           }
         }
       },
-      "Microsoft.Extensions.Diagnostics.ExceptionSummarization/9.2.0": {
+      "Microsoft.Extensions.Diagnostics.ExceptionSummarization/10.0.0": {
         "runtime": {
-          "lib/net9.0/Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll": {
-            "assemblyVersion": "9.2.0.0",
-            "fileVersion": "9.200.25.10506"
+          "lib/net10.0/Microsoft.Extensions.Diagnostics.ExceptionSummarization.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.55903"
           }
         }
       },
-      "Microsoft.Extensions.Http.Diagnostics/9.2.0": {
+      "Microsoft.Extensions.Http.Diagnostics/10.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.AutoActivation": "9.2.0",
-          "Microsoft.Extensions.Telemetry": "9.2.0"
+          "Microsoft.Extensions.Telemetry": "10.0.0"
         },
         "runtime": {
-          "lib/net9.0/Microsoft.Extensions.Http.Diagnostics.dll": {
-            "assemblyVersion": "9.2.0.0",
-            "fileVersion": "9.200.25.10506"
+          "lib/net10.0/Microsoft.Extensions.Http.Diagnostics.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.55903"
           }
         }
       },
@@ -452,53 +452,72 @@
           }
         }
       },
-      "Microsoft.Extensions.Http.Resilience/9.2.0": {
+      "Microsoft.Extensions.Http.Resilience/10.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.Http.Diagnostics": "9.2.0",
-          "Microsoft.Extensions.Resilience": "9.2.0"
+          "Microsoft.Extensions.Http.Diagnostics": "10.0.0",
+          "Microsoft.Extensions.Resilience": "10.0.0"
         },
         "runtime": {
-          "lib/net9.0/Microsoft.Extensions.Http.Resilience.dll": {
-            "assemblyVersion": "9.2.0.0",
-            "fileVersion": "9.200.25.10506"
+          "lib/net10.0/Microsoft.Extensions.Http.Resilience.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.55903"
           }
         }
       },
-      "Microsoft.Extensions.Resilience/9.2.0": {
+      "Microsoft.Extensions.Resilience/10.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.Diagnostics.ExceptionSummarization": "9.2.0",
-          "Microsoft.Extensions.Telemetry.Abstractions": "9.2.0",
+          "Microsoft.Extensions.Diagnostics.ExceptionSummarization": "10.0.0",
+          "Microsoft.Extensions.Telemetry.Abstractions": "10.0.0",
           "Polly.Extensions": "8.4.2",
           "Polly.RateLimiting": "8.4.2"
         },
         "runtime": {
-          "lib/net9.0/Microsoft.Extensions.Resilience.dll": {
-            "assemblyVersion": "9.2.0.0",
-            "fileVersion": "9.200.25.10506"
+          "lib/net10.0/Microsoft.Extensions.Resilience.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.55903"
           }
         }
       },
-      "Microsoft.Extensions.Telemetry/9.2.0": {
+      "Microsoft.Extensions.ServiceDiscovery/10.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.AmbientMetadata.Application": "9.2.0",
-          "Microsoft.Extensions.DependencyInjection.AutoActivation": "9.2.0",
-          "Microsoft.Extensions.Telemetry.Abstractions": "9.2.0"
+          "Microsoft.Extensions.ServiceDiscovery.Abstractions": "10.0.0"
         },
         "runtime": {
-          "lib/net9.0/Microsoft.Extensions.Telemetry.dll": {
-            "assemblyVersion": "9.2.0.0",
-            "fileVersion": "9.200.25.10506"
+          "lib/net10.0/Microsoft.Extensions.ServiceDiscovery.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.55903"
           }
         }
       },
-      "Microsoft.Extensions.Telemetry.Abstractions/9.2.0": {
+      "Microsoft.Extensions.ServiceDiscovery.Abstractions/10.0.0": {
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.ServiceDiscovery.Abstractions.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.55903"
+          }
+        }
+      },
+      "Microsoft.Extensions.Telemetry/10.0.0": {
         "dependencies": {
-          "Microsoft.Extensions.Compliance.Abstractions": "9.2.0"
+          "Microsoft.Extensions.AmbientMetadata.Application": "10.0.0",
+          "Microsoft.Extensions.DependencyInjection.AutoActivation": "10.0.0",
+          "Microsoft.Extensions.Telemetry.Abstractions": "10.0.0"
         },
         "runtime": {
-          "lib/net9.0/Microsoft.Extensions.Telemetry.Abstractions.dll": {
-            "assemblyVersion": "9.2.0.0",
-            "fileVersion": "9.200.25.10506"
+          "lib/net10.0/Microsoft.Extensions.Telemetry.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.55903"
+          }
+        }
+      },
+      "Microsoft.Extensions.Telemetry.Abstractions/10.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Compliance.Abstractions": "10.0.0"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.Telemetry.Abstractions.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.25.55903"
           }
         }
       },
@@ -695,7 +714,7 @@
       "OpenIddict.Client.SystemNetHttp/6.1.1": {
         "dependencies": {
           "Microsoft.Extensions.Http.Polly": "9.0.2",
-          "Microsoft.Extensions.Http.Resilience": "9.2.0",
+          "Microsoft.Extensions.Http.Resilience": "10.0.0",
           "OpenIddict.Client": "6.1.1"
         },
         "runtime": {
@@ -833,13 +852,98 @@
       "OpenIddict.Validation.SystemNetHttp/6.1.1": {
         "dependencies": {
           "Microsoft.Extensions.Http.Polly": "9.0.2",
-          "Microsoft.Extensions.Http.Resilience": "9.2.0",
+          "Microsoft.Extensions.Http.Resilience": "10.0.0",
           "OpenIddict.Validation": "6.1.1"
         },
         "runtime": {
           "lib/net9.0/OpenIddict.Validation.SystemNetHttp.dll": {
             "assemblyVersion": "6.1.1.0",
             "fileVersion": "6.100.125.12678"
+          }
+        }
+      },
+      "OpenTelemetry/1.11.2": {
+        "dependencies": {
+          "OpenTelemetry.Api.ProviderBuilderExtensions": "1.11.2"
+        },
+        "runtime": {
+          "lib/net9.0/OpenTelemetry.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.11.2.1586"
+          }
+        }
+      },
+      "OpenTelemetry.Api/1.11.2": {
+        "runtime": {
+          "lib/net9.0/OpenTelemetry.Api.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.11.2.1586"
+          }
+        }
+      },
+      "OpenTelemetry.Api.ProviderBuilderExtensions/1.11.2": {
+        "dependencies": {
+          "OpenTelemetry.Api": "1.11.2"
+        },
+        "runtime": {
+          "lib/net9.0/OpenTelemetry.Api.ProviderBuilderExtensions.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.11.2.1586"
+          }
+        }
+      },
+      "OpenTelemetry.Exporter.OpenTelemetryProtocol/1.11.2": {
+        "dependencies": {
+          "OpenTelemetry": "1.11.2"
+        },
+        "runtime": {
+          "lib/net9.0/OpenTelemetry.Exporter.OpenTelemetryProtocol.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.11.2.1586"
+          }
+        }
+      },
+      "OpenTelemetry.Extensions.Hosting/1.11.2": {
+        "dependencies": {
+          "OpenTelemetry": "1.11.2"
+        },
+        "runtime": {
+          "lib/net9.0/OpenTelemetry.Extensions.Hosting.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.11.2.1586"
+          }
+        }
+      },
+      "OpenTelemetry.Instrumentation.AspNetCore/1.11.1": {
+        "dependencies": {
+          "OpenTelemetry.Api.ProviderBuilderExtensions": "1.11.2"
+        },
+        "runtime": {
+          "lib/net8.0/OpenTelemetry.Instrumentation.AspNetCore.dll": {
+            "assemblyVersion": "1.11.1.401",
+            "fileVersion": "1.11.1.401"
+          }
+        }
+      },
+      "OpenTelemetry.Instrumentation.Http/1.11.1": {
+        "dependencies": {
+          "OpenTelemetry.Api.ProviderBuilderExtensions": "1.11.2"
+        },
+        "runtime": {
+          "lib/net8.0/OpenTelemetry.Instrumentation.Http.dll": {
+            "assemblyVersion": "1.11.1.407",
+            "fileVersion": "1.11.1.407"
+          }
+        }
+      },
+      "OpenTelemetry.Instrumentation.Runtime/1.11.1": {
+        "dependencies": {
+          "OpenTelemetry.Api": "1.11.2"
+        },
+        "runtime": {
+          "lib/net8.0/OpenTelemetry.Instrumentation.Runtime.dll": {
+            "assemblyVersion": "1.11.1.410",
+            "fileVersion": "1.11.1.410"
           }
         }
       },
@@ -959,6 +1063,23 @@
             "fileVersion": "9.0.24.52809"
           }
         }
+      },
+      "KopiKala.ServiceDefaults/1.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Http.Resilience": "10.0.0",
+          "Microsoft.Extensions.ServiceDiscovery": "10.0.0",
+          "OpenTelemetry.Exporter.OpenTelemetryProtocol": "1.11.2",
+          "OpenTelemetry.Extensions.Hosting": "1.11.2",
+          "OpenTelemetry.Instrumentation.AspNetCore": "1.11.1",
+          "OpenTelemetry.Instrumentation.Http": "1.11.1",
+          "OpenTelemetry.Instrumentation.Runtime": "1.11.1"
+        },
+        "runtime": {
+          "KopiKala.ServiceDefaults.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -1066,26 +1187,26 @@
       "path": "microsoft.entityframeworkcore.relational/10.0.11",
       "hashPath": "microsoft.entityframeworkcore.relational.10.0.11.nupkg.sha512"
     },
-    "Microsoft.Extensions.AmbientMetadata.Application/9.2.0": {
+    "Microsoft.Extensions.AmbientMetadata.Application/10.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-GMCX3zybUB22aAADjYPXrWhhd1HNMkcY5EcFAJnXy/4k5pPpJ6TS4VRl37xfrtosNyzbpO2SI7pd2Q5PvggSdg==",
-      "path": "microsoft.extensions.ambientmetadata.application/9.2.0",
-      "hashPath": "microsoft.extensions.ambientmetadata.application.9.2.0.nupkg.sha512"
+      "sha512": "sha512-bqA2KZIknwyE9DCKEe3qvmr7odWRHmcMHlBwGvIPdFyaaxedeIQrELs+ryUgHHtgYK6TfK82jEMwBpJtERST6A==",
+      "path": "microsoft.extensions.ambientmetadata.application/10.0.0",
+      "hashPath": "microsoft.extensions.ambientmetadata.application.10.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Compliance.Abstractions/9.2.0": {
+    "Microsoft.Extensions.Compliance.Abstractions/10.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Te+N4xphDlGIS90lKJMZyezFiMWKLAtYV2/M8gGJG4thH6xyC7LWhMzgz2+tWMehxwZlBUq2D9DvVpjKBZFTPQ==",
-      "path": "microsoft.extensions.compliance.abstractions/9.2.0",
-      "hashPath": "microsoft.extensions.compliance.abstractions.9.2.0.nupkg.sha512"
+      "sha512": "sha512-dfJxd9USR8BbRzZZPWVoqFVVESJRTUh2tn6TmSPQsJ2mJjvGsGJGlELM9vctAfgthajBicRZ9zzxsu6s4VUmMQ==",
+      "path": "microsoft.extensions.compliance.abstractions/10.0.0",
+      "hashPath": "microsoft.extensions.compliance.abstractions.10.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.DependencyInjection.AutoActivation/9.2.0": {
+    "Microsoft.Extensions.DependencyInjection.AutoActivation/10.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-WcwfTpl3IcPcaahTVEaJwMUg1eWog1SkIA6jQZZFqMXiMX9/tVkhNB6yzUQmBdGWdlWDDRKpOmK7T7x1Uu05pQ==",
-      "path": "microsoft.extensions.dependencyinjection.autoactivation/9.2.0",
-      "hashPath": "microsoft.extensions.dependencyinjection.autoactivation.9.2.0.nupkg.sha512"
+      "sha512": "sha512-5t17Z77ysTmEla9/xUiOJLYLc8/9OyzlZJRxjTaSyiCi0mEroR0PwldKZsfwFLUOMSaNP6vngptYFbw7stO0rw==",
+      "path": "microsoft.extensions.dependencyinjection.autoactivation/10.0.0",
+      "hashPath": "microsoft.extensions.dependencyinjection.autoactivation.10.0.0.nupkg.sha512"
     },
     "Microsoft.Extensions.DependencyModel/10.0.11": {
       "type": "package",
@@ -1094,19 +1215,19 @@
       "path": "microsoft.extensions.dependencymodel/10.0.11",
       "hashPath": "microsoft.extensions.dependencymodel.10.0.11.nupkg.sha512"
     },
-    "Microsoft.Extensions.Diagnostics.ExceptionSummarization/9.2.0": {
+    "Microsoft.Extensions.Diagnostics.ExceptionSummarization/10.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-et5JevHsLv1w1O1Zhb6LiUfai/nmDRzIHnbrZJdzLsIbbMCKTZpeHuANYIppAD//n12KvgOne05j4cu0GhG9gw==",
-      "path": "microsoft.extensions.diagnostics.exceptionsummarization/9.2.0",
-      "hashPath": "microsoft.extensions.diagnostics.exceptionsummarization.9.2.0.nupkg.sha512"
+      "sha512": "sha512-rfirztoSX5INXWX6YJ1iwTPfmsl53c3t3LN7rjOXbt5w5e0CmGVaUHYhABYq+rn+d+w0HWqgMiQubOZeirUAfw==",
+      "path": "microsoft.extensions.diagnostics.exceptionsummarization/10.0.0",
+      "hashPath": "microsoft.extensions.diagnostics.exceptionsummarization.10.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Http.Diagnostics/9.2.0": {
+    "Microsoft.Extensions.Http.Diagnostics/10.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Eeup1LuD5hVk5SsKAuX1D7I9sF380MjrNG10IaaauRLOmrRg8rq2TA8PYTXVBXf3MLkZ6m2xpBqRbZdxf8ygkg==",
-      "path": "microsoft.extensions.http.diagnostics/9.2.0",
-      "hashPath": "microsoft.extensions.http.diagnostics.9.2.0.nupkg.sha512"
+      "sha512": "sha512-Ll00tZzMmIO9wnA0JCqsmuDHfT1YXmtiGnpazZpAilwS/ro0gf8JIqgWOy6cLfBNDxFruaJhhvTKdLSlgcomHw==",
+      "path": "microsoft.extensions.http.diagnostics/10.0.0",
+      "hashPath": "microsoft.extensions.http.diagnostics.10.0.0.nupkg.sha512"
     },
     "Microsoft.Extensions.Http.Polly/9.0.2": {
       "type": "package",
@@ -1115,33 +1236,47 @@
       "path": "microsoft.extensions.http.polly/9.0.2",
       "hashPath": "microsoft.extensions.http.polly.9.0.2.nupkg.sha512"
     },
-    "Microsoft.Extensions.Http.Resilience/9.2.0": {
+    "Microsoft.Extensions.Http.Resilience/10.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Km+YyCuk1IaeOsAzPDygtgsUOh3Fi89hpA18si0tFJmpSBf9aKzP9ffV5j7YOoVDvRWirpumXAPQzk1inBsvKw==",
-      "path": "microsoft.extensions.http.resilience/9.2.0",
-      "hashPath": "microsoft.extensions.http.resilience.9.2.0.nupkg.sha512"
+      "sha512": "sha512-Mn/diApGtdtz83Mi+XO57WhO+FsiSScfjUsIU/h8nryh3pkUNZGhpUx22NtuOxgYSsrYfODgOa2QMtIQAOv/dA==",
+      "path": "microsoft.extensions.http.resilience/10.0.0",
+      "hashPath": "microsoft.extensions.http.resilience.10.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Resilience/9.2.0": {
+    "Microsoft.Extensions.Resilience/10.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-dyaM+Jeznh/i21bOrrRs3xceFfn0571EOjOq95dRXmL1rHDLC4ExhACJ2xipRBP6g1AgRNqmryi+hMrVWWgmlg==",
-      "path": "microsoft.extensions.resilience/9.2.0",
-      "hashPath": "microsoft.extensions.resilience.9.2.0.nupkg.sha512"
+      "sha512": "sha512-EPW15dqrBiqkD6YE4XVWivGMXTTPE3YAmXJ32wr1k8E1l7veEYUHwzetOonV76GTe4oJl1np3AXYFnCRpBYU+w==",
+      "path": "microsoft.extensions.resilience/10.0.0",
+      "hashPath": "microsoft.extensions.resilience.10.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Telemetry/9.2.0": {
+    "Microsoft.Extensions.ServiceDiscovery/10.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-4+bw7W4RrAMrND9TxonnSmzJOdXiPxljoda8OPJiReIN607mKCc0t0Mf28sHNsTujO1XQw28wsI0poxeeQxohw==",
-      "path": "microsoft.extensions.telemetry/9.2.0",
-      "hashPath": "microsoft.extensions.telemetry.9.2.0.nupkg.sha512"
+      "sha512": "sha512-SAWCC/N/94cJnLt/cAYJgB/C9SdN82ln9Dc2O/+5ZXlnP7Z6KQK11h4/YCVX1M3VUrv6dZUAbhbcuNgMQSMEzQ==",
+      "path": "microsoft.extensions.servicediscovery/10.0.0",
+      "hashPath": "microsoft.extensions.servicediscovery.10.0.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.Telemetry.Abstractions/9.2.0": {
+    "Microsoft.Extensions.ServiceDiscovery.Abstractions/10.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-kEl+5G3RqS20XaEhHh/nOugcjKEK+rgVtMJra1iuwNzdzQXElelf3vu8TugcT7rIZ/T4T76EKW1OX/fmlxz4hw==",
-      "path": "microsoft.extensions.telemetry.abstractions/9.2.0",
-      "hashPath": "microsoft.extensions.telemetry.abstractions.9.2.0.nupkg.sha512"
+      "sha512": "sha512-qlF8wZH4EpEoaU+EBU5PsTrBLtUwWdDKPUi4VDs7zHsnNB6h9MBqfyqD8aS7WVfEvaZzp6cl7rXOplnNc1TNwQ==",
+      "path": "microsoft.extensions.servicediscovery.abstractions/10.0.0",
+      "hashPath": "microsoft.extensions.servicediscovery.abstractions.10.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Telemetry/10.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dII0Kuh699xBMBmK7oLJNNXmJ+kMRcpabil/VbAtO08zjSNQPb/dk/kBI6sVfWw20po1J/up03SAYeLKPc3LEg==",
+      "path": "microsoft.extensions.telemetry/10.0.0",
+      "hashPath": "microsoft.extensions.telemetry.10.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Telemetry.Abstractions/10.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-M17n6IpgutodXxwTZk1r5Jp2ZZ995FJTKMxiEQSr6vT3iwRfRq2HWzzrR1B6N3MpJhDfI2QuMdCOLUq++GCsQg==",
+      "path": "microsoft.extensions.telemetry.abstractions/10.0.0",
+      "hashPath": "microsoft.extensions.telemetry.abstractions.10.0.0.nupkg.sha512"
     },
     "Microsoft.IdentityModel.Abstractions/8.4.0": {
       "type": "package",
@@ -1360,6 +1495,62 @@
       "path": "openiddict.validation.systemnethttp/6.1.1",
       "hashPath": "openiddict.validation.systemnethttp.6.1.1.nupkg.sha512"
     },
+    "OpenTelemetry/1.11.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-FwonkaCVW8M9DLTHmAeJ+znsQCeOVvF4vSBworyq6f55RJB62LFmK7h7SG2aNERTknxP5RoGSwGOBPcVEgC07w==",
+      "path": "opentelemetry/1.11.2",
+      "hashPath": "opentelemetry.1.11.2.nupkg.sha512"
+    },
+    "OpenTelemetry.Api/1.11.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-jgSd/FvtxPPc6nLaZnFj+bulHM2iQjy+NBCY5MbQjH6vkW/SfcXD9NMP3pKCmdF+SbZpgL+EoLQc+PmcnYYLlA==",
+      "path": "opentelemetry.api/1.11.2",
+      "hashPath": "opentelemetry.api.1.11.2.nupkg.sha512"
+    },
+    "OpenTelemetry.Api.ProviderBuilderExtensions/1.11.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Y1aag4WT9f3rF8jQWwub5DsFVXpM/5NQsfYg6lmsNQrtJ6TcRqQu2PubcHXeIX2N6TA7XF3ffQAgeJklsSLeoQ==",
+      "path": "opentelemetry.api.providerbuilderextensions/1.11.2",
+      "hashPath": "opentelemetry.api.providerbuilderextensions.1.11.2.nupkg.sha512"
+    },
+    "OpenTelemetry.Exporter.OpenTelemetryProtocol/1.11.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-37dQ85HHU+szAJY9ePSSXl5TNQp7iZm4Q+Dr9gQ8kOyJiHk7xsQUSjZrFA0Mzu74Jmi2WWPZ4p13BCcHXzFolg==",
+      "path": "opentelemetry.exporter.opentelemetryprotocol/1.11.2",
+      "hashPath": "opentelemetry.exporter.opentelemetryprotocol.1.11.2.nupkg.sha512"
+    },
+    "OpenTelemetry.Extensions.Hosting/1.11.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-X0SZcZM9nv7+/WreH3q5McgxeaLBwN3ohsH/R58uAKeiuieqDxoAVFyQSQaRkpkrqIZSTTab6NHDQXglIreG0Q==",
+      "path": "opentelemetry.extensions.hosting/1.11.2",
+      "hashPath": "opentelemetry.extensions.hosting.1.11.2.nupkg.sha512"
+    },
+    "OpenTelemetry.Instrumentation.AspNetCore/1.11.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KAzLOcCGi6TviuJWx0+QSgjVCrEnWDayN3aFSHoKzINPx/Tfwd9MIePUUDXQ+xHzrwon8IfExIDT1+UyIf3hoA==",
+      "path": "opentelemetry.instrumentation.aspnetcore/1.11.1",
+      "hashPath": "opentelemetry.instrumentation.aspnetcore.1.11.1.nupkg.sha512"
+    },
+    "OpenTelemetry.Instrumentation.Http/1.11.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-hyZ3H8HxtQPvipBPdkN6tJWSCvY06XVyLbKlHuJlPrlV/lQJ/QuEBKYTXqcSa21LE/Th4HV+Choxi8eTu74xyw==",
+      "path": "opentelemetry.instrumentation.http/1.11.1",
+      "hashPath": "opentelemetry.instrumentation.http.1.11.1.nupkg.sha512"
+    },
+    "OpenTelemetry.Instrumentation.Runtime/1.11.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fSAeBd8SEiWGAeCV9+p4y3QaUEn+1qOhp+VEOAEIQl2lh2j5rUM0sPRiI6PBhPjmWRn+Cm6heqXx5dsQTpBBXw==",
+      "path": "opentelemetry.instrumentation.runtime/1.11.1",
+      "hashPath": "opentelemetry.instrumentation.runtime.1.11.1.nupkg.sha512"
+    },
     "Polly/7.2.4": {
       "type": "package",
       "serviceable": true,
@@ -1443,6 +1634,11 @@
       "sha512": "sha512-aRZlojCCGEHDKqh43jaDgaVpYETsgd7Nx4g1zwLKMtv4iTo0627715ajEFNpEEBTgLmvZuv8K0EVxc3sM4NWJA==",
       "path": "system.composition.typedparts/9.0.0",
       "hashPath": "system.composition.typedparts.9.0.0.nupkg.sha512"
+    },
+    "KopiKala.ServiceDefaults/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

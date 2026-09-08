@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<coverage line-rate="0.33509999999999995" branch-rate="0.1993" version="1.9" timestamp="1788852311" lines-covered="1490" lines-valid="4446" branches-covered="63" branches-valid="316">
+<coverage line-rate="0.33509999999999995" branch-rate="0.1993" version="1.9" timestamp="1788878580" lines-covered="1490" lines-valid="4446" branches-covered="63" branches-valid="316">
   <sources>
-    <source>I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\</source>
+    <source>I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\</source>
   </sources>
   <packages>
     <package name="KopiKala" line-rate="0.33509999999999995" branch-rate="0.1993" complexity="384">

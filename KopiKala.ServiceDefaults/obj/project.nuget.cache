@@ -1,41 +1,56 @@
 {
   "version": 2,
-  "dgSpecHash": "7UxtqBlQG1k=",
+  "dgSpecHash": "ykIPPJVITpo=",
   "success": true,
-  "projectFilePath": "I:\\dev\\web\\KopiKala\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
+  "projectFilePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.aspnetcore.diagnostics.entityframeworkcore\\10.0.11\\microsoft.aspnetcore.diagnostics.entityframeworkcore.10.0.11.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\10.0.11\\microsoft.aspnetcore.identity.entityframeworkcore.10.0.11.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.entityframeworkcore\\10.0.11\\microsoft.entityframeworkcore.10.0.11.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\10.0.11\\microsoft.entityframeworkcore.abstractions.10.0.11.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\10.0.11\\microsoft.entityframeworkcore.analyzers.10.0.11.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\10.0.11\\microsoft.entityframeworkcore.relational.10.0.11.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\10.0.11\\microsoft.entityframeworkcore.tools.10.0.11.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.ambientmetadata.application\\10.8.0\\microsoft.extensions.ambientmetadata.application.10.8.0.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.compliance.abstractions\\10.8.0\\microsoft.extensions.compliance.abstractions.10.8.0.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.dependencyinjection.autoactivation\\10.8.0\\microsoft.extensions.dependencyinjection.autoactivation.10.8.0.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.diagnostics.exceptionsummarization\\10.8.0\\microsoft.extensions.diagnostics.exceptionsummarization.10.8.0.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.http.diagnostics\\10.8.0\\microsoft.extensions.http.diagnostics.10.8.0.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.http.resilience\\10.8.0\\microsoft.extensions.http.resilience.10.8.0.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.resilience\\10.8.0\\microsoft.extensions.resilience.10.8.0.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.servicediscovery\\10.8.0\\microsoft.extensions.servicediscovery.10.8.0.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.servicediscovery.abstractions\\10.8.0\\microsoft.extensions.servicediscovery.abstractions.10.8.0.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.telemetry\\10.8.0\\microsoft.extensions.telemetry.10.8.0.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.telemetry.abstractions\\10.8.0\\microsoft.extensions.telemetry.abstractions.10.8.0.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\mudblazor\\8.2.0\\mudblazor.8.2.0.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\npgsql\\10.0.0\\npgsql.10.0.0.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\10.0.0\\npgsql.entityframeworkcore.postgresql.10.0.0.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry\\1.15.3\\opentelemetry.1.15.3.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.api\\1.15.3\\opentelemetry.api.1.15.3.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.api.providerbuilderextensions\\1.15.3\\opentelemetry.api.providerbuilderextensions.1.15.3.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.exporter.opentelemetryprotocol\\1.15.3\\opentelemetry.exporter.opentelemetryprotocol.1.15.3.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.extensions.hosting\\1.15.3\\opentelemetry.extensions.hosting.1.15.3.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.instrumentation.aspnetcore\\1.15.2\\opentelemetry.instrumentation.aspnetcore.1.15.2.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.instrumentation.http\\1.15.1\\opentelemetry.instrumentation.http.1.15.1.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.instrumentation.runtime\\1.15.1\\opentelemetry.instrumentation.runtime.1.15.1.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.ambientmetadata.application\\10.0.0\\microsoft.extensions.ambientmetadata.application.10.0.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.compliance.abstractions\\10.0.0\\microsoft.extensions.compliance.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.dependencyinjection.autoactivation\\10.0.0\\microsoft.extensions.dependencyinjection.autoactivation.10.0.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.diagnostics.exceptionsummarization\\10.0.0\\microsoft.extensions.diagnostics.exceptionsummarization.10.0.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.http.diagnostics\\10.0.0\\microsoft.extensions.http.diagnostics.10.0.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.http.resilience\\10.0.0\\microsoft.extensions.http.resilience.10.0.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.resilience\\10.0.0\\microsoft.extensions.resilience.10.0.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.servicediscovery\\10.0.0\\microsoft.extensions.servicediscovery.10.0.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.servicediscovery.abstractions\\10.0.0\\microsoft.extensions.servicediscovery.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.telemetry\\10.0.0\\microsoft.extensions.telemetry.10.0.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.telemetry.abstractions\\10.0.0\\microsoft.extensions.telemetry.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry\\1.11.2\\opentelemetry.1.11.2.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.api\\1.11.2\\opentelemetry.api.1.11.2.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.api.providerbuilderextensions\\1.11.2\\opentelemetry.api.providerbuilderextensions.1.11.2.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.exporter.opentelemetryprotocol\\1.11.2\\opentelemetry.exporter.opentelemetryprotocol.1.11.2.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.extensions.hosting\\1.11.2\\opentelemetry.extensions.hosting.1.11.2.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.instrumentation.aspnetcore\\1.11.1\\opentelemetry.instrumentation.aspnetcore.1.11.1.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.instrumentation.http\\1.11.1\\opentelemetry.instrumentation.http.1.11.1.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.instrumentation.runtime\\1.11.1\\opentelemetry.instrumentation.runtime.1.11.1.nupkg.sha512",
     "C:\\Users\\maste\\.nuget\\packages\\polly.core\\8.4.2\\polly.core.8.4.2.nupkg.sha512",
     "C:\\Users\\maste\\.nuget\\packages\\polly.extensions\\8.4.2\\polly.extensions.8.4.2.nupkg.sha512",
     "C:\\Users\\maste\\.nuget\\packages\\polly.ratelimiting\\8.4.2\\polly.ratelimiting.8.4.2.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "Package 'OpenTelemetry.Api' 1.11.2 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j",
+      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
+      "warningLevel": 1,
+      "filePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
+      "libraryId": "OpenTelemetry.Api",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    },
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "Package 'OpenTelemetry.Exporter.OpenTelemetryProtocol' 1.11.2 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-4625-4j76-fww9",
+      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
+      "warningLevel": 1,
+      "filePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
+      "libraryId": "OpenTelemetry.Exporter.OpenTelemetryProtocol",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
 }

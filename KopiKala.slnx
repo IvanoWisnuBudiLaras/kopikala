@@ -1,6 +1,10 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="KopiKala/KopiKala.csproj" />
+    <Project Path="KopiKala.ServiceDefaults/KopiKala.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/host/">
+    <Project Path="KopiKala.AppHost/KopiKala.AppHost.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="KopiKala.Tests/KopiKala.Tests.csproj" />

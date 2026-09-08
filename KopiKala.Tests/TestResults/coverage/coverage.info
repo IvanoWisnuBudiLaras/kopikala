@@ -1,4 +1,4 @@
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Components\App.razor
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Components\App.razor
 FN:34,Microsoft.AspNetCore.Components.IComponentRenderMode KopiKala.Components.App::get_PageRenderMode()
 FNDA:2,Microsoft.AspNetCore.Components.IComponentRenderMode KopiKala.Components.App::get_PageRenderMode()
 DA:35,2
@@ -11,7 +11,7 @@ BRH:1
 FNF:1
 FNH:1
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Components\Pages\Counter.razor
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Components\Pages\Counter.razor
 FN:6,System.Void KopiKala.Components.Pages.Counter::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
 FNDA:0,System.Void KopiKala.Components.Pages.Counter::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
 DA:7,0
@@ -30,7 +30,7 @@ BRH:0
 FNF:3
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Components\Pages\Error.razor
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Components\Pages\Error.razor
 FN:8,System.Void KopiKala.Components.Pages.Error::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
 FNDA:0,System.Void KopiKala.Components.Pages.Error::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
 DA:9,0
@@ -58,7 +58,7 @@ BRH:0
 FNF:3
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Components\Pages\Weather.razor
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Components\Pages\Weather.razor
 FN:8,System.Void KopiKala.Components.Pages.Weather::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
 FNDA:0,System.Void KopiKala.Components.Pages.Weather::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
 DA:9,0
@@ -87,7 +87,7 @@ BRH:0
 FNF:2
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Components\Pages\Staff\Dashboard.razor
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Components\Pages\Staff\Dashboard.razor
 FN:645,System.DateOnly KopiKala.Components.Pages.Staff.Dashboard::get_SelectedDate()
 FNDA:0,System.DateOnly KopiKala.Components.Pages.Staff.Dashboard::get_SelectedDate()
 DA:646,0
@@ -251,7 +251,7 @@ BRH:0
 FNF:12
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Components\Pages\Customer\Booking.razor
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Components\Pages\Customer\Booking.razor
 FN:554,KopiKala.DTOs.Booking.TimeslotDto KopiKala.Components.Pages.Customer.Booking::get__selectedTimeslot()
 FNDA:0,KopiKala.DTOs.Booking.TimeslotDto KopiKala.Components.Pages.Customer.Booking::get__selectedTimeslot()
 DA:555,0
@@ -377,7 +377,7 @@ BRH:0
 FNF:13
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Components\Pages\Customer\Invoice.razor
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Components\Pages\Customer\Invoice.razor
 FN:290,System.Void KopiKala.Components.Pages.Customer.Invoice::StartCountdown()
 FNDA:0,System.Void KopiKala.Components.Pages.Customer.Invoice::StartCountdown()
 DA:291,0
@@ -489,7 +489,7 @@ BRH:0
 FNF:5
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Components\Pages\Customer\Orders.razor
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Components\Pages\Customer\Orders.razor
 FN:140,MudBlazor.Color KopiKala.Components.Pages.Customer.Orders::GetStatusChipColor(System.String)
 FNDA:0,MudBlazor.Color KopiKala.Components.Pages.Customer.Orders::GetStatusChipColor(System.String)
 DA:141,0
@@ -555,7 +555,7 @@ BRH:0
 FNF:2
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Components\Pages\Admin\Dashboard.razor
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Components\Pages\Admin\Dashboard.razor
 FN:379,System.Void KopiKala.Components.Pages.Admin.Dashboard::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
 FNDA:0,System.Void KopiKala.Components.Pages.Admin.Dashboard::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)
 DA:380,0
@@ -772,7 +772,7 @@ BRH:0
 FNF:14
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Components\Pages\Account\ForgotPassword.razor
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Components\Pages\Account\ForgotPassword.razor
 FN:99,System.Void KopiKala.Components.Pages.Account.ForgotPassword::.ctor()
 FNDA:0,System.Void KopiKala.Components.Pages.Account.ForgotPassword::.ctor()
 DA:100,0
@@ -783,7 +783,7 @@ BRH:0
 FNF:1
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Components\Pages\Account\Login.razor
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Components\Pages\Account\Login.razor
 FN:111,System.Void KopiKala.Components.Pages.Account.Login::OnInitialized()
 FNDA:0,System.Void KopiKala.Components.Pages.Account.Login::OnInitialized()
 DA:112,0
@@ -799,7 +799,7 @@ BRH:0
 FNF:1
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Components\Pages\Account\Register.razor
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Components\Pages\Account\Register.razor
 FN:136,System.Void KopiKala.Components.Pages.Account.Register::OnInitialized()
 FNDA:0,System.Void KopiKala.Components.Pages.Account.Register::OnInitialized()
 DA:137,0
@@ -814,7 +814,7 @@ BRH:0
 FNF:1
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Components\Pages\Account\ResetPassword.razor
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Components\Pages\Account\ResetPassword.razor
 FN:115,System.Void KopiKala.Components.Pages.Account.ResetPassword::OnInitialized()
 FNDA:0,System.Void KopiKala.Components.Pages.Account.ResetPassword::OnInitialized()
 DA:116,0
@@ -841,7 +841,7 @@ BRH:0
 FNF:2
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Components\Layout\RedirectToLogin.razor
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Components\Layout\RedirectToLogin.razor
 FN:4,System.Void KopiKala.Components.Layout.RedirectToLogin::OnInitialized()
 FNDA:0,System.Void KopiKala.Components.Layout.RedirectToLogin::OnInitialized()
 DA:5,0
@@ -855,7 +855,7 @@ BRH:0
 FNF:1
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Components\Layout\MainLayout.razor
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Components\Layout\MainLayout.razor
 FN:186,System.Void KopiKala.Components.Layout.MainLayout::OnInitialized()
 FNDA:0,System.Void KopiKala.Components.Layout.MainLayout::OnInitialized()
 DA:187,0
@@ -890,7 +890,7 @@ BRH:0
 FNF:5
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Workers\BackgroundTaskQueue.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Workers\BackgroundTaskQueue.cs
 FN:8,System.Void KopiKala.Workers.BackgroundTaskQueue::.ctor(System.Int32)
 FNDA:5,System.Void KopiKala.Workers.BackgroundTaskQueue::.ctor(System.Int32)
 DA:9,5
@@ -908,7 +908,7 @@ BRH:0
 FNF:1
 FNH:1
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Workers\BookingMaintenanceWorker.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Workers\BookingMaintenanceWorker.cs
 FN:15,System.Void KopiKala.Workers.BookingMaintenanceWorker::.ctor(Microsoft.Extensions.DependencyInjection.IServiceScopeFactory,System.TimeProvider,Microsoft.Extensions.Logging.ILogger`1<KopiKala.Workers.BookingMaintenanceWorker>,System.Nullable`1<System.TimeSpan>)
 FNDA:6,System.Void KopiKala.Workers.BookingMaintenanceWorker::.ctor(Microsoft.Extensions.DependencyInjection.IServiceScopeFactory,System.TimeProvider,Microsoft.Extensions.Logging.ILogger`1<KopiKala.Workers.BookingMaintenanceWorker>,System.Nullable`1<System.TimeSpan>)
 DA:16,6
@@ -931,7 +931,7 @@ BRH:2
 FNF:1
 FNH:1
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Workers\MidnightReconciliationWorker.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Workers\MidnightReconciliationWorker.cs
 FN:139,System.Int32 KopiKala.Workers.MidnightReconciliationWorker::PerformFileCleanup(System.Int32)
 FNDA:1,System.Int32 KopiKala.Workers.MidnightReconciliationWorker::PerformFileCleanup(System.Int32)
 DA:140,1
@@ -998,7 +998,7 @@ BRH:8
 FNF:2
 FNH:2
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Workers\QueuedHostedService.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Workers\QueuedHostedService.cs
 FN:10,System.Void KopiKala.Workers.QueuedHostedService::.ctor(KopiKala.Workers.IBackgroundTaskQueue,Microsoft.Extensions.Logging.ILogger`1<KopiKala.Workers.QueuedHostedService>)
 FNDA:3,System.Void KopiKala.Workers.QueuedHostedService::.ctor(KopiKala.Workers.IBackgroundTaskQueue,Microsoft.Extensions.Logging.ILogger`1<KopiKala.Workers.QueuedHostedService>)
 DA:11,3
@@ -1015,7 +1015,7 @@ BRH:0
 FNF:1
 FNH:1
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Theme\KopiKalaTheme.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Theme\KopiKalaTheme.cs
 FN:7,MudBlazor.MudTheme KopiKala.Theme.KopiKalaTheme::CreateTheme()
 FNDA:1,MudBlazor.MudTheme KopiKala.Theme.KopiKalaTheme::CreateTheme()
 DA:8,1
@@ -1156,7 +1156,7 @@ BRH:0
 FNF:1
 FNH:1
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Services\AuthService.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Services\AuthService.cs
 FN:215,System.Security.Claims.ClaimsPrincipal KopiKala.Services.AuthService::CreateClaimsPrincipal(KopiKala.Models.User)
 FNDA:4,System.Security.Claims.ClaimsPrincipal KopiKala.Services.AuthService::CreateClaimsPrincipal(KopiKala.Models.User)
 DA:216,4
@@ -1199,7 +1199,7 @@ BRH:4
 FNF:2
 FNH:2
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Services\BookingService.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Services\BookingService.cs
 FN:342,KopiKala.DTOs.Booking.InvoiceResponseDto KopiKala.Services.BookingService::MapToInvoiceDto(KopiKala.Models.Booking)
 FNDA:6,KopiKala.DTOs.Booking.InvoiceResponseDto KopiKala.Services.BookingService::MapToInvoiceDto(KopiKala.Models.Booking)
 DA:343,6
@@ -1270,7 +1270,7 @@ BRH:8
 FNF:2
 FNH:2
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Services\CashierService.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Services\CashierService.cs
 FN:439,KopiKala.DTOs.Staff.CashierBookingDto KopiKala.Services.CashierService::MapToDto(KopiKala.Models.Booking)
 FNDA:3,KopiKala.DTOs.Staff.CashierBookingDto KopiKala.Services.CashierService::MapToDto(KopiKala.Models.Booking)
 DA:440,3
@@ -1354,7 +1354,7 @@ BRH:13
 FNF:2
 FNH:2
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Services\SuperAdminService.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Services\SuperAdminService.cs
 FN:18,System.Void KopiKala.Services.SuperAdminService::.ctor(Microsoft.Extensions.DependencyInjection.IServiceScopeFactory,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,System.TimeProvider,Microsoft.Extensions.Logging.ILogger`1<KopiKala.Services.SuperAdminService>)
 FNDA:19,System.Void KopiKala.Services.SuperAdminService::.ctor(Microsoft.Extensions.DependencyInjection.IServiceScopeFactory,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,System.TimeProvider,Microsoft.Extensions.Logging.ILogger`1<KopiKala.Services.SuperAdminService>)
 DA:19,19
@@ -1375,7 +1375,7 @@ BRH:0
 FNF:1
 FNH:1
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Migrations\20260906194059_InitialDatabaseSetup.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Migrations\20260906194059_InitialDatabaseSetup.cs
 FN:13,System.Void KopiKala.Migrations.InitialDatabaseSetup::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
 FNDA:0,System.Void KopiKala.Migrations.InitialDatabaseSetup::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
 DA:14,0
@@ -1671,7 +1671,7 @@ BRH:0
 FNF:2
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Migrations\20260906194059_InitialDatabaseSetup.Designer.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Migrations\20260906194059_InitialDatabaseSetup.Designer.cs
 FN:19,System.Void KopiKala.Migrations.InitialDatabaseSetup::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)
 FNDA:0,System.Void KopiKala.Migrations.InitialDatabaseSetup::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)
 DA:20,0
@@ -2188,7 +2188,7 @@ BRH:0
 FNF:1
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Migrations\20260907085410_AddOpenIddictTables.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Migrations\20260907085410_AddOpenIddictTables.cs
 FN:12,System.Void KopiKala.Migrations.AddOpenIddictTables::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
 FNDA:0,System.Void KopiKala.Migrations.AddOpenIddictTables::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
 DA:13,0
@@ -2337,7 +2337,7 @@ BRH:0
 FNF:2
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Migrations\20260907085410_AddOpenIddictTables.Designer.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Migrations\20260907085410_AddOpenIddictTables.Designer.cs
 FN:19,System.Void KopiKala.Migrations.AddOpenIddictTables::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)
 FNDA:0,System.Void KopiKala.Migrations.AddOpenIddictTables::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)
 DA:20,0
@@ -3090,7 +3090,7 @@ BRH:0
 FNF:1
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Migrations\20260908014349_AddDailyReportTable.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Migrations\20260908014349_AddDailyReportTable.cs
 FN:12,System.Void KopiKala.Migrations.AddDailyReportTable::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
 FNDA:0,System.Void KopiKala.Migrations.AddDailyReportTable::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)
 DA:13,0
@@ -3130,7 +3130,7 @@ BRH:0
 FNF:2
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Migrations\20260908014349_AddDailyReportTable.Designer.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Migrations\20260908014349_AddDailyReportTable.Designer.cs
 FN:19,System.Void KopiKala.Migrations.AddDailyReportTable::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)
 FNDA:0,System.Void KopiKala.Migrations.AddDailyReportTable::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)
 DA:20,0
@@ -3932,7 +3932,7 @@ BRH:0
 FNF:1
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Migrations\AppDbContextModelSnapshot.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Migrations\AppDbContextModelSnapshot.cs
 FN:16,System.Void KopiKala.Migrations.AppDbContextModelSnapshot::BuildModel(Microsoft.EntityFrameworkCore.ModelBuilder)
 FNDA:1,System.Void KopiKala.Migrations.AppDbContextModelSnapshot::BuildModel(Microsoft.EntityFrameworkCore.ModelBuilder)
 DA:17,1
@@ -4734,7 +4734,7 @@ BRH:0
 FNF:1
 FNH:1
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Helpers\CurrencyHelper.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Helpers\CurrencyHelper.cs
 FN:9,System.String KopiKala.Helpers.CurrencyHelper::ToRupiah(System.Decimal)
 FNDA:2,System.String KopiKala.Helpers.CurrencyHelper::ToRupiah(System.Decimal)
 DA:10,2
@@ -4750,7 +4750,7 @@ BRH:0
 FNF:2
 FNH:2
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Helpers\FileSecurityHelper.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Helpers\FileSecurityHelper.cs
 FN:15,System.Boolean KopiKala.Helpers.FileSecurityHelper::IsValidImageExtension(System.String)
 FNDA:12,System.Boolean KopiKala.Helpers.FileSecurityHelper::IsValidImageExtension(System.String)
 DA:16,12
@@ -4841,7 +4841,7 @@ BRH:25
 FNF:4
 FNH:4
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Helpers\InvoiceCodeHelper.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Helpers\InvoiceCodeHelper.cs
 FN:5,System.String KopiKala.Helpers.InvoiceCodeHelper::GenerateInvoiceCode(System.DateOnly)
 FNDA:9,System.String KopiKala.Helpers.InvoiceCodeHelper::GenerateInvoiceCode(System.DateOnly)
 DA:6,9
@@ -4856,7 +4856,7 @@ BRH:0
 FNF:1
 FNH:1
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Helpers\PasswordHelper.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Helpers\PasswordHelper.cs
 FN:8,System.String KopiKala.Helpers.PasswordHelper::HashPassword(System.String)
 FNDA:66,System.String KopiKala.Helpers.PasswordHelper::HashPassword(System.String)
 DA:9,66
@@ -4895,7 +4895,7 @@ BRH:1
 FNF:2
 FNH:2
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Helpers\PermissionAuthorizationHandler.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Helpers\PermissionAuthorizationHandler.cs
 FN:7,System.Threading.Tasks.Task KopiKala.Helpers.PermissionAuthorizationHandler::HandleRequirementAsync(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,KopiKala.Helpers.PermissionRequirement)
 FNDA:0,System.Threading.Tasks.Task KopiKala.Helpers.PermissionAuthorizationHandler::HandleRequirementAsync(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,KopiKala.Helpers.PermissionRequirement)
 DA:8,0
@@ -4920,7 +4920,7 @@ BRH:0
 FNF:1
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Helpers\PermissionPolicyProvider.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Helpers\PermissionPolicyProvider.cs
 FN:15,System.Threading.Tasks.Task`1<Microsoft.AspNetCore.Authorization.AuthorizationPolicy> KopiKala.Helpers.PermissionPolicyProvider::GetDefaultPolicyAsync()
 FNDA:0,System.Threading.Tasks.Task`1<Microsoft.AspNetCore.Authorization.AuthorizationPolicy> KopiKala.Helpers.PermissionPolicyProvider::GetDefaultPolicyAsync()
 DA:16,0
@@ -4940,7 +4940,7 @@ BRH:0
 FNF:3
 FNH:2
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Helpers\PermissionRequirement.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Helpers\PermissionRequirement.cs
 FN:8,System.Void KopiKala.Helpers.PermissionRequirement::.ctor(System.String)
 FNDA:0,System.Void KopiKala.Helpers.PermissionRequirement::.ctor(System.String)
 DA:9,0
@@ -4954,7 +4954,7 @@ BRH:0
 FNF:1
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\DTOs\Booking\OrderItemDto.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\DTOs\Booking\OrderItemDto.cs
 FN:16,System.Decimal KopiKala.DTOs.Booking.OrderItemDto::get_SubTotal()
 FNDA:1,System.Decimal KopiKala.DTOs.Booking.OrderItemDto::get_SubTotal()
 DA:17,1
@@ -4965,7 +4965,7 @@ BRH:0
 FNF:1
 FNH:1
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Data\AppDbContext.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Data\AppDbContext.cs
 FN:17,System.Void KopiKala.Data.AppDbContext::OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)
 FNDA:244,System.Void KopiKala.Data.AppDbContext::OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)
 DA:18,244
@@ -5284,7 +5284,7 @@ BRH:1
 FNF:4
 FNH:3
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Data\ApplicationDbContext.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Data\ApplicationDbContext.cs
 FN:6,System.Void KopiKala.Data.ApplicationDbContext::.ctor(Microsoft.EntityFrameworkCore.DbContextOptions`1<KopiKala.Data.ApplicationDbContext>)
 FNDA:0,System.Void KopiKala.Data.ApplicationDbContext::.ctor(Microsoft.EntityFrameworkCore.DbContextOptions`1<KopiKala.Data.ApplicationDbContext>)
 DA:7,0
@@ -5295,7 +5295,7 @@ BRH:0
 FNF:1
 FNH:0
 end_of_record
-SF:I:\dev\web\KopiKala\.claude\worktrees\fix-worker-shutdown-exception\KopiKala\Controllers\AuthorizationController.cs
+SF:I:\dev\web\KopiKala\.claude\worktrees\feat-aspire-apphost\KopiKala\Controllers\AuthorizationController.cs
 FN:24,System.Void KopiKala.Controllers.AuthorizationController::.ctor(OpenIddict.Abstractions.IOpenIddictApplicationManager,OpenIddict.Abstractions.IOpenIddictAuthorizationManager,OpenIddict.Abstractions.IOpenIddictScopeManager,KopiKala.Data.AppDbContext)
 FNDA:1,System.Void KopiKala.Controllers.AuthorizationController::.ctor(OpenIddict.Abstractions.IOpenIddictApplicationManager,OpenIddict.Abstractions.IOpenIddictAuthorizationManager,OpenIddict.Abstractions.IOpenIddictScopeManager,KopiKala.Data.AppDbContext)
 DA:25,1

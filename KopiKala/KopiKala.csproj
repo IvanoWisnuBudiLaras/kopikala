@@ -20,4 +20,8 @@
     <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="6.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\KopiKala.ServiceDefaults\KopiKala.ServiceDefaults.csproj" />
+  </ItemGroup>
+
 </Project>
