@@ -151,25 +151,9 @@
 
     <MudSpacer />
 
-    @* ── DESKTOP UTILITIES (Search, Theme, Profile / Auth) ── *@
+    @* ── DESKTOP UTILITIES (Theme, Profile / Auth) ── *@
     <MudHidden Breakpoint="Breakpoint.SmAndDown">
         <div class="d-flex align-center">
-            @* Search Field *@
-            <div class="kopi-search-wrapper mr-3">
-                <MudTextField T="string"
-                              @bind-Value="_searchQuery"
-                              Placeholder="Cari meja, menu..."
-                              Adornment="Adornment.Start"
-                              AdornmentIcon="@Icons.Material.Filled.Search"
-                              Variant="Variant.Outlined"
-                              Margin="Margin.Dense"
-                              Class="kopi-search-input"
-                              Clearable="true"
-                              Immediate="true"
-                              OnKeyDown="HandleSearchKeyDown"
-                              aria-label="Search" />
-            </div>
-
             @* Theme Toggle *@
             <MudIconButton Icon="@(IsDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)"
                            Color="Color.Inherit"
@@ -231,15 +215,9 @@
         </div>
     </MudHidden>
 
-    @* ── MOBILE UTILITIES (Search Icon, Theme Toggle, Profile Icon) ── *@
+    @* ── MOBILE UTILITIES (Theme Toggle, Logout / Login) ── *@
     <MudHidden Breakpoint="Breakpoint.MdAndUp">
         <div class="d-flex align-center">
-            <MudIconButton Icon="@Icons.Material.Filled.Search"
-                           Color="Color.Inherit"
-                           OnClick="ToggleMobileSearch"
-                           Class="mr-1"
-                           aria-label="Search" />
-
             <MudIconButton Icon="@(IsDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)"
                            Color="Color.Inherit"
                            OnClick="ToggleThemeAsync"
@@ -266,33 +244,6 @@
         </div>
     </MudHidden>
 </MudAppBar>
-
-@* ── Expandable Mobile Search Bar ── *@
-@if (_mobileSearchOpen)
-{
-    <MudHidden Breakpoint="Breakpoint.MdAndUp">
-        <div class="kopi-mobile-search-bar d-flex align-center gap-2">
-            <MudTextField T="string"
-                          @bind-Value="_searchQuery"
-                          Placeholder="Cari meja, menu..."
-                          Adornment="Adornment.Start"
-                          AdornmentIcon="@Icons.Material.Filled.Search"
-                          Variant="Variant.Outlined"
-                          Margin="Margin.Dense"
-                          FullWidth="true"
-                          Clearable="true"
-                          Immediate="true"
-                          OnKeyDown="HandleSearchKeyDown"
-                          AutoFocus="true"
-                          aria-label="Mobile Search" />
-            <MudIconButton Icon="@Icons.Material.Filled.Close"
-                           Color="Color.Default"
-                           Size="Size.Small"
-                           OnClick="ToggleMobileSearch"
-                           aria-label="Close search" />
-        </div>
-    </MudHidden>
-}
 
 @* ── Mobile Navigation Drawer ── *@
 <MudDrawer @bind-Open="_drawerOpen"
@@ -406,8 +357,6 @@
     public EventCallback<bool> IsDarkModeChanged { get; set; }
 
     private bool _drawerOpen;
-    private bool _mobileSearchOpen;
-    private string _searchQuery = string.Empty;
 
     private void ToggleDrawer()
     {
@@ -419,24 +368,10 @@
         _drawerOpen = false;
     }
 
-    private void ToggleMobileSearch()
-    {
-        _mobileSearchOpen = !_mobileSearchOpen;
-    }
-
     private async Task ToggleThemeAsync()
     {
         IsDarkMode = !IsDarkMode;
         await IsDarkModeChanged.InvokeAsync(IsDarkMode);
-    }
-
-    private void HandleSearchKeyDown(KeyboardEventArgs e)
-    {
-        if (e.Key == "Enter" && !string.IsNullOrWhiteSpace(_searchQuery))
-        {
-            NavigationManager.NavigateTo($"/Staff?tab=2");
-            _mobileSearchOpen = false;
-        }
     }
 
     private void HandleLogout()

@@ -42,30 +42,6 @@
     padding: 6px 16px;
 }
 
-.kopi-search-wrapper {
-    width: 220px;
-    max-width: 260px;
-}
-
-.kopi-search-input {
-    font-size: 0.85rem;
-}
-
-.kopi-search-input ::deep .mud-input-outlined-border {
-    border-color: var(--mud-palette-lines-default);
-    border-radius: 8px;
-}
-
-.kopi-search-input ::deep .mud-input-outlined-border:hover {
-    border-color: var(--mud-palette-primary);
-}
-
-.kopi-mobile-search-bar {
-    background: var(--mud-palette-surface);
-    border-bottom: 1px solid var(--mud-palette-lines-default);
-    padding: 8px 16px;
-}
-
 .kopi-action-btn {
     border-radius: 8px;
 }
