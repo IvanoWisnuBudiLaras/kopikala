@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ISTpR+Ocinc=",
+  "dgSpecHash": "Ia4tJSqAdWY=",
   "success": true,
-  "projectFilePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.Tests\\KopiKala.Tests.csproj",
+  "projectFilePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala.Tests\\KopiKala.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\maste\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\maste\\.nuget\\packages\\coverlet.collector\\6.0.4\\coverlet.collector.6.0.4.nupkg.sha512",
@@ -112,14 +112,14 @@
     "C:\\Users\\maste\\.nuget\\packages\\openiddict.validation.dataprotection\\6.1.1\\openiddict.validation.dataprotection.6.1.1.nupkg.sha512",
     "C:\\Users\\maste\\.nuget\\packages\\openiddict.validation.serverintegration\\6.1.1\\openiddict.validation.serverintegration.6.1.1.nupkg.sha512",
     "C:\\Users\\maste\\.nuget\\packages\\openiddict.validation.systemnethttp\\6.1.1\\openiddict.validation.systemnethttp.6.1.1.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry\\1.11.2\\opentelemetry.1.11.2.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.api\\1.11.2\\opentelemetry.api.1.11.2.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.api.providerbuilderextensions\\1.11.2\\opentelemetry.api.providerbuilderextensions.1.11.2.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.exporter.opentelemetryprotocol\\1.11.2\\opentelemetry.exporter.opentelemetryprotocol.1.11.2.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.extensions.hosting\\1.11.2\\opentelemetry.extensions.hosting.1.11.2.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.instrumentation.aspnetcore\\1.11.1\\opentelemetry.instrumentation.aspnetcore.1.11.1.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.instrumentation.http\\1.11.1\\opentelemetry.instrumentation.http.1.11.1.nupkg.sha512",
-    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.instrumentation.runtime\\1.11.1\\opentelemetry.instrumentation.runtime.1.11.1.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry\\1.18.0\\opentelemetry.1.18.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.api\\1.18.0\\opentelemetry.api.1.18.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.api.providerbuilderextensions\\1.18.0\\opentelemetry.api.providerbuilderextensions.1.18.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.exporter.opentelemetryprotocol\\1.18.0\\opentelemetry.exporter.opentelemetryprotocol.1.18.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.extensions.hosting\\1.18.0\\opentelemetry.extensions.hosting.1.18.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.instrumentation.aspnetcore\\1.18.0\\opentelemetry.instrumentation.aspnetcore.1.18.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.instrumentation.http\\1.18.0\\opentelemetry.instrumentation.http.1.18.0.nupkg.sha512",
+    "C:\\Users\\maste\\.nuget\\packages\\opentelemetry.instrumentation.runtime\\1.18.0\\opentelemetry.instrumentation.runtime.1.18.0.nupkg.sha512",
     "C:\\Users\\maste\\.nuget\\packages\\polly\\7.2.4\\polly.7.2.4.nupkg.sha512",
     "C:\\Users\\maste\\.nuget\\packages\\polly.core\\8.4.2\\polly.core.8.4.2.nupkg.sha512",
     "C:\\Users\\maste\\.nuget\\packages\\polly.extensions\\8.4.2\\polly.extensions.8.4.2.nupkg.sha512",
@@ -136,30 +136,5 @@
     "C:\\Users\\maste\\.nuget\\packages\\xunit.extensibility.execution\\2.9.3\\xunit.extensibility.execution.2.9.3.nupkg.sha512",
     "C:\\Users\\maste\\.nuget\\packages\\xunit.runner.visualstudio\\3.1.0\\xunit.runner.visualstudio.3.1.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "message": "Package 'OpenTelemetry.Api' 1.11.2 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j",
-      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.Tests\\KopiKala.Tests.csproj",
-      "warningLevel": 1,
-      "filePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.Tests\\KopiKala.Tests.csproj",
-      "libraryId": "OpenTelemetry.Api",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    },
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "message": "Package 'OpenTelemetry.Exporter.OpenTelemetryProtocol' 1.11.2 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-4625-4j76-fww9",
-      "projectPath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.Tests\\KopiKala.Tests.csproj",
-      "warningLevel": 1,
-      "filePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.Tests\\KopiKala.Tests.csproj",
-      "libraryId": "OpenTelemetry.Exporter.OpenTelemetryProtocol",
-      "targetGraphs": [
-        "net10.0"
-      ]
-    }
-  ]
+  "logs": []
 }

@@ -1,6 +1,6 @@
 {
   "KopiKala.dll": {
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Components\\App.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Components\\App.razor": {
       "KopiKala.Components.App": {
         "Microsoft.AspNetCore.Components.IComponentRenderMode KopiKala.Components.App::get_PageRenderMode()": {
           "Lines": {
@@ -27,7 +27,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Components\\Pages\\Counter.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Components\\Pages\\Counter.razor": {
       "KopiKala.Components.Pages.Counter": {
         "System.Void KopiKala.Components.Pages.Counter::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)": {
           "Lines": {
@@ -51,7 +51,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Components\\Pages\\Error.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Components\\Pages\\Error.razor": {
       "KopiKala.Components.Pages.Error": {
         "System.Void KopiKala.Components.Pages.Error::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)": {
           "Lines": {
@@ -142,7 +142,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Components\\Pages\\Weather.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Components\\Pages\\Weather.razor": {
       "KopiKala.Components.Pages.Weather": {
         "System.Void KopiKala.Components.Pages.Weather::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)": {
           "Lines": {
@@ -204,7 +204,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Components\\Pages\\Staff\\Dashboard.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Components\\Pages\\Staff\\Dashboard.razor": {
       "KopiKala.Components.Pages.Staff.Dashboard": {
         "System.DateOnly KopiKala.Components.Pages.Staff.Dashboard::get_SelectedDate()": {
           "Lines": {
@@ -716,7 +716,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Components\\Pages\\Customer\\Booking.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Components\\Pages\\Customer\\Booking.razor": {
       "KopiKala.Components.Pages.Customer.Booking": {
         "KopiKala.DTOs.Booking.TimeslotDto KopiKala.Components.Pages.Customer.Booking::get__selectedTimeslot()": {
           "Lines": {
@@ -1024,7 +1024,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Components\\Pages\\Customer\\Invoice.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Components\\Pages\\Customer\\Invoice.razor": {
       "KopiKala.Components.Pages.Customer.Invoice": {
         "System.Void KopiKala.Components.Pages.Customer.Invoice::StartCountdown()": {
           "Lines": {
@@ -1515,7 +1515,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Components\\Pages\\Customer\\Orders.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Components\\Pages\\Customer\\Orders.razor": {
       "KopiKala.Components.Pages.Customer.Orders": {
         "MudBlazor.Color KopiKala.Components.Pages.Customer.Orders::GetStatusChipColor(System.String)": {
           "Lines": {
@@ -1878,7 +1878,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Components\\Pages\\Admin\\Dashboard.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Components\\Pages\\Admin\\Dashboard.razor": {
       "KopiKala.Components.Pages.Admin.Dashboard": {
         "System.Void KopiKala.Components.Pages.Admin.Dashboard::BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder)": {
           "Lines": {
@@ -2405,7 +2405,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Components\\Pages\\Account\\ForgotPassword.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Components\\Pages\\Account\\ForgotPassword.razor": {
       "KopiKala.Components.Pages.Account.ForgotPassword": {
         "System.Void KopiKala.Components.Pages.Account.ForgotPassword::.ctor()": {
           "Lines": {
@@ -2415,7 +2415,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Components\\Pages\\Account\\Login.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Components\\Pages\\Account\\Login.razor": {
       "KopiKala.Components.Pages.Account.Login": {
         "System.Void KopiKala.Components.Pages.Account.Login::OnInitialized()": {
           "Lines": {
@@ -2430,7 +2430,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Components\\Pages\\Account\\Register.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Components\\Pages\\Account\\Register.razor": {
       "KopiKala.Components.Pages.Account.Register": {
         "System.Void KopiKala.Components.Pages.Account.Register::OnInitialized()": {
           "Lines": {
@@ -2444,7 +2444,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Components\\Pages\\Account\\ResetPassword.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Components\\Pages\\Account\\ResetPassword.razor": {
       "KopiKala.Components.Pages.Account.ResetPassword": {
         "System.Void KopiKala.Components.Pages.Account.ResetPassword::OnInitialized()": {
           "Lines": {
@@ -2502,7 +2502,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Components\\Layout\\RedirectToLogin.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Components\\Layout\\RedirectToLogin.razor": {
       "KopiKala.Components.Layout.RedirectToLogin": {
         "System.Void KopiKala.Components.Layout.RedirectToLogin::OnInitialized()": {
           "Lines": {
@@ -2515,7 +2515,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Components\\Layout\\MainLayout.razor": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Components\\Layout\\MainLayout.razor": {
       "KopiKala.Components.Layout.MainLayout": {
         "System.Void KopiKala.Components.Layout.MainLayout::OnInitialized()": {
           "Lines": {
@@ -2561,7 +2561,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Workers\\BackgroundTaskQueue.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Workers\\BackgroundTaskQueue.cs": {
       "KopiKala.Workers.BackgroundTaskQueue": {
         "System.Void KopiKala.Workers.BackgroundTaskQueue::.ctor(System.Int32)": {
           "Lines": {
@@ -2578,7 +2578,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Workers\\BookingMaintenanceWorker.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Workers\\BookingMaintenanceWorker.cs": {
       "KopiKala.Workers.BookingMaintenanceWorker": {
         "System.Void KopiKala.Workers.BookingMaintenanceWorker::.ctor(Microsoft.Extensions.DependencyInjection.IServiceScopeFactory,System.TimeProvider,Microsoft.Extensions.Logging.ILogger`1<KopiKala.Workers.BookingMaintenanceWorker>,System.Nullable`1<System.TimeSpan>)": {
           "Lines": {
@@ -2615,7 +2615,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Workers\\MidnightReconciliationWorker.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Workers\\MidnightReconciliationWorker.cs": {
       "KopiKala.Workers.MidnightReconciliationWorker": {
         "System.Int32 KopiKala.Workers.MidnightReconciliationWorker::PerformFileCleanup(System.Int32)": {
           "Lines": {
@@ -2756,7 +2756,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Workers\\QueuedHostedService.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Workers\\QueuedHostedService.cs": {
       "KopiKala.Workers.QueuedHostedService": {
         "System.Void KopiKala.Workers.QueuedHostedService::.ctor(KopiKala.Workers.IBackgroundTaskQueue,Microsoft.Extensions.Logging.ILogger`1<KopiKala.Workers.QueuedHostedService>)": {
           "Lines": {
@@ -2772,7 +2772,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Theme\\KopiKalaTheme.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Theme\\KopiKalaTheme.cs": {
       "KopiKala.Theme.KopiKalaTheme": {
         "MudBlazor.MudTheme KopiKala.Theme.KopiKalaTheme::CreateTheme()": {
           "Lines": {
@@ -2912,7 +2912,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Services\\AuthService.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Services\\AuthService.cs": {
       "KopiKala.Services.AuthService": {
         "System.Security.Claims.ClaimsPrincipal KopiKala.Services.AuthService::CreateClaimsPrincipal(KopiKala.Models.User)": {
           "Lines": {
@@ -2986,7 +2986,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Services\\BookingService.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Services\\BookingService.cs": {
       "KopiKala.Services.BookingService": {
         "KopiKala.DTOs.Booking.InvoiceResponseDto KopiKala.Services.BookingService::MapToInvoiceDto(KopiKala.Models.Booking)": {
           "Lines": {
@@ -3172,7 +3172,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Services\\CashierService.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Services\\CashierService.cs": {
       "KopiKala.Services.CashierService": {
         "KopiKala.DTOs.Staff.CashierBookingDto KopiKala.Services.CashierService::MapToDto(KopiKala.Models.Booking)": {
           "Lines": {
@@ -3441,7 +3441,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Services\\SuperAdminService.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Services\\SuperAdminService.cs": {
       "KopiKala.Services.SuperAdminService": {
         "System.Void KopiKala.Services.SuperAdminService::.ctor(Microsoft.Extensions.DependencyInjection.IServiceScopeFactory,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,System.TimeProvider,Microsoft.Extensions.Logging.ILogger`1<KopiKala.Services.SuperAdminService>)": {
           "Lines": {
@@ -3461,7 +3461,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Migrations\\20260906194059_InitialDatabaseSetup.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Migrations\\20260906194059_InitialDatabaseSetup.cs": {
       "KopiKala.Migrations.InitialDatabaseSetup": {
         "System.Void KopiKala.Migrations.InitialDatabaseSetup::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)": {
           "Lines": {
@@ -3759,7 +3759,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Migrations\\20260906194059_InitialDatabaseSetup.Designer.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Migrations\\20260906194059_InitialDatabaseSetup.Designer.cs": {
       "KopiKala.Migrations.InitialDatabaseSetup": {
         "System.Void KopiKala.Migrations.InitialDatabaseSetup::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)": {
           "Lines": {
@@ -4275,7 +4275,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Migrations\\20260907085410_AddOpenIddictTables.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Migrations\\20260907085410_AddOpenIddictTables.cs": {
       "KopiKala.Migrations.AddOpenIddictTables": {
         "System.Void KopiKala.Migrations.AddOpenIddictTables::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)": {
           "Lines": {
@@ -4426,7 +4426,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Migrations\\20260907085410_AddOpenIddictTables.Designer.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Migrations\\20260907085410_AddOpenIddictTables.Designer.cs": {
       "KopiKala.Migrations.AddOpenIddictTables": {
         "System.Void KopiKala.Migrations.AddOpenIddictTables::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)": {
           "Lines": {
@@ -5178,7 +5178,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Migrations\\20260908014349_AddDailyReportTable.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Migrations\\20260908014349_AddDailyReportTable.cs": {
       "KopiKala.Migrations.AddDailyReportTable": {
         "System.Void KopiKala.Migrations.AddDailyReportTable::Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)": {
           "Lines": {
@@ -5220,7 +5220,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Migrations\\20260908014349_AddDailyReportTable.Designer.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Migrations\\20260908014349_AddDailyReportTable.Designer.cs": {
       "KopiKala.Migrations.AddDailyReportTable": {
         "System.Void KopiKala.Migrations.AddDailyReportTable::BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)": {
           "Lines": {
@@ -6021,7 +6021,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Migrations\\AppDbContextModelSnapshot.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Migrations\\AppDbContextModelSnapshot.cs": {
       "KopiKala.Migrations.AppDbContextModelSnapshot": {
         "System.Void KopiKala.Migrations.AppDbContextModelSnapshot::BuildModel(Microsoft.EntityFrameworkCore.ModelBuilder)": {
           "Lines": {
@@ -6822,7 +6822,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Helpers\\CurrencyHelper.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Helpers\\CurrencyHelper.cs": {
       "KopiKala.Helpers.CurrencyHelper": {
         "System.String KopiKala.Helpers.CurrencyHelper::ToRupiah(System.Decimal)": {
           "Lines": {
@@ -6840,7 +6840,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Helpers\\FileSecurityHelper.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Helpers\\FileSecurityHelper.cs": {
       "KopiKala.Helpers.FileSecurityHelper": {
         "System.Boolean KopiKala.Helpers.FileSecurityHelper::IsValidImageExtension(System.String)": {
           "Lines": {
@@ -7193,7 +7193,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Helpers\\InvoiceCodeHelper.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Helpers\\InvoiceCodeHelper.cs": {
       "KopiKala.Helpers.InvoiceCodeHelper": {
         "System.String KopiKala.Helpers.InvoiceCodeHelper::GenerateInvoiceCode(System.DateOnly)": {
           "Lines": {
@@ -7207,7 +7207,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Helpers\\PasswordHelper.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Helpers\\PasswordHelper.cs": {
       "KopiKala.Helpers.PasswordHelper": {
         "System.String KopiKala.Helpers.PasswordHelper::HashPassword(System.String)": {
           "Lines": {
@@ -7263,7 +7263,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Helpers\\PermissionAuthorizationHandler.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Helpers\\PermissionAuthorizationHandler.cs": {
       "KopiKala.Helpers.PermissionAuthorizationHandler": {
         "System.Threading.Tasks.Task KopiKala.Helpers.PermissionAuthorizationHandler::HandleRequirementAsync(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,KopiKala.Helpers.PermissionRequirement)": {
           "Lines": {
@@ -7316,7 +7316,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Helpers\\PermissionPolicyProvider.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Helpers\\PermissionPolicyProvider.cs": {
       "KopiKala.Helpers.PermissionPolicyProvider": {
         "System.Threading.Tasks.Task`1<Microsoft.AspNetCore.Authorization.AuthorizationPolicy> KopiKala.Helpers.PermissionPolicyProvider::GetDefaultPolicyAsync()": {
           "Lines": {
@@ -7341,7 +7341,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Helpers\\PermissionRequirement.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Helpers\\PermissionRequirement.cs": {
       "KopiKala.Helpers.PermissionRequirement": {
         "System.Void KopiKala.Helpers.PermissionRequirement::.ctor(System.String)": {
           "Lines": {
@@ -7354,7 +7354,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\DTOs\\Booking\\OrderItemDto.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\DTOs\\Booking\\OrderItemDto.cs": {
       "KopiKala.DTOs.Booking.OrderItemDto": {
         "System.Decimal KopiKala.DTOs.Booking.OrderItemDto::get_SubTotal()": {
           "Lines": {
@@ -7364,7 +7364,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Data\\AppDbContext.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Data\\AppDbContext.cs": {
       "KopiKala.Data.AppDbContext": {
         "System.Void KopiKala.Data.AppDbContext::OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)": {
           "Lines": {
@@ -7706,7 +7706,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Data\\ApplicationDbContext.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Data\\ApplicationDbContext.cs": {
       "KopiKala.Data.ApplicationDbContext": {
         "System.Void KopiKala.Data.ApplicationDbContext::.ctor(Microsoft.EntityFrameworkCore.DbContextOptions`1<KopiKala.Data.ApplicationDbContext>)": {
           "Lines": {
@@ -7716,7 +7716,7 @@
         }
       }
     },
-    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\feat-aspire-apphost\\KopiKala\\Controllers\\AuthorizationController.cs": {
+    "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala\\Controllers\\AuthorizationController.cs": {
       "KopiKala.Controllers.AuthorizationController": {
         "System.Void KopiKala.Controllers.AuthorizationController::.ctor(OpenIddict.Abstractions.IOpenIddictApplicationManager,OpenIddict.Abstractions.IOpenIddictAuthorizationManager,OpenIddict.Abstractions.IOpenIddictScopeManager,KopiKala.Data.AppDbContext)": {
           "Lines": {

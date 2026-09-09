@@ -11,20 +11,21 @@ using System;
 using System.Reflection;
 
 [assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("aspnet-KopiKala.AppHost-e5a6f23b-01c9-44d3-8b7a-9b817c1a8f50")]
-[assembly: System.Reflection.AssemblyMetadata("dcpclipath", ("C:\\Users\\maste\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\9.1.0\\tools\\d" +
-    "cp.exe"))]
-[assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", ("C:\\Users\\maste\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\9.1.0\\tools\\e" +
-    "xt\\"))]
-[assembly: System.Reflection.AssemblyMetadata("dcpbinpath", ("C:\\Users\\maste\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\9.1.0\\tools\\e" +
-    "xt\\bin\\"))]
-[assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\update-sln-and-slnx\\KopiKala.AppHost")]
+[assembly: System.Reflection.AssemblyMetadata("dcpclipath", ("C:\\Users\\maste\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\13.5.3\\tools\\" +
+    "dcp.exe"))]
+[assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", ("C:\\Users\\maste\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\13.5.3\\tools\\" +
+    "ext\\"))]
+[assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", ("I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala.AppHos" +
+    "t"))]
 [assembly: System.Reflection.AssemblyMetadata("apphostprojectname", "KopiKala.AppHost.csproj")]
-[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", ("C:\\Users\\maste\\.nuget\\packages\\aspire.dashboard.sdk.win-x64\\9.1.0\\tools\\Aspire.Da" +
-    "shboard.exe"))]
+[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", ("C:\\Users\\maste\\.nuget\\packages\\aspire.dashboard.sdk.win-x64\\13.5.3\\tools\\Aspire.D" +
+    "ashboard.exe"))]
+[assembly: System.Reflection.AssemblyMetadataAttribute("apphostprojectbaseintermediateoutputpath", ("I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala.AppHos" +
+    "t\\obj\\"))]
 [assembly: System.Reflection.AssemblyCompanyAttribute("KopiKala.AppHost")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aab4501cac1c0fa68599b8a8ab5353623ce01404")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b263f9114efba15ff2fe51be5197fc26525bdf50")]
 [assembly: System.Reflection.AssemblyProductAttribute("KopiKala.AppHost")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KopiKala.AppHost")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
