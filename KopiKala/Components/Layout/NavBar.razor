@@ -1,0 +1,450 @@
+@using Microsoft.AspNetCore.Authorization
+@inject NavigationManager NavigationManager
+
+@* ── Fixed Top App Bar ── *@
+<MudAppBar Elevation="1" Class="kopi-appbar px-4" Color="Color.Inherit">
+    @* ── MOBILE VIEW: Hamburger & Compact Brand (SmAndDown) ── *@
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+        <div class="d-flex align-center">
+            <MudIconButton Icon="@Icons.Material.Filled.Menu"
+                           Color="Color.Inherit"
+                           Edge="Edge.Start"
+                           OnClick="ToggleDrawer"
+                           Class="mr-1"
+                           aria-label="Open navigation menu" />
+
+            <MudIconButton Icon="@Icons.Material.Filled.Coffee"
+                           Color="Color.Primary"
+                           Href="/"
+                           Size="Size.Small"
+                           Class="mr-1 pa-1"
+                           aria-label="KopiKala Home" />
+
+            <MudLink Href="/" Underline="Underline.None" Class="kopi-brand-link">
+                <MudText Typo="Typo.h6" Class="font-weight-bold kopi-brand-text">
+                    KopiKala
+                </MudText>
+            </MudLink>
+        </div>
+    </MudHidden>
+
+    @* ── DESKTOP VIEW: Brand Logo (MdAndUp) ── *@
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        <div class="d-flex align-center mr-6">
+            <MudIconButton Icon="@Icons.Material.Filled.Coffee"
+                           Color="Color.Primary"
+                           Href="/"
+                           Size="Size.Medium"
+                           Edge="Edge.Start"
+                           Class="mr-1 pa-1"
+                           aria-label="KopiKala Home" />
+
+            <MudLink Href="/" Underline="Underline.None" Class="kopi-brand-link mr-4">
+                <MudText Typo="Typo.h6" Class="font-weight-bold kopi-brand-text">
+                    KopiKala
+                </MudText>
+            </MudLink>
+        </div>
+
+        @* ── DESKTOP HORIZONTAL NAVIGATION (Role-Based) ── *@
+        <div class="d-flex align-center gap-1">
+            <AuthorizeView>
+                <Authorized>
+                    @* Customer Links *@
+                    <AuthorizeView Policy="CustomerOnly" Context="custContext">
+                        <Authorized>
+                            <MudButton Href="/Booking"
+                                       Variant="Variant.Text"
+                                       Color="Color.Inherit"
+                                       Class="kopi-nav-item"
+                                       StartIcon="@Icons.Material.Filled.EventSeat">
+                                Pesan Meja
+                            </MudButton>
+                            <MudButton Href="/Customer/Orders"
+                                       Variant="Variant.Text"
+                                       Color="Color.Inherit"
+                                       Class="kopi-nav-item"
+                                       StartIcon="@Icons.Material.Filled.ReceiptLong">
+                                Pesanan Saya
+                            </MudButton>
+                        </Authorized>
+                    </AuthorizeView>
+
+                    @* Staff Dropdown Navigation *@
+                    <AuthorizeView Policy="StaffAccess" Context="staffContext">
+                        <Authorized>
+                            <MudMenu Label="Portal Staf"
+                                     StartIcon="@Icons.Material.Filled.Badge"
+                                     EndIcon="@Icons.Material.Filled.ArrowDropDown"
+                                     Variant="Variant.Text"
+                                     Color="Color.Inherit"
+                                     Class="kopi-nav-item"
+                                     AnchorOrigin="Origin.BottomLeft"
+                                     TransformOrigin="Origin.TopLeft"
+                                     PopoverClass="kopi-nav-popover">
+                                <MudMenuItem Href="/Staff" Icon="@Icons.Material.Filled.Dashboard">
+                                    Ringkasan Portal Staf
+                                </MudMenuItem>
+                                <MudDivider />
+                                <MudMenuItem Href="/Staff?tab=0" Icon="@Icons.Material.Filled.TableBar">
+                                    Denah Meja &amp; Status
+                                </MudMenuItem>
+                                <MudMenuItem Href="/Staff?tab=1" Icon="@Icons.Material.Filled.FactCheck">
+                                    Verifikasi Transfer
+                                </MudMenuItem>
+                                <MudMenuItem Href="/Staff?tab=2" Icon="@Icons.Material.Filled.Search">
+                                    Cari Transaksi / Tamu
+                                </MudMenuItem>
+                            </MudMenu>
+                        </Authorized>
+                    </AuthorizeView>
+
+                    @* SuperAdmin Dropdown Navigation *@
+                    <AuthorizeView Policy="SuperAdminOnly" Context="adminContext">
+                        <Authorized>
+                            <MudMenu Label="SuperAdmin"
+                                     StartIcon="@Icons.Material.Filled.AdminPanelSettings"
+                                     EndIcon="@Icons.Material.Filled.ArrowDropDown"
+                                     Variant="Variant.Text"
+                                     Color="Color.Inherit"
+                                     Class="kopi-nav-item"
+                                     AnchorOrigin="Origin.BottomLeft"
+                                     TransformOrigin="Origin.TopLeft"
+                                     PopoverClass="kopi-nav-popover">
+                                <MudMenuItem Href="/SuperAdmin" Icon="@Icons.Material.Filled.Dashboard">
+                                    Panel Utama
+                                </MudMenuItem>
+                                <MudDivider />
+                                <MudMenuItem Href="/SuperAdmin?tab=0" Icon="@Icons.Material.Filled.Insights">
+                                    Analitik &amp; KPI Bisnis
+                                </MudMenuItem>
+                                <MudMenuItem Href="/SuperAdmin?tab=1" Icon="@Icons.Material.Filled.PeopleAlt">
+                                    Akun Staf &amp; Dynamic PBAC
+                                </MudMenuItem>
+                                <MudMenuItem Href="/SuperAdmin?tab=2" Icon="@Icons.Material.Filled.Storage">
+                                    Master Data Kafe
+                                </MudMenuItem>
+                            </MudMenu>
+                        </Authorized>
+                    </AuthorizeView>
+                </Authorized>
+
+                <NotAuthorized>
+                    <MudButton Href="/"
+                               Variant="Variant.Text"
+                               Color="Color.Inherit"
+                               Class="kopi-nav-item"
+                               StartIcon="@Icons.Material.Filled.Home">
+                        Beranda
+                    </MudButton>
+                    <MudButton Href="/Booking"
+                               Variant="Variant.Text"
+                               Color="Color.Inherit"
+                               Class="kopi-nav-item"
+                               StartIcon="@Icons.Material.Filled.EventSeat">
+                        Pesan Meja
+                    </MudButton>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+    </MudHidden>
+
+    <MudSpacer />
+
+    @* ── DESKTOP UTILITIES (Search, Theme, Profile / Auth) ── *@
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        <div class="d-flex align-center">
+            @* Search Field *@
+            <div class="kopi-search-wrapper mr-3">
+                <MudTextField T="string"
+                              @bind-Value="_searchQuery"
+                              Placeholder="Cari meja, menu..."
+                              Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Search"
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Dense"
+                              Class="kopi-search-input"
+                              Clearable="true"
+                              Immediate="true"
+                              OnKeyDown="HandleSearchKeyDown"
+                              aria-label="Search" />
+            </div>
+
+            @* Theme Toggle *@
+            <MudIconButton Icon="@(IsDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)"
+                           Color="Color.Inherit"
+                           OnClick="ToggleThemeAsync"
+                           Class="mr-2 kopi-action-btn"
+                           aria-label="Toggle dark mode" />
+
+            @* Account / Profile Menu *@
+            <AuthorizeView>
+                <Authorized>
+                    <MudMenu EndIcon="@Icons.Material.Filled.ArrowDropDown"
+                             Color="Color.Inherit"
+                             Class="kopi-profile-menu"
+                             AnchorOrigin="Origin.BottomRight"
+                             TransformOrigin="Origin.TopRight"
+                             PopoverClass="kopi-nav-popover">
+                        <ActivatorContent>
+                            <MudButton Variant="Variant.Text"
+                                       Color="Color.Inherit"
+                                       StartIcon="@Icons.Material.Filled.AccountCircle"
+                                       EndIcon="@Icons.Material.Filled.ArrowDropDown"
+                                       Class="kopi-profile-btn font-weight-medium">
+                                @context.User.Identity?.Name
+                            </MudButton>
+                        </ActivatorContent>
+                        <ChildContent>
+                            <div class="px-4 py-2">
+                                <MudText Typo="Typo.subtitle2" Class="font-weight-bold">
+                                    @context.User.Identity?.Name
+                                </MudText>
+                                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                                    Akun Terdaftar
+                                </MudText>
+                            </div>
+                            <MudDivider />
+                            <MudMenuItem Href="/Account/Manage" Icon="@Icons.Material.Filled.Person">
+                                Profil Akun
+                            </MudMenuItem>
+                            <MudDivider />
+                            <MudMenuItem Icon="@Icons.Material.Filled.Logout" OnClick="HandleLogout">
+                                Keluar
+                            </MudMenuItem>
+                        </ChildContent>
+                    </MudMenu>
+                </Authorized>
+                <NotAuthorized>
+                    <MudButton Href="/Account/Login"
+                               Variant="Variant.Text"
+                               Color="Color.Inherit"
+                               Size="Size.Small"
+                               Class="mr-2 kopi-nav-item">
+                        Masuk
+                    </MudButton>
+                    <MudButton Href="/Account/Register"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               Size="Size.Small"
+                               Class="kopi-cta-btn">
+                        Daftar
+                    </MudButton>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+    </MudHidden>
+
+    @* ── MOBILE UTILITIES (Search Icon, Theme Toggle, Profile Icon) ── *@
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+        <div class="d-flex align-center">
+            <MudIconButton Icon="@Icons.Material.Filled.Search"
+                           Color="Color.Inherit"
+                           OnClick="ToggleMobileSearch"
+                           Class="mr-1"
+                           aria-label="Search" />
+
+            <MudIconButton Icon="@(IsDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)"
+                           Color="Color.Inherit"
+                           OnClick="ToggleThemeAsync"
+                           Class="mr-1"
+                           aria-label="Toggle dark mode" />
+
+            <AuthorizeView>
+                <Authorized>
+                    <MudIconButton Icon="@Icons.Material.Filled.AccountCircle"
+                                   Color="Color.Inherit"
+                                   Href="/Account/Manage"
+                                   aria-label="User account" />
+                </Authorized>
+                <NotAuthorized>
+                    <MudButton Href="/Account/Login"
+                               Variant="Variant.Text"
+                               Color="Color.Inherit"
+                               Size="Size.Small"
+                               Class="px-2">
+                        Masuk
+                    </MudButton>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+    </MudHidden>
+</MudAppBar>
+
+@* ── Expandable Mobile Search Bar ── *@
+@if (_mobileSearchOpen)
+{
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+        <div class="kopi-mobile-search-bar d-flex align-center gap-2">
+            <MudTextField T="string"
+                          @bind-Value="_searchQuery"
+                          Placeholder="Cari meja, menu..."
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search"
+                          Variant="Variant.Outlined"
+                          Margin="Margin.Dense"
+                          FullWidth="true"
+                          Clearable="true"
+                          Immediate="true"
+                          OnKeyDown="HandleSearchKeyDown"
+                          AutoFocus="true"
+                          aria-label="Mobile Search" />
+            <MudIconButton Icon="@Icons.Material.Filled.Close"
+                           Color="Color.Default"
+                           Size="Size.Small"
+                           OnClick="ToggleMobileSearch"
+                           aria-label="Close search" />
+        </div>
+    </MudHidden>
+}
+
+@* ── Mobile Navigation Drawer ── *@
+<MudDrawer @bind-Open="_drawerOpen"
+           ClipMode="DrawerClipMode.Always"
+           Elevation="2"
+           Variant="DrawerVariant.Temporary"
+           Width="280px">
+    <MudDrawerHeader Class="px-4 py-3 d-flex align-center justify-space-between">
+        <div class="d-flex align-center gap-2">
+            <MudIcon Icon="@Icons.Material.Filled.Coffee" Color="Color.Primary" Size="Size.Medium" />
+            <MudText Typo="Typo.h6" Class="font-weight-bold" Color="Color.Primary">KopiKala</MudText>
+        </div>
+        <MudIconButton Icon="@Icons.Material.Filled.Close"
+                       Size="Size.Small"
+                       Color="Color.Default"
+                       OnClick="CloseDrawer"
+                       aria-label="Close menu" />
+    </MudDrawerHeader>
+    <MudDivider />
+
+    <MudNavMenu Class="pa-2">
+        <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home" OnClick="CloseDrawer">
+            Beranda
+        </MudNavLink>
+
+        <AuthorizeView>
+            <Authorized>
+                @* Customer Navigation Group *@
+                <AuthorizeView Policy="CustomerOnly" Context="drawerCustContext">
+                    <Authorized>
+                        <MudNavGroup Title="Menu Pelanggan" Icon="@Icons.Material.Filled.Restaurant" Expanded="true">
+                            <MudNavLink Href="/Booking" Icon="@Icons.Material.Filled.EventSeat" OnClick="CloseDrawer">
+                                Pesan Meja
+                            </MudNavLink>
+                            <MudNavLink Href="/Customer/Orders" Icon="@Icons.Material.Filled.ReceiptLong" OnClick="CloseDrawer">
+                                Pesanan Saya
+                            </MudNavLink>
+                        </MudNavGroup>
+                    </Authorized>
+                </AuthorizeView>
+
+                @* Staff Navigation Group *@
+                <AuthorizeView Policy="StaffAccess" Context="drawerStaffContext">
+                    <Authorized>
+                        <MudNavGroup Title="Portal Staf" Icon="@Icons.Material.Filled.Badge" Expanded="true">
+                            <MudNavLink Href="/Staff" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Dashboard" OnClick="CloseDrawer">
+                                Ringkasan Staf
+                            </MudNavLink>
+                            <MudNavLink Href="/Staff?tab=0" Icon="@Icons.Material.Filled.TableBar" OnClick="CloseDrawer">
+                                Denah Meja &amp; Status
+                            </MudNavLink>
+                            <MudNavLink Href="/Staff?tab=1" Icon="@Icons.Material.Filled.FactCheck" OnClick="CloseDrawer">
+                                Verifikasi Transfer
+                            </MudNavLink>
+                            <MudNavLink Href="/Staff?tab=2" Icon="@Icons.Material.Filled.Search" OnClick="CloseDrawer">
+                                Cari Transaksi / Tamu
+                            </MudNavLink>
+                        </MudNavGroup>
+                    </Authorized>
+                </AuthorizeView>
+
+                @* SuperAdmin Navigation Group *@
+                <AuthorizeView Policy="SuperAdminOnly" Context="drawerAdminContext">
+                    <Authorized>
+                        <MudNavGroup Title="SuperAdmin" Icon="@Icons.Material.Filled.AdminPanelSettings" Expanded="true">
+                            <MudNavLink Href="/SuperAdmin" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Dashboard" OnClick="CloseDrawer">
+                                Panel Utama
+                            </MudNavLink>
+                            <MudNavLink Href="/SuperAdmin?tab=0" Icon="@Icons.Material.Filled.Insights" OnClick="CloseDrawer">
+                                Analitik &amp; KPI Bisnis
+                            </MudNavLink>
+                            <MudNavLink Href="/SuperAdmin?tab=1" Icon="@Icons.Material.Filled.PeopleAlt" OnClick="CloseDrawer">
+                                Akun Staf &amp; PBAC
+                            </MudNavLink>
+                            <MudNavLink Href="/SuperAdmin?tab=2" Icon="@Icons.Material.Filled.Storage" OnClick="CloseDrawer">
+                                Master Data Kafe
+                            </MudNavLink>
+                        </MudNavGroup>
+                    </Authorized>
+                </AuthorizeView>
+
+                <MudDivider Class="my-2" />
+                <MudNavLink Href="/Account/Manage" Icon="@Icons.Material.Filled.Person" OnClick="CloseDrawer">
+                    Profil Akun (@context.User.Identity?.Name)
+                </MudNavLink>
+                <MudNavLink Icon="@Icons.Material.Filled.Logout" OnClick="HandleLogout">
+                    Keluar (Logout)
+                </MudNavLink>
+            </Authorized>
+            <NotAuthorized>
+                <MudNavLink Href="/Booking" Icon="@Icons.Material.Filled.EventSeat" OnClick="CloseDrawer">
+                    Pesan Meja
+                </MudNavLink>
+                <MudDivider Class="my-2" />
+                <MudNavLink Href="/Account/Login" Icon="@Icons.Material.Filled.Login" OnClick="CloseDrawer">
+                    Masuk
+                </MudNavLink>
+                <MudNavLink Href="/Account/Register" Icon="@Icons.Material.Filled.PersonAdd" OnClick="CloseDrawer">
+                    Daftar
+                </MudNavLink>
+            </NotAuthorized>
+        </AuthorizeView>
+    </MudNavMenu>
+</MudDrawer>
+
+@code {
+    [Parameter]
+    public bool IsDarkMode { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> IsDarkModeChanged { get; set; }
+
+    private bool _drawerOpen;
+    private bool _mobileSearchOpen;
+    private string _searchQuery = string.Empty;
+
+    private void ToggleDrawer()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    private void CloseDrawer()
+    {
+        _drawerOpen = false;
+    }
+
+    private void ToggleMobileSearch()
+    {
+        _mobileSearchOpen = !_mobileSearchOpen;
+    }
+
+    private async Task ToggleThemeAsync()
+    {
+        IsDarkMode = !IsDarkMode;
+        await IsDarkModeChanged.InvokeAsync(IsDarkMode);
+    }
+
+    private void HandleSearchKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !string.IsNullOrWhiteSpace(_searchQuery))
+        {
+            NavigationManager.NavigateTo($"/Staff?tab=2");
+            _mobileSearchOpen = false;
+        }
+    }
+
+    private void HandleLogout()
+    {
+        NavigationManager.NavigateTo("/auth/logout", forceLoad: true);
+    }
+}
