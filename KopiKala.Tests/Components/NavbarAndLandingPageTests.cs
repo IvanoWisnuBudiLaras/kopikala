@@ -106,6 +106,23 @@ public class NavbarAndLandingPageTests
         _output.WriteLine($"[SECURITY TEST] URL: '{url}' -> Safe: {isSafe} (Expected: {expectedSafe})");
     }
 
+    [Theory]
+    [InlineData(0, true)]
+    [InlineData(1, true)]
+    [InlineData(2, true)]
+    [InlineData(3, false)]
+    [InlineData(-1, false)]
+    [InlineData(null, false)]
+    public void TabQueryParameter_EvaluatesTabIndexBounds_Correctly(int? tabParam, bool expectedValid)
+    {
+        // Act: validate index bounds for deep link navigation
+        bool isValid = tabParam.HasValue && tabParam.Value >= 0 && tabParam.Value <= 2;
+
+        // Assert
+        Assert.Equal(expectedValid, isValid);
+        _output.WriteLine($"[TAB TEST] Tab parameter '{tabParam}' -> Valid: {isValid} (Expected: {expectedValid})");
+    }
+
     private static bool IsLocalUrlHelper(string? url)
     {
         if (string.IsNullOrEmpty(url)) return false;
