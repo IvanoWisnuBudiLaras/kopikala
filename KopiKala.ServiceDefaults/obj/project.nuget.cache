@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "mjtb6zHPJsY=",
+  "dgSpecHash": "sDh39gwZRrg=",
   "success": true,
-  "projectFilePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
+  "projectFilePath": "I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-aspire-postgres-credentials\\KopiKala.ServiceDefaults\\KopiKala.ServiceDefaults.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.ambientmetadata.application\\10.0.0\\microsoft.extensions.ambientmetadata.application.10.0.0.nupkg.sha512",
     "C:\\Users\\maste\\.nuget\\packages\\microsoft.extensions.compliance.abstractions\\10.0.0\\microsoft.extensions.compliance.abstractions.10.0.0.nupkg.sha512",

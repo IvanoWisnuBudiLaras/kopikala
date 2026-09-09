@@ -15,17 +15,17 @@ using System.Reflection;
     "dcp.exe"))]
 [assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", ("C:\\Users\\maste\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\13.5.3\\tools\\" +
     "ext\\"))]
-[assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", ("I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala.AppHos" +
-    "t"))]
+[assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", ("I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-aspire-postgres-credentials\\KopiKala.Ap" +
+    "pHost"))]
 [assembly: System.Reflection.AssemblyMetadata("apphostprojectname", "KopiKala.AppHost.csproj")]
 [assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", ("C:\\Users\\maste\\.nuget\\packages\\aspire.dashboard.sdk.win-x64\\13.5.3\\tools\\Aspire.D" +
     "ashboard.exe"))]
-[assembly: System.Reflection.AssemblyMetadataAttribute("apphostprojectbaseintermediateoutputpath", ("I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-package-vulnerabilities\\KopiKala.AppHos" +
-    "t\\obj\\"))]
+[assembly: System.Reflection.AssemblyMetadataAttribute("apphostprojectbaseintermediateoutputpath", ("I:\\dev\\web\\KopiKala\\.claude\\worktrees\\fix-aspire-postgres-credentials\\KopiKala.Ap" +
+    "pHost\\obj\\"))]
 [assembly: System.Reflection.AssemblyCompanyAttribute("KopiKala.AppHost")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b263f9114efba15ff2fe51be5197fc26525bdf50")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1515c4ee888466a33074f1b0234ec1839d812b7a")]
 [assembly: System.Reflection.AssemblyProductAttribute("KopiKala.AppHost")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KopiKala.AppHost")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,7 +1,10 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-// Container PostgreSQL (Docker) with persistent volume
-var postgres = builder.AddPostgres("kopikala-postgres", port: 5432)
+var pgUser = builder.AddParameter("pg-user", "kopikala_user");
+var pgPassword = builder.AddParameter("pg-password", "kopikala_password123", secret: true);
+
+// Container PostgreSQL (Docker) with persistent volume & explicit credentials matching docker-compose
+var postgres = builder.AddPostgres("kopikala-postgres", userName: pgUser, password: pgPassword, port: 5432)
     .WithDataVolume("kopikala_pgdata")
     .WithPgAdmin();
 
