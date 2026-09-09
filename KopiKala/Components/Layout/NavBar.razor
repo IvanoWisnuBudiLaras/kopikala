@@ -201,16 +201,12 @@
                                     @context.User.Identity?.Name
                                 </MudText>
                                 <MudText Typo="Typo.caption" Color="Color.Secondary">
-                                    Akun Terdaftar
+                                    Pengguna Terautentikasi
                                 </MudText>
                             </div>
                             <MudDivider />
-                            <MudMenuItem Href="/Account/Manage" Icon="@Icons.Material.Filled.Person">
-                                Profil Akun
-                            </MudMenuItem>
-                            <MudDivider />
                             <MudMenuItem Icon="@Icons.Material.Filled.Logout" OnClick="HandleLogout">
-                                Keluar
+                                Keluar (Logout)
                             </MudMenuItem>
                         </ChildContent>
                     </MudMenu>
@@ -252,10 +248,10 @@
 
             <AuthorizeView>
                 <Authorized>
-                    <MudIconButton Icon="@Icons.Material.Filled.AccountCircle"
+                    <MudIconButton Icon="@Icons.Material.Filled.Logout"
                                    Color="Color.Inherit"
-                                   Href="/Account/Manage"
-                                   aria-label="User account" />
+                                   OnClick="HandleLogout"
+                                   aria-label="Keluar (Logout)" />
                 </Authorized>
                 <NotAuthorized>
                     <MudButton Href="/Account/Login"
@@ -379,9 +375,9 @@
                 </AuthorizeView>
 
                 <MudDivider Class="my-2" />
-                <MudNavLink Href="/Account/Manage" Icon="@Icons.Material.Filled.Person" OnClick="CloseDrawer">
-                    Profil Akun (@context.User.Identity?.Name)
-                </MudNavLink>
+                <MudText Typo="Typo.caption" Class="px-4 py-1" Color="Color.Secondary">
+                    Akun: @context.User.Identity?.Name
+                </MudText>
                 <MudNavLink Icon="@Icons.Material.Filled.Logout" OnClick="HandleLogout">
                     Keluar (Logout)
                 </MudNavLink>
